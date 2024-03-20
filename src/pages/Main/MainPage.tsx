@@ -61,6 +61,14 @@ export const MainPage: FC<MainPageProps> = ({ className }) => {
     }
   }
 
+  const onClickDeleteConditionButton = (index: number) => () => {
+    if (confirm('정말로 삭제하시겠습니까?')) {
+      handleConditionList('DELETE', index)()
+      return
+    }
+    return
+  }
+
   const onDeleteLecture = (conditionItemId: number, lectureConditionItemId: number) => () => {
     setConditionList((prevState) => {
       return prevState.map((value) => {
@@ -111,7 +119,7 @@ export const MainPage: FC<MainPageProps> = ({ className }) => {
                       ))}
                     <LectureConditionCreateModal />
                   </ContentCardFieldContainer>
-                  <ContentCardDeleteButton type={'primary'} onClick={handleConditionList('DELETE', index)}>
+                  <ContentCardDeleteButton type={'primary'} onClick={onClickDeleteConditionButton(index)}>
                     <ContentCardDeleteButtonTypo>조건 삭제</ContentCardDeleteButtonTypo>
                     <ContentCardDeleteButtonIcon />
                   </ContentCardDeleteButton>

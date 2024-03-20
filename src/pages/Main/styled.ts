@@ -110,7 +110,6 @@ export const ContentSelectField = styled(Select)``
 
 export const ContentCardDeleteButton = styled(Button)`
   width: 100%;
-  height: 40px;
   background: #ff000088;
   display: flex;
   justify-content: center;

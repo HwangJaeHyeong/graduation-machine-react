@@ -18,7 +18,9 @@ export const ContentButtonContainer = styled.div`
   gap: 5px;
 `
 
-export const ContentButton = styled(Button)``
+export const ContentButton = styled(Button)`
+  width: 100%;
+`
 
 export const ModalRoot = styled(Modal)``
 

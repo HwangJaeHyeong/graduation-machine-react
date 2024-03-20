@@ -1,33 +1,16 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { availableSeason, availableYears, AvailableYearType } from 'constants/lecture'
 import { useBooleanState } from 'hooks/useBooleanState'
+import { ContentAddButtonIcon } from 'pages/Main/styled'
 import { FC, useState } from 'react'
-import {
-  ContentButton,
-  ContentButtonContainer,
-  ModalContentRoot,
-  ModalRoot,
-  ModalSelectField,
-  ModalSubmitButton,
-  Root,
-  SummaryTypo,
-} from './styled'
+import { ContentButton, ModalContentRoot, ModalRoot, ModalSelectField, ModalSubmitButton } from './styled'
 
 type LectureConditionCreateModalProps = {
   className?: string
-  onDelete: () => void
 }
 
-export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> = ({ className, onDelete }) => {
+export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> = ({ className }) => {
   const { state: open, setTrue: openModal, setFalse: closeModal } = useBooleanState({ initialValue: false })
   const [selectedYear, setSelectedYear] = useState<AvailableYearType>()
-
-  const onClickDeleteButton = () => {
-    if (confirm('정말로 삭제하시겠습니까?')) {
-      onDelete()
-    }
-    return
-  }
 
   const onChangeSelectedYear = (value: any) => {
     setSelectedYear(value)
@@ -59,13 +42,11 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
 
   return (
     <>
-      <Root className={className}>
-        <SummaryTypo>EAS1</SummaryTypo>
-        <ContentButtonContainer>
-          <ContentButton type="default" shape="circle" icon={<EditOutlined />} onClick={openModal} />
-          <ContentButton type="default" shape="circle" icon={<DeleteOutlined />} onClick={onClickDeleteButton} />
-        </ContentButtonContainer>
-      </Root>
+      <ContentButton type={'primary'} className={className} onClick={openModal}>
+        강의 추가
+        <ContentAddButtonIcon />
+      </ContentButton>
+
       <ModalRoot title={'과목 정보 수정하기'} open={open} onCancel={closeModal} closable={true} footer={false}>
         <ModalContentRoot>
           <ModalSelectField
