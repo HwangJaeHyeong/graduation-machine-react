@@ -1,12 +1,4 @@
-// english : 영어 강의, design : 설계 강의, refinement : 교양 강의, msc
-export type ConditionCategoryType = 'english' | 'design' | 'common_refinement' | 'msc' | 'etc'
-export type ConditionCategoryItemType = {
-  id: number
-  label: string
-  category: ConditionCategoryType
-}
-
-export type ConditionCategoryListType = ConditionCategoryItemType[]
+import { ConditionCategoryListType } from 'types/lecture'
 
 export const defaultConditionCategoryList: ConditionCategoryListType = [
   {
