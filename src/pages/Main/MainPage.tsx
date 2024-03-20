@@ -1,4 +1,5 @@
-import { LectureSelectModal } from 'components/LectureSelectModal'
+import { LectureConditionCreateModal } from 'components/LectureConditionCreateModal'
+import { LectureConditionEditModal } from 'components/LectureConditionEditModal'
 import { FC, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ConditionListType } from 'types/common'
@@ -103,11 +104,12 @@ export const MainPage: FC<MainPageProps> = ({ className }) => {
 
                     {conditionItem?.lectureIdentificationList &&
                       conditionItem.lectureIdentificationList.map((lectureIdentificationItem) => (
-                        <LectureSelectModal
+                        <LectureConditionEditModal
                           onDelete={onDeleteLecture(conditionItem.id, lectureIdentificationItem.id)}
                           key={`condition_item_${index}_${lectureIdentificationItem.id}`}
                         />
                       ))}
+                    <LectureConditionCreateModal />
                   </ContentCardFieldContainer>
                   <ContentCardDeleteButton type={'primary'} onClick={handleConditionList('DELETE', index)}>
                     <ContentCardDeleteButtonTypo>조건 삭제</ContentCardDeleteButtonTypo>

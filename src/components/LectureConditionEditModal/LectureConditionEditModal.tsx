@@ -13,12 +13,12 @@ import {
   SummaryTypo,
 } from './styled'
 
-type LectureSelectModalProps = {
+type LectureConditionEditModalProps = {
   className?: string
   onDelete: () => void
 }
 
-export const LectureSelectModal: FC<LectureSelectModalProps> = ({ className, onDelete }) => {
+export const LectureConditionEditModal: FC<LectureConditionEditModalProps> = ({ className, onDelete }) => {
   const { state: open, setTrue: openModal, setFalse: closeModal } = useBooleanState({ initialValue: false })
   const [selectedYear, setSelectedYear] = useState<AvailableYearType>()
 
