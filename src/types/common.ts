@@ -1,9 +1,11 @@
-import { LectureIdentificationListType } from './lecture'
+import { ConditionCategoryType, LectureConditionListType } from './lecture'
 
 export type ConditionItemType = {
   id: number
   title: string
-  lectureIdentificationList: LectureIdentificationListType
+  category: ConditionCategoryType
+  lectureIdentificationList: LectureConditionListType
+  memo?: string
 }
 
 export type ConditionListType = ConditionItemType[]

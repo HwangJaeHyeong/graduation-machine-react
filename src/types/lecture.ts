@@ -85,14 +85,19 @@ type LectureGradeType = 'A+' | 'A0' | 'B+' | 'B0' | 'C+' | 'C0' | 'D+' | 'D0' | 
 type LectureCreditType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 
 export type LectureIdentificationItemType = {
-  id: string
+  code: string
   year: LectureYearType
   season: LectureSeasonType
 }
 
 export type LectureIdentificationListType = LectureIdentificationItemType[]
+export type LectureConditionItemType = {
+  id: number
+} & LectureIdentificationItemType
+export type LectureConditionListType = LectureConditionItemType[]
 
-export type LectureItemType = {
+export type LectureDetailsItemType = {
+  id: number
   name: string
   grade: LectureGradeType
   credit: LectureCreditType
