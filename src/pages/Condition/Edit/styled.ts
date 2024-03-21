@@ -132,8 +132,6 @@ export const ContentCardDeleteButtonIcon = styled(DeleteOutlined)`
   font-size: 16px;
 `
 
-export const ContentButton = styled(Button)``
-
 export const ContentAddButton = styled(Button)`
   width: 100%;
   height: 45px;

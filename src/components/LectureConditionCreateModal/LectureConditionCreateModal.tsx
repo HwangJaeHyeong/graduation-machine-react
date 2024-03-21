@@ -62,7 +62,7 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
             showSearch
           />
           <ModalSubmitButton type={'primary'} onClick={onClickSubmitButton}>
-            수정하기
+            추가하기
           </ModalSubmitButton>
         </ModalContentRoot>
       </ModalRoot>

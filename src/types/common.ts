@@ -3,9 +3,10 @@ import { ConditionCategoryType, LectureConditionListType } from './lecture'
 export type ConditionItemType = {
   id: number
   title: string
+  // 최소 이수학점
+  minimumCredit: number
   category: ConditionCategoryType
   lectureIdentificationList: LectureConditionListType
-  memo?: string
 }
 
 export type ConditionListType = ConditionItemType[]
