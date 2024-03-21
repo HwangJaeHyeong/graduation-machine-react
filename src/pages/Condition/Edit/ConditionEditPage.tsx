@@ -126,7 +126,13 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
               <ContentCardCollapse>
                 <ContentCardCollapse.Panel
                   key={`content_card_${index}_1`}
-                  header={<ContentCardTitleTypo>{conditionItem.title ?? `조건 ${index + 1}`} </ContentCardTitleTypo>}
+                  header={
+                    <ContentCardTitleTypo>
+                      {conditionItem.title
+                        ? `${conditionItem.title} (최소 ${conditionItem.minimumCredit}학점)`
+                        : `조건 ${index + 1}`}{' '}
+                    </ContentCardTitleTypo>
+                  }
                 >
                   <ContentCardFieldContainer>
                     {conditionItem.category === 'etc' && (
