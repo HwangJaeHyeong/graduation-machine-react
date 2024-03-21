@@ -20,6 +20,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
+    "react-spreadsheet": "^0.9.4",
+    "scheduler": "^0.23.0",
     "styled-components": "^6.1.8",
     "web-vitals": "^2.1.4"
   },
