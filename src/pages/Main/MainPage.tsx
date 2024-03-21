@@ -14,6 +14,10 @@ export const MainPage: FC<MainPageProps> = ({ className }) => {
     navigate(`/condition/edit/${majorItemCode}`)
   }
 
+  const onClickLectureExcelButton = () => {
+    navigate(`/lecture/excel`)
+  }
+
   return (
     <Root className={className}>
       <HeaderContainer>
@@ -25,6 +29,9 @@ export const MainPage: FC<MainPageProps> = ({ className }) => {
             {majorItem.label}
           </ContentButton>
         ))}
+      </ContentContainer>
+      <ContentContainer>
+        <ContentButton onClick={onClickLectureExcelButton}>전체 강의 정보 입력(엑셀)</ContentButton>
       </ContentContainer>
     </Root>
   )

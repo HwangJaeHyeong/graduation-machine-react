@@ -1,5 +1,6 @@
 import 'antd/dist/reset.css'
 import { ConditionEditPage } from 'pages/Condition/Edit'
+import { LectureExcelPage } from 'pages/Lecture/Excel'
 import { MainPage } from 'pages/Main'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
@@ -11,6 +12,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/condition/edit/:id" element={<ConditionEditPage />} />
+        <Route path="/lecture/excel" element={<LectureExcelPage />} />
         <Route path="/" element={<MainPage />} />
       </Routes>
     </BrowserRouter>
