@@ -1,4 +1,4 @@
-import { Button, Modal, Select, Typography } from 'antd'
+import { Button, Input, Modal, Select, Typography } from 'antd'
 import styled from 'styled-components'
 
 export const Root = styled.div`
@@ -42,3 +42,16 @@ export const ModalSelectField = styled(Select)`
     width: 100%;
   }
 `
+
+export const ModalContentRowContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+`
+
+export const ContentCheckbox = styled(Input)`
+  width: fit-content;
+`
+export const ContentTypo = styled(Typography)``

@@ -2,7 +2,16 @@ import { availableSeason, availableYears, AvailableYearType } from 'constants/le
 import { useBooleanState } from 'hooks/useBooleanState'
 import { ContentAddButtonIcon } from 'pages/Main/styled'
 import { FC, useState } from 'react'
-import { ContentButton, ModalContentRoot, ModalRoot, ModalSelectField, ModalSubmitButton } from './styled'
+import {
+  ContentButton,
+  ContentCheckbox,
+  ContentTypo,
+  ModalContentRoot,
+  ModalContentRowContainer,
+  ModalRoot,
+  ModalSelectField,
+  ModalSubmitButton,
+} from './styled'
 
 type LectureConditionCreateModalProps = {
   className?: string
@@ -11,6 +20,7 @@ type LectureConditionCreateModalProps = {
 export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> = ({ className }) => {
   const { state: open, setTrue: openModal, setFalse: closeModal } = useBooleanState({ initialValue: false })
   const [selectedYear, setSelectedYear] = useState<AvailableYearType>()
+  const { state: isEssentialLecture, setToggle: toggleIsEssentialLecture } = useBooleanState({ initialValue: false })
 
   const onChangeSelectedYear = (value: any) => {
     setSelectedYear(value)
@@ -61,6 +71,10 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
             disabled={!selectAvailableSeasonOptions}
             showSearch
           />
+          <ModalContentRowContainer onClick={toggleIsEssentialLecture}>
+            <ContentCheckbox type={'checkbox'} checked={isEssentialLecture} />
+            <ContentTypo>필수</ContentTypo>
+          </ModalContentRowContainer>
           <ModalSubmitButton type={'primary'} onClick={onClickSubmitButton}>
             추가하기
           </ModalSubmitButton>
