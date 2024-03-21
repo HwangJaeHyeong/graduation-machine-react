@@ -32,7 +32,7 @@ export const defaultConditionCategoryList: ConditionCategoryListType = [
 export const defaultConditionList: ConditionListType = defaultConditionCategoryList.map((conditionCategoryItem) => ({
   id: conditionCategoryItem.id,
   title: conditionCategoryItem.label,
-  minimumCredit: 1,
+  minimumCredit: 0,
   category: conditionCategoryItem.category,
   lectureIdentificationList: [],
 }))

@@ -65,7 +65,7 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
           id: prev.length === 0 ? 1 : prev[prev.length - 1].id + 1,
           title: '새로운 조건',
           category: 'etc',
-          minimumCredit: 1,
+          minimumCredit: 0,
           lectureIdentificationList: [],
         },
       ])
@@ -129,12 +129,14 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                   header={<ContentCardTitleTypo>{conditionItem.title ?? `조건 ${index + 1}`} </ContentCardTitleTypo>}
                 >
                   <ContentCardFieldContainer>
-                    <ContentInputField
-                      addonBefore="제목"
-                      placeholder="제목을 입력해주세요."
-                      value={conditionItem.title}
-                      onChange={onChangeConditionInput('TITLE', conditionItem.id)}
-                    />
+                    {conditionItem.category === 'etc' && (
+                      <ContentInputField
+                        addonBefore="제목"
+                        placeholder="제목을 입력해주세요."
+                        value={conditionItem.title}
+                        onChange={onChangeConditionInput('TITLE', conditionItem.id)}
+                      />
+                    )}
                     <ContentInputField
                       type="number"
                       min={1}
@@ -153,10 +155,12 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                       ))}
                     <LectureConditionCreateModal />
                   </ContentCardFieldContainer>
-                  <ContentCardDeleteButton type={'primary'} onClick={onClickDeleteConditionButton(index)}>
-                    <ContentCardDeleteButtonTypo>조건 삭제</ContentCardDeleteButtonTypo>
-                    <ContentCardDeleteButtonIcon />
-                  </ContentCardDeleteButton>
+                  {conditionItem.category === 'etc' && (
+                    <ContentCardDeleteButton type={'primary'} onClick={onClickDeleteConditionButton(index)}>
+                      <ContentCardDeleteButtonTypo>조건 삭제</ContentCardDeleteButtonTypo>
+                      <ContentCardDeleteButtonIcon />
+                    </ContentCardDeleteButton>
+                  )}
                 </ContentCardCollapse.Panel>
               </ContentCardCollapse>
             </ContentCard>
