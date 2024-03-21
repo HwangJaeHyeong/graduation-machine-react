@@ -10,3 +10,5 @@ declare var process: {
   env: any
 }
 declare var document: any
+
+declare module 'xlsx/xlsx.mjs'

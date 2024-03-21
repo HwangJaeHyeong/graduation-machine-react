@@ -1,4 +1,4 @@
-import { Typography } from 'antd'
+import { Input, Typography } from 'antd'
 import styled from 'styled-components'
 
 export const Root = styled.div`
@@ -51,3 +51,5 @@ export const ContentContainer = styled.div`
   border-radius: 8px;
   margin-top: 20px;
 `
+
+export const ContentInput = styled(Input)``
