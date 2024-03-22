@@ -1,4 +1,4 @@
-import { Input, Typography } from 'antd'
+import { Button, Input, Select, Typography } from 'antd'
 import styled from 'styled-components'
 
 export const Root = styled.div`
@@ -53,3 +53,29 @@ export const ContentContainer = styled.div`
 `
 
 export const ContentInput = styled(Input)``
+export const ContentButton = styled(Button)`
+  width: 100%;
+`
+
+export const ContentSelectField = styled(Select)`
+  width: 100%;
+`
+
+export const SpreadSheetWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  table {
+    max-width: 960px;
+  }
+  td {
+    max-width: 600px;
+  }
+  margin-top: 20px;
+`
+
+export const SpreadSheetTitleTypo = styled(Typography)`
+  font-size: 24px;
+  font-weight: 700;
+  color: #111;
+`

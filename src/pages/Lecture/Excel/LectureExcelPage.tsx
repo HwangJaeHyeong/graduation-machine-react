@@ -1,7 +1,19 @@
+import { availableSeason, AvailableSeasonType, availableYears, AvailableYearType } from 'constants/lecture'
 import { FC, useState } from 'react'
-
+import Spreadsheet from 'react-spreadsheet'
 import * as XLSX from 'xlsx/xlsx.mjs'
-import { ContentContainer, ContentInput, HeaderContainer, HeaderLogoTypo, Root } from './styled'
+import { TABLE_COLUMN_TITLE } from './constant'
+import {
+  ContentButton,
+  ContentContainer,
+  ContentInput,
+  ContentSelectField,
+  HeaderContainer,
+  HeaderLogoTypo,
+  Root,
+  SpreadSheetTitleTypo,
+  SpreadSheetWrapper,
+} from './styled'
 
 type LectureExcelPageProps = {
   className?: string
@@ -9,6 +21,37 @@ type LectureExcelPageProps = {
 
 export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
   const [excelData, setExcelData] = useState<any>([])
+  const [selectedYear, setSelectedYear] = useState<AvailableYearType>()
+  const [selectedSeason, setSelectedSeason] = useState<AvailableSeasonType>()
+
+  const selectAvailableYearOptions = availableYears.map((value) => ({ label: `${value}년도`, value }))
+  const selectAvailableSeasonOptions = (() => {
+    if (selectedYear) {
+      return availableSeason(selectedYear).map((value) => {
+        if (value === '1') {
+          return { label: '1학기', value }
+        }
+        if (value === '2') {
+          return { label: '2학기', value }
+        }
+        if (value === 'summer') {
+          return { label: '여름학기', value }
+        }
+        return { label: '겨울학기', value }
+      })
+    }
+    return undefined
+  })()
+
+  const onChangeSelectedYear = (value: any) => {
+    setSelectedYear(value)
+    return
+  }
+
+  const onChangeSelectedSeason = (value: any) => {
+    setSelectedSeason(value)
+    return
+  }
 
   const handleFile = (e: any) => {
     const files = e.target.files
@@ -27,9 +70,14 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
       const data = XLSX.utils.sheet_to_json(ws, { header: 1 })
       e.target.value = null
 
-      console.log({ data })
       setExcelData(() => {
         let newData = data
+          .map((value: any) => ({
+            code: value[4],
+            name: `${value[5]} (${value[27]})`,
+            credit: value[10],
+          }))
+          .slice(1, data.length)
 
         return [...newData]
       })
@@ -37,8 +85,13 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
     if (rABS) reader.readAsBinaryString(file)
     else reader.readAsArrayBuffer(file)
   }
-
-  console.log({ excelData })
+  const washedExcelData =
+    excelData &&
+    excelData.map((item: any) => [
+      { value: item.code, readOnly: true },
+      { value: item.name, readOnly: true },
+      { value: item.credit, readOnly: true },
+    ])
 
   return (
     <Root className={className}>
@@ -46,8 +99,37 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
         <HeaderLogoTypo>종합 시간표 엑셀 입력하기</HeaderLogoTypo>
       </HeaderContainer>
       <ContentContainer>
-        <ContentInput type="file" className="form-control" id="file" accept={'xlsx'} onChange={handleFile} />
+        <ContentSelectField
+          placeholder={'년도를 선택하세요.'}
+          options={selectAvailableYearOptions}
+          onChange={onChangeSelectedYear}
+          showSearch
+        />
+        <ContentSelectField
+          placeholder={'학기를 선택하세요.'}
+          options={selectAvailableSeasonOptions ?? []}
+          disabled={!selectAvailableSeasonOptions}
+          onChange={onChangeSelectedSeason}
+          showSearch
+        />
+        <ContentInput
+          disabled={!selectedSeason}
+          type="file"
+          className="form-control"
+          id="file"
+          accept={'xlsx'}
+          onChange={handleFile}
+        />
+        <ContentButton type={'primary'}>저장하기</ContentButton>
       </ContentContainer>
+      {selectedYear && selectedSeason && (
+        <ContentContainer>
+          <SpreadSheetTitleTypo>{`${selectedYear}년도 ${selectedSeason}학기 종합시간표`}</SpreadSheetTitleTypo>
+          <SpreadSheetWrapper>
+            {washedExcelData && <Spreadsheet data={washedExcelData} columnLabels={TABLE_COLUMN_TITLE} />}
+          </SpreadSheetWrapper>
+        </ContentContainer>
+      )}
     </Root>
   )
 }
