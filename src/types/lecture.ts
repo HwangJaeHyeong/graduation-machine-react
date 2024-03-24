@@ -106,7 +106,7 @@ export type LectureConditionGroupItemType = {
   id: number
   title: string
   lectureIdentificationList: LectureIdentificationListType
-} & LectureIdentificationItemType
+}
 
 export type LectureConditionGroupListType = LectureConditionGroupItemType[]
 

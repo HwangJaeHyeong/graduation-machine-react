@@ -10,6 +10,7 @@ import {
   ContentAddButtonIcon,
   ContentAddButtonTypo,
   ContentAddContainer,
+  ContentButton,
   ContentCard,
   ContentCardCollapse,
   ContentCardContainer,
@@ -20,6 +21,7 @@ import {
   ContentCardTitleTypo,
   ContentContainer,
   ContentInputField,
+  ContentLectureConditionGroupTitleTypo,
   ContentSubmitButton,
   ContentSubmitButtonTypo,
   HeaderContainer,
@@ -103,6 +105,42 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
     })
   }
 
+  const handleConditionGroupList =
+    (type: 'ADD' | 'DELETE', conditionIndex: number, conditionGroupIndex?: number) => () => {
+      if (type === 'ADD') {
+        setConditionList((prev) =>
+          prev.map((value) =>
+            value.id === conditionIndex
+              ? {
+                  ...value,
+                  lectureConditionGroupList: [
+                    ...value.lectureConditionGroupList,
+                    {
+                      id:
+                        value.lectureConditionGroupList.length > 0
+                          ? value.lectureConditionGroupList[value.lectureConditionGroupList.length - 1].id
+                          : 0,
+                      title: 'etc',
+                      lectureIdentificationList: [],
+                    },
+                  ],
+                }
+              : value
+          )
+        )
+        return
+      }
+      if (type === 'DELETE') {
+        setConditionList((prev) => prev.filter((_, index) => index !== conditionGroupIndex))
+        return
+      }
+    }
+
+  const onClickCreateConditionGroup = (conditionIndex: number) => () => {
+    handleConditionGroupList('ADD', conditionIndex)()
+    return
+  }
+
   const onClickSubmitButton = () => {
     navigate('/result')
   }
@@ -156,12 +194,34 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
 
                     {conditionItem?.lectureConditionGroupList &&
                       conditionItem.lectureConditionGroupList.map((lectureConditionGroupItem) => (
-                        <LectureConditionEditModal
-                          onDelete={onDeleteLecture(conditionItem.id, lectureConditionGroupItem.id)}
-                          key={`condition_item_${index}_${lectureConditionGroupItem.id}`}
-                        />
+                        <ContentCardCollapse key={`condition_item_${index}_${lectureConditionGroupItem.id}`}>
+                          <ContentCardCollapse.Panel
+                            header={
+                              <ContentLectureConditionGroupTitleTypo>
+                                {lectureConditionGroupItem.title}
+                              </ContentLectureConditionGroupTitleTypo>
+                            }
+                            key={`condition_item_${index}_${lectureConditionGroupItem.id}_1`}
+                          >
+                            {lectureConditionGroupItem.lectureIdentificationList.map((lectureIdentificationItem) => (
+                              <LectureConditionEditModal
+                                onDelete={onDeleteLecture(conditionItem.id, lectureConditionGroupItem.id)}
+                                key={`condition_item_${index}_${lectureConditionGroupItem.id}_${lectureIdentificationItem.year}_${lectureIdentificationItem.season}_${lectureIdentificationItem.code}`}
+                              />
+                            ))}
+                            <LectureConditionCreateModal />
+                          </ContentCardCollapse.Panel>
+                        </ContentCardCollapse>
                       ))}
-                    <LectureConditionCreateModal />
+
+                    <ContentButton
+                      type={'primary'}
+                      className={className}
+                      onClick={onClickCreateConditionGroup(conditionItem.id)}
+                    >
+                      그룹 추가
+                      <ContentAddButtonIcon />
+                    </ContentButton>
                   </ContentCardFieldContainer>
                   {conditionItem.category === 'etc' && (
                     <ContentCardDeleteButton type={'primary'} onClick={onClickDeleteConditionButton(index)}>

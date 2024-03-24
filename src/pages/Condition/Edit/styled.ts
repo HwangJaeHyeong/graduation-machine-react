@@ -123,6 +123,10 @@ export const ContentCardDeleteButton = styled(Button)`
   }
 `
 
+export const ContentLectureConditionGroupTitleTypo = styled(Typography)`
+  font-size: 14px;
+`
+
 export const ContentCardDeleteButtonTypo = styled(Typography)`
   font-size: 14px;
   color: white;
@@ -163,4 +167,8 @@ export const ContentSubmitButton = styled(Button)`
 
 export const ContentSubmitButtonTypo = styled(Typography)`
   font-size: 16px;
+`
+
+export const ContentButton = styled(Button)`
+  width: 100%;
 `
