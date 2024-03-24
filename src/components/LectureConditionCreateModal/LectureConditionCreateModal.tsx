@@ -32,7 +32,7 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
   }
 
   const onChangeSelectedLectureItemCode = (value: any) => {
-    setSelectedSeason(value)
+    setSelectedLectureItemCode(value)
     return
   }
 
