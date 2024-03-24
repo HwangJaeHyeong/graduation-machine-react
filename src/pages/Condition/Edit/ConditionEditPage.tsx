@@ -80,6 +80,8 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
     )
   }
 
+  console.log(conditionList)
+
   const onChangeConditionGroupTitleInput = (conditionIndex: number, conditionGroupIndex: number) => (e: any) => {
     setConditionList((prevState) =>
       prevState.map((value) =>
@@ -151,9 +153,9 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                     ...value.lectureConditionGroupList,
                     {
                       id:
-                        value.lectureConditionGroupList.length > 0
-                          ? value.lectureConditionGroupList[value.lectureConditionGroupList.length - 1].id
-                          : 0,
+                        value.lectureConditionGroupList.length === 0
+                          ? 1
+                          : value.lectureConditionGroupList[value.lectureConditionGroupList.length - 1].id + 1,
                       title: 'etc',
                       lectureIdentificationList: [],
                       isEssential: false,
@@ -197,15 +199,15 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
       <ContentContainer>
         <ContentCardContainer>
           {conditionList.map((conditionItem, index) => (
-            <ContentCard key={`content_card_${index}`}>
+            <ContentCard key={`content_card_${conditionItem.id}`}>
               <ContentCardCollapse>
                 <ContentCardCollapse.Panel
-                  key={`content_card_${index}_1`}
+                  key={`content_card_${conditionItem.id}_1`}
                   header={
                     <ContentCardTitleTypo>
                       {conditionItem.title
                         ? `${conditionItem.title} (최소 ${conditionItem.minimumCredit}학점)`
-                        : `조건 ${index + 1}`}{' '}
+                        : `조건 ${conditionItem.id + 1}`}{' '}
                     </ContentCardTitleTypo>
                   }
                 >
@@ -229,14 +231,16 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
 
                     {conditionItem?.lectureConditionGroupList &&
                       conditionItem.lectureConditionGroupList.map((lectureConditionGroupItem) => (
-                        <ContentCardCollapse key={`condition_item_${index}_${lectureConditionGroupItem.id}`}>
+                        <ContentCardCollapse key={`condition_item_${conditionItem.id}_${lectureConditionGroupItem.id}`}>
                           <ContentCardCollapse.Panel
                             header={
                               <ContentLectureConditionGroupTitleTypo>
-                                {lectureConditionGroupItem.title}
+                                {`${lectureConditionGroupItem.title} ${
+                                  lectureConditionGroupItem.isEssential ? `(필수)` : ``
+                                }`}
                               </ContentLectureConditionGroupTitleTypo>
                             }
-                            key={`condition_item_${index}_${lectureConditionGroupItem.id}_1`}
+                            key={`condition_item_${conditionItem.id}_${lectureConditionGroupItem.id}_1`}
                           >
                             <ContentLectureGroupContainer>
                               <ContentInputField
@@ -251,7 +255,7 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                               {lectureConditionGroupItem.lectureIdentificationList.map((lectureIdentificationItem) => (
                                 <LectureConditionEditModal
                                   onDelete={onDeleteLecture(conditionItem.id, lectureConditionGroupItem.id)}
-                                  key={`condition_item_${index}_${lectureConditionGroupItem.id}_${lectureIdentificationItem.year}_${lectureIdentificationItem.season}_${lectureIdentificationItem.code}`}
+                                  key={`condition_item_${conditionItem.id}_${lectureConditionGroupItem.id}_${lectureIdentificationItem.year}_${lectureIdentificationItem.season}_${lectureIdentificationItem.code}`}
                                 />
                               ))}
                               <ContentCheckboxContainer
