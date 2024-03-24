@@ -8,7 +8,7 @@ import { ContentButton, ModalContentRoot, ModalRoot, ModalSelectField, ModalSubm
 
 type LectureConditionCreateModalProps = {
   className?: string
-  onCreate: (lectureIdentificationItem: LectureIdentificationItemType) => void
+  onCreate: (lectureIdentificationItem: LectureIdentificationItemType) => () => void
 }
 
 export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> = ({ className, onCreate }) => {
@@ -49,7 +49,7 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
       alert('선택하지 않은 항목이 있습니다.')
       return
     }
-    onCreate(JSON.parse(selectedLectureItem))
+    onCreate(JSON.parse(selectedLectureItem))()
     closeModal()
     resetState()
     return

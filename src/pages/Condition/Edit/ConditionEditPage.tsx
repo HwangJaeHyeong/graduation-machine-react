@@ -125,14 +125,21 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
     return
   }
 
-  const onDeleteLecture = (conditionItemId: number, lectureConditionItemId: number) => () => {
+  const onDeleteLecture = (conditionItemId: number, lectureConditionGroupId: number, lectureId: number) => () => {
     setConditionList((prevState) => {
       return prevState.map((value) => {
         if (value.id === conditionItemId) {
           return {
             ...value,
-            lectureConditionGroupList: value.lectureConditionGroupList.filter(
-              (value2) => value2.id !== lectureConditionItemId
+            lectureConditionGroupList: value.lectureConditionGroupList.map((value2) =>
+              value2.id === lectureConditionGroupId
+                ? {
+                    ...value2,
+                    lectureIdentificationList: value2.lectureIdentificationList.filter(
+                      (value3) => value3.id !== lectureId
+                    ),
+                  }
+                : value2
             ),
           }
         }
@@ -217,7 +224,16 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                   value2.id === conditionGroupIndex
                     ? {
                         ...value2,
-                        lectureIdentificationList: [...value2.lectureIdentificationList, lectureIdentificationItem],
+                        lectureIdentificationList: [
+                          ...value2.lectureIdentificationList,
+                          {
+                            ...lectureIdentificationItem,
+                            id:
+                              value2.lectureIdentificationList.length === 0
+                                ? 1
+                                : value2.lectureIdentificationList[value2.lectureIdentificationList.length - 1].id + 1,
+                          },
+                        ],
                       }
                     : value2
                 ),
@@ -300,7 +316,11 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                               {lectureConditionGroupItem.lectureIdentificationList.map((lectureIdentificationItem) => (
                                 <LectureConditionEditModal
                                   lectureIdentificationItem={lectureIdentificationItem}
-                                  onDelete={onDeleteLecture(conditionItem.id, lectureConditionGroupItem.id)}
+                                  onDelete={onDeleteLecture(
+                                    conditionItem.id,
+                                    lectureConditionGroupItem.id,
+                                    lectureIdentificationItem.id
+                                  )}
                                   key={`condition_item_${conditionItem.id}_${lectureConditionGroupItem.id}_${lectureIdentificationItem.year}_${lectureIdentificationItem.season}_${lectureIdentificationItem.code}`}
                                 />
                               ))}

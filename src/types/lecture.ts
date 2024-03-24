@@ -97,6 +97,7 @@ export type LectureBasicInformationItemType = {
 export type LectureBasicInformationListType = LectureBasicInformationItemType[]
 
 export type LectureIdentificationItemType = {
+  id: number
   code: string
   name: string
   year: AvailableYearType

@@ -2,6 +2,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { availableSeason, availableYears, AvailableYearType } from 'constants/lecture'
 import { useBooleanState } from 'hooks/useBooleanState'
 import { FC, useState } from 'react'
+import { LectureIdentificationItemType } from 'types/lecture'
 import {
   ContentButton,
   ContentButtonContainer,
@@ -16,9 +17,14 @@ import {
 type LectureConditionEditModalProps = {
   className?: string
   onDelete: () => void
+  lectureIdentificationItem: LectureIdentificationItemType
 }
 
-export const LectureConditionEditModal: FC<LectureConditionEditModalProps> = ({ className, onDelete }) => {
+export const LectureConditionEditModal: FC<LectureConditionEditModalProps> = ({
+  className,
+  onDelete,
+  lectureIdentificationItem,
+}) => {
   const { state: open, setTrue: openModal, setFalse: closeModal } = useBooleanState({ initialValue: false })
   const [selectedYear, setSelectedYear] = useState<AvailableYearType>()
 
@@ -60,7 +66,7 @@ export const LectureConditionEditModal: FC<LectureConditionEditModalProps> = ({ 
   return (
     <>
       <Root className={className}>
-        <SummaryTypo>EAS1</SummaryTypo>
+        <SummaryTypo>{`학기 : ${lectureIdentificationItem.year}-${lectureIdentificationItem.season}, 학수번호 : ${lectureIdentificationItem.code}, 강의명 : ${lectureIdentificationItem.name}, 학점 : ${lectureIdentificationItem.credit}`}</SummaryTypo>
         <ContentButtonContainer>
           <ContentButton type="default" shape="circle" icon={<EditOutlined />} onClick={openModal} />
           <ContentButton type="default" shape="circle" icon={<DeleteOutlined />} onClick={onClickDeleteButton} />
