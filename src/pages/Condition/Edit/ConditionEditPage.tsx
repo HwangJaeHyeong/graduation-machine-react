@@ -156,7 +156,7 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                         value.lectureConditionGroupList.length === 0
                           ? 1
                           : value.lectureConditionGroupList[value.lectureConditionGroupList.length - 1].id + 1,
-                      title: 'etc',
+                      title: '그룹명을 입력해주세요.',
                       lectureIdentificationList: [],
                       isEssential: false,
                     },
