@@ -94,13 +94,6 @@ export type LectureBasicInformationItemType = {
 
 export type LectureBasicInformationListType = LectureBasicInformationItemType[]
 
-export type LectureSetItemType = {
-  title: string
-  lectureBasicInformationList: LectureBasicInformationListType
-}
-
-export type LectureSetListType = LectureSetItemType[]
-
 export type LectureIdentificationItemType = {
   code: string
   year: LectureYearType
@@ -108,10 +101,14 @@ export type LectureIdentificationItemType = {
 }
 
 export type LectureIdentificationListType = LectureIdentificationItemType[]
-export type LectureConditionItemType = {
+
+export type LectureConditionGroupItemType = {
   id: number
+  title: string
+  lectureIdentificationList: LectureIdentificationListType
 } & LectureIdentificationItemType
-export type LectureConditionListType = LectureConditionItemType[]
+
+export type LectureConditionGroupListType = LectureConditionGroupItemType[]
 
 export type LectureDetailsItemType = {
   id: number

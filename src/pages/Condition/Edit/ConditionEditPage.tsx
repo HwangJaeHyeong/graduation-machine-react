@@ -68,7 +68,7 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
           title: '새로운 조건',
           category: 'etc',
           minimumCredit: 0,
-          lectureIdentificationList: [],
+          lectureConditionGroupList: [],
         },
       ])
       return
@@ -93,7 +93,7 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
         if (value.id === conditionItemId) {
           return {
             ...value,
-            lectureIdentificationList: value.lectureIdentificationList.filter(
+            lectureConditionGroupList: value.lectureConditionGroupList.filter(
               (value2) => value2.id !== lectureConditionItemId
             ),
           }
@@ -154,11 +154,11 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                       onChange={onChangeConditionInput('MINIMUM_GRADE', conditionItem.id)}
                     />
 
-                    {conditionItem?.lectureIdentificationList &&
-                      conditionItem.lectureIdentificationList.map((lectureIdentificationItem) => (
+                    {conditionItem?.lectureConditionGroupList &&
+                      conditionItem.lectureConditionGroupList.map((lectureConditionGroupItem) => (
                         <LectureConditionEditModal
-                          onDelete={onDeleteLecture(conditionItem.id, lectureIdentificationItem.id)}
-                          key={`condition_item_${index}_${lectureIdentificationItem.id}`}
+                          onDelete={onDeleteLecture(conditionItem.id, lectureConditionGroupItem.id)}
+                          key={`condition_item_${index}_${lectureConditionGroupItem.id}`}
                         />
                       ))}
                     <LectureConditionCreateModal />

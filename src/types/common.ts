@@ -1,4 +1,4 @@
-import { ConditionCategoryType, LectureConditionListType } from './lecture'
+import { ConditionCategoryType, LectureConditionGroupListType } from './lecture'
 
 export type ConditionItemType = {
   id: number
@@ -6,7 +6,7 @@ export type ConditionItemType = {
   // 최소 이수학점
   minimumCredit: number
   category: ConditionCategoryType
-  lectureIdentificationList: LectureConditionListType
+  lectureConditionGroupList: LectureConditionGroupListType
 }
 
 export type ConditionListType = ConditionItemType[]

@@ -34,5 +34,5 @@ export const defaultConditionList: ConditionListType = defaultConditionCategoryL
   title: conditionCategoryItem.label,
   minimumCredit: 0,
   category: conditionCategoryItem.category,
-  lectureIdentificationList: [],
+  lectureConditionGroupList: [],
 }))
