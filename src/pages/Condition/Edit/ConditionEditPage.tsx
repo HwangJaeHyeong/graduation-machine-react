@@ -210,10 +210,6 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
     (conditionIndex: number, conditionGroupIndex: number) =>
     (lectureIdentificationItem: LectureIdentificationItemType) =>
     () => {
-      console.log({ lectureIdentificationItem })
-      if (!(conditionIndex && conditionGroupIndex && lectureIdentificationItem)) {
-        alert('알 수 없는 오류가 발생하였습니다.')
-      }
       setConditionList((prev) =>
         prev.map((value, index) =>
           index === conditionIndex
