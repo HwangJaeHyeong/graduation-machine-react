@@ -161,7 +161,7 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
           저장하기
         </ContentButton>
       </ContentContainer>
-      {selectedYear && selectedSeason && (
+      {selectedYear && selectedSeason && excelData.length !== 0 && (
         <ContentContainer>
           <SpreadSheetTitleTypo>{`${selectedYear}년도 ${selectedSeason}학기 종합시간표`}</SpreadSheetTitleTypo>
           <SpreadSheetWrapper>
