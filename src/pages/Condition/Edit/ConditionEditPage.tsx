@@ -19,6 +19,9 @@ import {
   ContentCardDeleteButtonTypo,
   ContentCardFieldContainer,
   ContentCardTitleTypo,
+  ContentCheckbox,
+  ContentCheckboxContainer,
+  ContentCheckboxTypo,
   ContentContainer,
   ContentInputField,
   ContentLectureConditionGroupTitleTypo,
@@ -60,6 +63,21 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
       )
       return
     }
+  }
+
+  const onChangeConditionGroupIsEssentialCheckbox = (conditionIndex: number, conditionGroupIndex: number) => () => {
+    setConditionList((prevState) =>
+      prevState.map((value) =>
+        value.id === conditionIndex
+          ? {
+              ...value,
+              lectureConditionGroupList: value.lectureConditionGroupList.map((value2) =>
+                value2.id === conditionGroupIndex ? { ...value2, isEssential: !value2.isEssential } : value2
+              ),
+            }
+          : value
+      )
+    )
   }
 
   const onChangeConditionGroupTitleInput = (conditionIndex: number, conditionGroupIndex: number) => (e: any) => {
@@ -138,6 +156,7 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                           : 0,
                       title: 'etc',
                       lectureIdentificationList: [],
+                      isEssential: false,
                     },
                   ],
                 }
@@ -235,6 +254,15 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                                   key={`condition_item_${index}_${lectureConditionGroupItem.id}_${lectureIdentificationItem.year}_${lectureIdentificationItem.season}_${lectureIdentificationItem.code}`}
                                 />
                               ))}
+                              <ContentCheckboxContainer
+                                onClick={onChangeConditionGroupIsEssentialCheckbox(
+                                  conditionItem.id,
+                                  lectureConditionGroupItem.id
+                                )}
+                              >
+                                <ContentCheckbox type={'checkbox'} checked={lectureConditionGroupItem.isEssential} />{' '}
+                                <ContentCheckboxTypo>필수</ContentCheckboxTypo>
+                              </ContentCheckboxContainer>
                               <LectureConditionCreateModal />
                             </ContentLectureGroupContainer>
                           </ContentCardCollapse.Panel>

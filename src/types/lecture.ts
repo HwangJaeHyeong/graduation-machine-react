@@ -106,6 +106,7 @@ export type LectureConditionGroupItemType = {
   id: number
   title: string
   lectureIdentificationList: LectureIdentificationListType
+  isEssential: boolean
 }
 
 export type LectureConditionGroupListType = LectureConditionGroupItemType[]

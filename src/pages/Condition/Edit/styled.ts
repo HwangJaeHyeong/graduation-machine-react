@@ -179,3 +179,16 @@ export const ContentLectureGroupContainer = styled.div`
   flex-direction: column;
   gap: 10px;
 `
+
+export const ContentCheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+`
+export const ContentCheckbox = styled(Input)`
+  width: fit-content;
+`
+export const ContentCheckboxTypo = styled(Typography)``
