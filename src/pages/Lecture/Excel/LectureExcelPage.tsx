@@ -14,6 +14,7 @@ import {
   SpreadSheetTitleTypo,
   SpreadSheetWrapper,
 } from './styled'
+import { saveTimetableToLocalStorage } from './utils'
 
 type LectureExcelPageProps = {
   className?: string
@@ -93,6 +94,20 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
       { value: item.credit, readOnly: true },
     ])
 
+  const onClickSubmitButton = () => {
+    if (!selectedYear || !selectedSeason) {
+      alert('년도와 학기를 선택해주세요.')
+      return
+    }
+    if (excelData.length === 0) {
+      alert('엑셀 파일을 입력해주세요.')
+      return
+    }
+
+    saveTimetableToLocalStorage(selectedYear, selectedSeason, excelData)
+    return
+  }
+
   return (
     <Root className={className}>
       <HeaderContainer>
@@ -120,7 +135,9 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
           accept={'xlsx'}
           onChange={handleFile}
         />
-        <ContentButton type={'primary'}>저장하기</ContentButton>
+        <ContentButton type={'primary'} onClick={onClickSubmitButton}>
+          저장하기
+        </ContentButton>
       </ContentContainer>
       {selectedYear && selectedSeason && (
         <ContentContainer>
