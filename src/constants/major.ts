@@ -11,3 +11,5 @@ export const majorList: MajorListType = [
     label: '컴퓨터공학전공',
   },
 ]
+
+export type AvailableMajorType = 'CSE'
