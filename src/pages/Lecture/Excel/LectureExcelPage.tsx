@@ -1,5 +1,5 @@
 import { availableSeason, AvailableSeasonType, availableYears, AvailableYearType } from 'constants/lecture'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Spreadsheet from 'react-spreadsheet'
 import * as XLSX from 'xlsx/xlsx.mjs'
 import { TABLE_COLUMN_TITLE } from './constant'
@@ -14,7 +14,7 @@ import {
   SpreadSheetTitleTypo,
   SpreadSheetWrapper,
 } from './styled'
-import { saveTimetableToLocalStorage } from './utils'
+import { loadTimetableFromLocalStorage, saveTimetableToLocalStorage } from './utils'
 
 type LectureExcelPageProps = {
   className?: string
@@ -24,6 +24,7 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
   const [excelData, setExcelData] = useState<any>([])
   const [selectedYear, setSelectedYear] = useState<AvailableYearType>()
   const [selectedSeason, setSelectedSeason] = useState<AvailableSeasonType>()
+  const [loading, setLoading] = useState<'LOADING' | 'NONE'>('NONE')
 
   const selectAvailableYearOptions = availableYears.map((value) => ({ label: `${value}년도`, value }))
   const selectAvailableSeasonOptions = (() => {
@@ -46,6 +47,7 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
 
   const onChangeSelectedYear = (value: any) => {
     setSelectedYear(value)
+    setSelectedSeason(undefined)
     return
   }
 
@@ -108,6 +110,17 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
     return
   }
 
+  useEffect(() => {
+    if (selectedYear && selectedSeason) {
+      setLoading('LOADING')
+      const loadedData = loadTimetableFromLocalStorage(selectedYear, selectedSeason)
+      if (loadedData) {
+        setExcelData(loadedData)
+      }
+      setLoading('NONE')
+    }
+  }, [selectedYear, selectedSeason])
+
   return (
     <Root className={className}>
       <HeaderContainer>
@@ -117,25 +130,28 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
         <ContentSelectField
           placeholder={'년도를 선택하세요.'}
           options={selectAvailableYearOptions}
+          value={selectedYear}
           onChange={onChangeSelectedYear}
+          disabled={loading === 'LOADING'}
           showSearch
         />
         <ContentSelectField
           placeholder={'학기를 선택하세요.'}
           options={selectAvailableSeasonOptions ?? []}
-          disabled={!selectAvailableSeasonOptions}
+          disabled={!selectAvailableSeasonOptions || loading === 'LOADING'}
+          value={selectedSeason}
           onChange={onChangeSelectedSeason}
           showSearch
         />
         <ContentInput
-          disabled={!selectedSeason}
+          disabled={!selectedSeason || loading === 'LOADING'}
           type="file"
           className="form-control"
           id="file"
           accept={'xlsx'}
           onChange={handleFile}
         />
-        <ContentButton type={'primary'} onClick={onClickSubmitButton}>
+        <ContentButton type={'primary'} onClick={onClickSubmitButton} disabled={loading === 'LOADING'}>
           저장하기
         </ContentButton>
       </ContentContainer>
