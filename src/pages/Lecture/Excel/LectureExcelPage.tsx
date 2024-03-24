@@ -59,6 +59,7 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
   }
 
   const handleFile = (e: any) => {
+    setLoading('LOADING')
     const files = e.target.files
     if (!(files || files[0])) {
       return
@@ -89,6 +90,7 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
     }
     if (rABS) reader.readAsBinaryString(file)
     else reader.readAsArrayBuffer(file)
+    setLoading('NONE')
   }
   const washedExcelData =
     excelData &&
