@@ -195,3 +195,9 @@ export const ContentCheckbox = styled(Input)`
   width: fit-content;
 `
 export const ContentCheckboxTypo = styled(Typography)``
+
+export const ContentTitleTypo = styled(Typography)`
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+`

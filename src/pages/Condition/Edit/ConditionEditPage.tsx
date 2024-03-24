@@ -32,6 +32,7 @@ import {
   ContentLectureGroupContainer,
   ContentSubmitButton,
   ContentSubmitButtonTypo,
+  ContentTitleTypo,
   HeaderContainer,
   HeaderLogoTypo,
   HeaderMenuContainer,
@@ -46,6 +47,7 @@ type ConditionEditPageProps = {
 export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => {
   const { major_code: majorCode, year: selectedYear } = useParams()
   const [conditionList, setConditionList] = useState<ConditionListType>(defaultConditionList)
+  const [minimumCredit, setMinimumCredit] = useState<number>(130)
   const navigate = useNavigate()
 
   const onChangeConditionInput = (type: 'TITLE' | 'MINIMUM_GRADE', conditionIndex: number) => (e: any) => {
@@ -264,8 +266,6 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
     }
   }, [])
 
-  console.log(conditionList)
-
   if (!majorItem && availableYears.includes(washedSelectedYear)) {
     return <div>잘못된 접근입니다.</div>
   }
@@ -281,6 +281,7 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
         </HeaderMenuContainer>
       </HeaderContainer>
       <ContentContainer>
+        <ContentTitleTypo>졸업 이수 조건</ContentTitleTypo>
         <ContentCardContainer>
           {conditionList.map((conditionItem, index) => (
             <ContentCard key={`content_card_${conditionItem.id}`}>
@@ -403,6 +404,20 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
             <ContentAddButtonIcon />
           </ContentAddButton>
         </ContentAddContainer>
+        <ContentSubmitButton onClick={onClickSubmitButton}>
+          <ContentSubmitButtonTypo>저장하기</ContentSubmitButtonTypo>
+        </ContentSubmitButton>
+      </ContentContainer>
+      <ContentContainer>
+        <ContentTitleTypo>기타</ContentTitleTypo>
+        <ContentInputField
+          type={'number'}
+          min={1}
+          addonBefore="최소 이수 학점"
+          placeholder="최소 이수 학점을 입력해주세요."
+          value={minimumCredit}
+          onChange={(e: any) => setMinimumCredit(e.target.value)}
+        />
         <ContentSubmitButton onClick={onClickSubmitButton}>
           <ContentSubmitButtonTypo>저장하기</ContentSubmitButtonTypo>
         </ContentSubmitButton>
