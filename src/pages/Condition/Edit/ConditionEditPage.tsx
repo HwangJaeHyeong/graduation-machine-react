@@ -1,12 +1,13 @@
 import { LectureConditionCreateModal } from 'components/LectureConditionCreateModal'
 import { LectureConditionEditModal } from 'components/LectureConditionEditModal'
 import { defaultConditionList } from 'constants/condition'
-import { availableYears } from 'constants/lecture'
-import { majorList } from 'constants/major'
-import { FC, useState } from 'react'
+import { availableYears, AvailableYearType } from 'constants/lecture'
+import { AvailableMajorType, majorList } from 'constants/major'
+import { FC, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ConditionListType } from 'types/common'
 import { LectureIdentificationItemType } from 'types/lecture'
+import { loadConditionFromLocalStorage, saveConditionToLocalStorage } from 'utils/handleConditionLocalStorage'
 import {
   ContentAddButton,
   ContentAddButtonIcon,
@@ -202,10 +203,6 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
     return
   }
 
-  const onClickSubmitButton = () => {
-    navigate('/result')
-  }
-
   const onCreateConditionGroupLectureItem =
     (conditionIndex: number, conditionGroupIndex: number) =>
     (lectureIdentificationItem: LectureIdentificationItemType) =>
@@ -242,6 +239,32 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
 
   const majorItem = majorList.filter((majorItem) => majorItem.code === majorCode)[0]
   const washedSelectedYear = selectedYear ? +selectedYear : 0
+
+  const onClickSubmitButton = () => {
+    if (majorItem && washedSelectedYear) {
+      saveConditionToLocalStorage(
+        majorItem.code as AvailableMajorType,
+        washedSelectedYear as AvailableYearType,
+        conditionList
+      )
+      navigate(0)
+    }
+  }
+
+  useEffect(() => {
+    if (majorItem && washedSelectedYear) {
+      const loadedData = loadConditionFromLocalStorage(
+        majorItem.code as AvailableMajorType,
+        washedSelectedYear as AvailableYearType
+      )
+      if (loadedData && loadedData.length !== 0) {
+        setConditionList(loadedData)
+        return
+      }
+    }
+  }, [])
+
+  console.log(conditionList)
 
   if (!majorItem && availableYears.includes(washedSelectedYear)) {
     return <div>잘못된 접근입니다.</div>

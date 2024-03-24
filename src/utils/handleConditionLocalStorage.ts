@@ -1,16 +1,16 @@
 import { AvailableYearType } from 'constants/lecture'
 import { AvailableMajorType } from 'constants/major'
-import { LectureIdentificationListType } from 'types/lecture'
+import { ConditionListType } from 'types/common'
 import { getConditionLocalStorageKey } from './getConditionLocalStorageKey'
 
 export const loadConditionFromLocalStorage = (
   major: AvailableMajorType,
   year: AvailableYearType
-): LectureIdentificationListType => {
+): ConditionListType => {
   const localStorageValue = localStorage.getItem(getConditionLocalStorageKey(major, year))
 
   if (localStorageValue) {
-    return JSON.parse(localStorageValue) as LectureIdentificationListType
+    return JSON.parse(localStorageValue) as ConditionListType
   }
   return []
 }
@@ -18,7 +18,7 @@ export const loadConditionFromLocalStorage = (
 export const saveConditionToLocalStorage = (
   major: AvailableMajorType,
   year: AvailableYearType,
-  value: LectureIdentificationListType
+  value: ConditionListType
 ) => {
   localStorage.removeItem(getConditionLocalStorageKey(major, year))
   localStorage.setItem(getConditionLocalStorageKey(major, year), JSON.stringify(value))
