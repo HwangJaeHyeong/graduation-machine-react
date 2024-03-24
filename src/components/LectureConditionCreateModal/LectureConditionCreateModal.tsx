@@ -2,13 +2,13 @@ import { availableSeason, AvailableSeasonType, availableYears, AvailableYearType
 import { useBooleanState } from 'hooks/useBooleanState'
 import { ContentAddButtonIcon } from 'pages/Main/styled'
 import { FC, useEffect, useState } from 'react'
-import { LectureIdentificationListType } from 'types/lecture'
+import { LectureIdentificationItemType, LectureIdentificationListType } from 'types/lecture'
 import { loadTimetableFromLocalStorage } from 'utils/handleTimetableLocalStorage'
 import { ContentButton, ModalContentRoot, ModalRoot, ModalSelectField, ModalSubmitButton } from './styled'
 
 type LectureConditionCreateModalProps = {
   className?: string
-  onCreate: (year: AvailableYearType, season: AvailableSeasonType, code: string) => void
+  onCreate: (lectureIdentificationItem: LectureIdentificationItemType) => void
 }
 
 export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> = ({ className, onCreate }) => {
@@ -16,32 +16,42 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
   const [availableLectureList, setAvailableLectureList] = useState<LectureIdentificationListType>([])
   const [selectedYear, setSelectedYear] = useState<AvailableYearType>()
   const [selectedSeason, setSelectedSeason] = useState<AvailableSeasonType>()
-  const [selectedLectureItemCode, setSelectedLectureItemCode] = useState<string>()
+  const [selectedLectureItem, setSelectedLectureItem] = useState<string>()
+
+  const resetState = () => {
+    setSelectedYear(undefined)
+    setSelectedSeason(undefined)
+    setSelectedLectureItem(undefined)
+    setAvailableLectureList([])
+  }
 
   const onChangeSelectedYear = (value: any) => {
     setSelectedYear(value)
     setSelectedSeason(undefined)
-    setSelectedLectureItemCode(undefined)
+    setAvailableLectureList([])
+    setSelectedLectureItem(undefined)
     return
   }
 
   const onChangeSelectedSeason = (value: any) => {
     setSelectedSeason(value)
-    setSelectedLectureItemCode(undefined)
+    setSelectedLectureItem(undefined)
     return
   }
 
-  const onChangeSelectedLectureItemCode = (value: any) => {
-    setSelectedLectureItemCode(value)
+  const onChangeSelectedLectureItem = (value: any) => {
+    setSelectedLectureItem(value)
     return
   }
 
   const onClickSubmitButton = () => {
-    if (!selectedYear || !selectedSeason || !selectedLectureItemCode) {
+    if (!selectedYear || !selectedSeason || !selectedLectureItem) {
       alert('선택하지 않은 항목이 있습니다.')
       return
     }
-    onCreate(selectedYear, selectedSeason, selectedLectureItemCode)
+    onCreate(JSON.parse(selectedLectureItem))
+    closeModal()
+    resetState()
     return
   }
 
@@ -68,11 +78,17 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
     if (availableLectureList) {
       return availableLectureList.map((availableLectureItem) => ({
         ...availableLectureList,
-        value: availableLectureItem.code,
+        label: `${availableLectureItem.code} - ${availableLectureItem.name}`,
+        value: JSON.stringify(availableLectureItem),
       }))
     }
     return undefined
   })()
+
+  const onCancel = () => {
+    resetState()
+    closeModal()
+  }
 
   useEffect(() => {
     if (selectedYear && selectedSeason) {
@@ -90,7 +106,7 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
         <ContentAddButtonIcon />
       </ContentButton>
 
-      <ModalRoot title={'과목 정보 수정하기'} open={open} onCancel={closeModal} closable={true} footer={false}>
+      <ModalRoot title={'과목 정보 수정하기'} open={open} onCancel={onCancel} closable={true} footer={false}>
         <ModalContentRoot>
           <ModalSelectField
             placeholder={'년도를 선택하세요.'}
@@ -110,9 +126,9 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
           <ModalSelectField
             placeholder={'강의를 선택하세요.'}
             options={selectAvailableLectureOptions ?? []}
-            disabled={!selectAvailableSeasonOptions}
-            value={selectedLectureItemCode}
-            onChange={onChangeSelectedLectureItemCode}
+            disabled={selectAvailableLectureOptions?.length === 0 || !selectAvailableSeasonOptions}
+            value={selectedLectureItem}
+            onChange={onChangeSelectedLectureItem}
             showSearch
           />
           <ModalSubmitButton type={'primary'} onClick={onClickSubmitButton}>

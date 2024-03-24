@@ -98,8 +98,10 @@ export type LectureBasicInformationListType = LectureBasicInformationItemType[]
 
 export type LectureIdentificationItemType = {
   code: string
+  name: string
   year: AvailableYearType
   season: AvailableSeasonType
+  credit: LectureCreditType
 }
 
 export type LectureIdentificationListType = LectureIdentificationItemType[]
@@ -116,7 +118,6 @@ export type LectureConditionGroupListType = LectureConditionGroupItemType[]
 export type LectureDetailsItemType = {
   id: number
   name: string
-  grade: LectureGradeType
   credit: LectureCreditType
 } & LectureIdentificationItemType
 

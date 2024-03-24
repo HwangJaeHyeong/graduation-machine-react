@@ -1,11 +1,11 @@
 import { LectureConditionCreateModal } from 'components/LectureConditionCreateModal'
 import { LectureConditionEditModal } from 'components/LectureConditionEditModal'
 import { defaultConditionList } from 'constants/condition'
-import { AvailableSeasonType, AvailableYearType } from 'constants/lecture'
 import { majorList } from 'constants/major'
 import { FC, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ConditionListType } from 'types/common'
+import { LectureIdentificationItemType } from 'types/lecture'
 import {
   ContentAddButton,
   ContentAddButtonIcon,
@@ -202,9 +202,9 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
 
   const onCreateConditionGroupLectureItem =
     (conditionIndex: number, conditionGroupIndex: number) =>
-    (year: AvailableYearType, season: AvailableSeasonType, code: string) =>
+    (lectureIdentificationItem: LectureIdentificationItemType) =>
     () => {
-      if (!(conditionIndex && conditionGroupIndex && year && season && code)) {
+      if (!(conditionIndex && conditionGroupIndex && lectureIdentificationItem)) {
         alert('알 수 없는 오류가 발생하였습니다.')
       }
       setConditionList((prev) =>
@@ -216,7 +216,7 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                   value2.id === conditionGroupIndex
                     ? {
                         ...value2,
-                        lectureIdentificationList: [...value2.lectureIdentificationList, { code, year, season }],
+                        lectureIdentificationList: [...value2.lectureIdentificationList, lectureIdentificationItem],
                       }
                     : value2
                 ),

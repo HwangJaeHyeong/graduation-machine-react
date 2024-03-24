@@ -79,6 +79,8 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
       setExcelData(() => {
         let newData = data
           .map((value: any) => ({
+            year: selectedYear,
+            season: selectedSeason,
             code: value[4],
             name: `${value[5]} (${value[27]})`,
             credit: value[10],
