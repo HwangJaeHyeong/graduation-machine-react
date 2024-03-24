@@ -1,18 +1,9 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { DeleteOutlined } from '@ant-design/icons'
 import { availableSeason, availableYears, AvailableYearType } from 'constants/lecture'
 import { useBooleanState } from 'hooks/useBooleanState'
 import { FC, useState } from 'react'
 import { LectureIdentificationItemType } from 'types/lecture'
-import {
-  ContentButton,
-  ContentButtonContainer,
-  ModalContentRoot,
-  ModalRoot,
-  ModalSelectField,
-  ModalSubmitButton,
-  Root,
-  SummaryTypo,
-} from './styled'
+import { ContentButton, ContentButtonContainer, Root, SummaryTypo } from './styled'
 
 type LectureConditionEditModalProps = {
   className?: string
@@ -68,11 +59,10 @@ export const LectureConditionEditModal: FC<LectureConditionEditModalProps> = ({
       <Root className={className}>
         <SummaryTypo>{`학기 : ${lectureIdentificationItem.year}-${lectureIdentificationItem.season}, 학수번호 : ${lectureIdentificationItem.code}, 강의명 : ${lectureIdentificationItem.name}, 학점 : ${lectureIdentificationItem.credit}`}</SummaryTypo>
         <ContentButtonContainer>
-          <ContentButton type="default" shape="circle" icon={<EditOutlined />} onClick={openModal} />
           <ContentButton type="default" shape="circle" icon={<DeleteOutlined />} onClick={onClickDeleteButton} />
         </ContentButtonContainer>
       </Root>
-      <ModalRoot title={'과목 정보 수정하기'} open={open} onCancel={closeModal} closable={false} footer={false}>
+      {/* <ModalRoot title={'과목 정보 수정하기'} open={open} onCancel={closeModal} closable={false} footer={false}>
         <ModalContentRoot>
           <ModalSelectField
             placeholder={'년도를 선택하세요.'}
@@ -86,11 +76,16 @@ export const LectureConditionEditModal: FC<LectureConditionEditModalProps> = ({
             disabled={!selectAvailableSeasonOptions}
             showSearch
           />
-          <ModalSubmitButton type={'primary'} onClick={onClickSubmitButton}>
-            수정하기
-          </ModalSubmitButton>
+          <ContentSubmitButtonContainer>
+            <ModalSubmitButton type={'primary'} onClick={onClickSubmitButton}>
+              추가하기
+            </ModalSubmitButton>
+            <ModalSubmitButton type={'default'} onClick={onCancel}>
+              취소하기
+            </ModalSubmitButton>
+          </ContentSubmitButtonContainer>
         </ModalContentRoot>
-      </ModalRoot>
+      </ModalRoot> */}
     </>
   )
 }

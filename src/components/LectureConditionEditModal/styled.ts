@@ -40,3 +40,10 @@ export const ModalSelectField = styled(Select)`
     width: 100%;
   }
 `
+
+export const ContentSubmitButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+`

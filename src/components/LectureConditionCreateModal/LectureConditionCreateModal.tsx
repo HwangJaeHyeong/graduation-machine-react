@@ -4,7 +4,14 @@ import { ContentAddButtonIcon } from 'pages/Main/styled'
 import { FC, useEffect, useState } from 'react'
 import { LectureIdentificationItemType, LectureIdentificationListType } from 'types/lecture'
 import { loadTimetableFromLocalStorage } from 'utils/handleTimetableLocalStorage'
-import { ContentButton, ModalContentRoot, ModalRoot, ModalSelectField, ModalSubmitButton } from './styled'
+import {
+  ContentButton,
+  ContentSubmitButtonContainer,
+  ModalContentRoot,
+  ModalRoot,
+  ModalSelectField,
+  ModalSubmitButton,
+} from './styled'
 
 type LectureConditionCreateModalProps = {
   className?: string
@@ -106,7 +113,15 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
         <ContentAddButtonIcon />
       </ContentButton>
 
-      <ModalRoot title={'과목 정보 수정하기'} open={open} onCancel={onCancel} closable={false} footer={false}>
+      <ModalRoot
+        title={'과목 정보 수정하기'}
+        open={open}
+        onCancel={onCancel}
+        closable={false}
+        maskClosable={false}
+        closeIcon={true}
+        footer={false}
+      >
         <ModalContentRoot>
           <ModalSelectField
             placeholder={'년도를 선택하세요.'}
@@ -131,9 +146,14 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
             onChange={onChangeSelectedLectureItem}
             showSearch
           />
-          <ModalSubmitButton type={'primary'} onClick={onClickSubmitButton}>
-            추가하기
-          </ModalSubmitButton>
+          <ContentSubmitButtonContainer>
+            <ModalSubmitButton type={'primary'} onClick={onClickSubmitButton}>
+              추가하기
+            </ModalSubmitButton>
+            <ModalSubmitButton type={'default'} onClick={onCancel}>
+              취소하기
+            </ModalSubmitButton>
+          </ContentSubmitButtonContainer>
         </ModalContentRoot>
       </ModalRoot>
     </>

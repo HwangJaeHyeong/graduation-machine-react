@@ -55,3 +55,9 @@ export const ContentCheckbox = styled(Input)`
   width: fit-content;
 `
 export const ContentTypo = styled(Typography)``
+
+export const ContentSubmitButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
