@@ -27,4 +27,4 @@ export const SAMPLE_CSE_KEY_LIST = [
     label: '2024년도',
     year: 2024,
   },
-]
+].slice(2)
