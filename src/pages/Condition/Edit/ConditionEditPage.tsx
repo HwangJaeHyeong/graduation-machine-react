@@ -204,12 +204,13 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
     (conditionIndex: number, conditionGroupIndex: number) =>
     (lectureIdentificationItem: LectureIdentificationItemType) =>
     () => {
+      console.log({ lectureIdentificationItem })
       if (!(conditionIndex && conditionGroupIndex && lectureIdentificationItem)) {
         alert('알 수 없는 오류가 발생하였습니다.')
       }
       setConditionList((prev) =>
         prev.map((value, index) =>
-          index !== conditionIndex
+          index === conditionIndex
             ? {
                 ...value,
                 lectureConditionGroupList: value.lectureConditionGroupList.map((value2) =>
@@ -298,6 +299,7 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                               />
                               {lectureConditionGroupItem.lectureIdentificationList.map((lectureIdentificationItem) => (
                                 <LectureConditionEditModal
+                                  lectureIdentificationItem={lectureIdentificationItem}
                                   onDelete={onDeleteLecture(conditionItem.id, lectureConditionGroupItem.id)}
                                   key={`condition_item_${conditionItem.id}_${lectureConditionGroupItem.id}_${lectureIdentificationItem.year}_${lectureIdentificationItem.season}_${lectureIdentificationItem.code}`}
                                 />
