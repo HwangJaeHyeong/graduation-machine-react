@@ -166,3 +166,16 @@ export const ContentSubmitButton = styled(Button)`
 export const ContentSubmitButtonTypo = styled(Typography)`
   font-size: 16px;
 `
+
+export const ContentTitleTypo = styled(Typography)`
+  font-size: 24px;
+  font-weight: bold;
+`
+
+export const ContentButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+`

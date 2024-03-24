@@ -1,7 +1,15 @@
-import { majorList } from 'constants/major'
 import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ContentButton, ContentContainer, HeaderContainer, HeaderLogoTypo, Root } from './styled'
+import { SAMPLE_CSE_KEY_LIST } from './constant'
+import {
+  ContentButton,
+  ContentButtonContainer,
+  ContentContainer,
+  ContentTitleTypo,
+  HeaderContainer,
+  HeaderLogoTypo,
+  Root,
+} from './styled'
 
 type MainPageProps = {
   className?: string
@@ -10,8 +18,8 @@ type MainPageProps = {
 export const MainPage: FC<MainPageProps> = ({ className }) => {
   const navigate = useNavigate()
 
-  const onClickMajorButton = (majorItemCode: string) => () => {
-    navigate(`/condition/edit/${majorItemCode}`)
+  const onClickMajorButton = (majorItemCode: string, year: number) => () => {
+    navigate(`/condition/edit/${majorItemCode}/${year}`)
   }
 
   const onClickLectureExcelButton = () => {
@@ -24,14 +32,20 @@ export const MainPage: FC<MainPageProps> = ({ className }) => {
         <HeaderLogoTypo>졸업 판정기</HeaderLogoTypo>
       </HeaderContainer>
       <ContentContainer>
-        {majorList.map((majorItem) => (
-          <ContentButton onClick={onClickMajorButton(majorItem.code)} key={`major_item_${majorItem.code}`}>
-            {majorItem.label}
-          </ContentButton>
-        ))}
+        <ContentTitleTypo>컴퓨터공학전공 졸업 요건 수정</ContentTitleTypo>
+        <ContentButtonContainer>
+          {SAMPLE_CSE_KEY_LIST.map((keyItem) => (
+            <ContentButton onClick={onClickMajorButton('CSE', keyItem.year)} key={`cse_${keyItem.year}`}>
+              {keyItem.label}
+            </ContentButton>
+          ))}
+        </ContentButtonContainer>
       </ContentContainer>
       <ContentContainer>
-        <ContentButton onClick={onClickLectureExcelButton}>전체 강의 정보 입력(엑셀)</ContentButton>
+        <ContentTitleTypo>전체 강의 정보 입력</ContentTitleTypo>
+        <ContentButtonContainer>
+          <ContentButton onClick={onClickLectureExcelButton}>전체 강의 정보 입력(엑셀)</ContentButton>
+        </ContentButtonContainer>
       </ContentContainer>
     </Root>
   )

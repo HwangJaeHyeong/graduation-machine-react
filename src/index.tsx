@@ -11,7 +11,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/condition/edit/:id" element={<ConditionEditPage />} />
+        <Route path="/condition/edit/:major_code/:year" element={<ConditionEditPage />} />
         <Route path="/lecture/excel" element={<LectureExcelPage />} />
         <Route path="/" element={<MainPage />} />
       </Routes>
