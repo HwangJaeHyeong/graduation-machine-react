@@ -1,6 +1,7 @@
 import { LectureConditionCreateModal } from 'components/LectureConditionCreateModal'
 import { LectureConditionEditModal } from 'components/LectureConditionEditModal'
 import { defaultConditionList } from 'constants/condition'
+import { AvailableSeasonType, AvailableYearType } from 'constants/lecture'
 import { majorList } from 'constants/major'
 import { FC, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -17,6 +18,7 @@ import {
   ContentCardDeleteButton,
   ContentCardDeleteButtonIcon,
   ContentCardDeleteButtonTypo,
+  ContentCardDeleteButtonWrapper,
   ContentCardFieldContainer,
   ContentCardTitleTypo,
   ContentCheckbox,
@@ -79,8 +81,6 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
       )
     )
   }
-
-  console.log(conditionList)
 
   const onChangeConditionGroupTitleInput = (conditionIndex: number, conditionGroupIndex: number) => (e: any) => {
     setConditionList((prevState) =>
@@ -168,7 +168,18 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
         return
       }
       if (type === 'DELETE') {
-        setConditionList((prev) => prev.filter((_, index) => index !== conditionGroupIndex))
+        setConditionList((prev) =>
+          prev.map((value, index) =>
+            index !== conditionIndex
+              ? {
+                  ...value,
+                  lectureConditionGroupList: value.lectureConditionGroupList.filter(
+                    (value2) => value2.id !== conditionGroupIndex
+                  ),
+                }
+              : value
+          )
+        )
         return
       }
     }
@@ -178,11 +189,44 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
     return
   }
 
+  const onClickDeleteConditionGroup = (conditionIndex: number, conditionGroupIndex: number) => () => {
+    handleConditionGroupList('ADD', conditionIndex, conditionGroupIndex)()
+    return
+  }
+
   const onClickSubmitButton = () => {
     navigate('/result')
   }
 
   const majorItem = majorList.filter((majorItem) => majorItem.code === majorItemCode)[0]
+
+  const onCreateConditionGroupLectureItem =
+    (conditionIndex: number, conditionGroupIndex: number) =>
+    (year: AvailableYearType, season: AvailableSeasonType, code: string) =>
+    () => {
+      if (!(conditionIndex && conditionGroupIndex && year && season && code)) {
+        alert('알 수 없는 오류가 발생하였습니다.')
+      }
+      setConditionList((prev) =>
+        prev.map((value, index) =>
+          index !== conditionIndex
+            ? {
+                ...value,
+                lectureConditionGroupList: value.lectureConditionGroupList.map((value2) =>
+                  value2.id === conditionGroupIndex
+                    ? {
+                        ...value2,
+                        lectureIdentificationList: [...value2.lectureIdentificationList, { code, year, season }],
+                      }
+                    : value2
+                ),
+              }
+            : value
+        )
+      )
+
+      return
+    }
 
   if (!majorItem) {
     return <div>잘못된 접근입니다.</div>
@@ -267,7 +311,20 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                                 <ContentCheckbox type={'checkbox'} checked={lectureConditionGroupItem.isEssential} />{' '}
                                 <ContentCheckboxTypo>필수</ContentCheckboxTypo>
                               </ContentCheckboxContainer>
-                              <LectureConditionCreateModal />
+                              <LectureConditionCreateModal
+                                onCreate={onCreateConditionGroupLectureItem(
+                                  conditionItem.id,
+                                  lectureConditionGroupItem.id
+                                )}
+                              />
+                              <ContentCardDeleteButton
+                                type={'primary'}
+                                className={className}
+                                onClick={onClickDeleteConditionGroup(conditionItem.id, lectureConditionGroupItem.id)}
+                              >
+                                <ContentCardDeleteButtonTypo>그룹 삭제</ContentCardDeleteButtonTypo>
+                                <ContentCardDeleteButtonIcon />
+                              </ContentCardDeleteButton>
                             </ContentLectureGroupContainer>
                           </ContentCardCollapse.Panel>
                         </ContentCardCollapse>
@@ -283,10 +340,12 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                     </ContentButton>
                   </ContentCardFieldContainer>
                   {conditionItem.category === 'etc' && (
-                    <ContentCardDeleteButton type={'primary'} onClick={onClickDeleteConditionButton(index)}>
-                      <ContentCardDeleteButtonTypo>조건 삭제</ContentCardDeleteButtonTypo>
-                      <ContentCardDeleteButtonIcon />
-                    </ContentCardDeleteButton>
+                    <ContentCardDeleteButtonWrapper>
+                      <ContentCardDeleteButton type={'primary'} onClick={onClickDeleteConditionButton(index)}>
+                        <ContentCardDeleteButtonTypo>조건 삭제</ContentCardDeleteButtonTypo>
+                        <ContentCardDeleteButtonIcon />
+                      </ContentCardDeleteButton>
+                    </ContentCardDeleteButtonWrapper>
                   )}
                 </ContentCardCollapse.Panel>
               </ContentCardCollapse>

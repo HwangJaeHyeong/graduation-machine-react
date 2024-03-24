@@ -1,33 +1,47 @@
-import { availableSeason, availableYears, AvailableYearType } from 'constants/lecture'
+import { availableSeason, AvailableSeasonType, availableYears, AvailableYearType } from 'constants/lecture'
 import { useBooleanState } from 'hooks/useBooleanState'
 import { ContentAddButtonIcon } from 'pages/Main/styled'
-import { FC, useState } from 'react'
-import {
-  ContentButton,
-  ContentCheckbox,
-  ContentTypo,
-  ModalContentRoot,
-  ModalContentRowContainer,
-  ModalRoot,
-  ModalSelectField,
-  ModalSubmitButton,
-} from './styled'
+import { FC, useEffect, useState } from 'react'
+import { LectureIdentificationListType } from 'types/lecture'
+import { loadTimetableFromLocalStorage } from 'utils/handleTimetableLocalStorage'
+import { ContentButton, ModalContentRoot, ModalRoot, ModalSelectField, ModalSubmitButton } from './styled'
 
 type LectureConditionCreateModalProps = {
   className?: string
+  onCreate: (year: AvailableYearType, season: AvailableSeasonType, code: string) => void
 }
 
-export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> = ({ className }) => {
+export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> = ({ className, onCreate }) => {
   const { state: open, setTrue: openModal, setFalse: closeModal } = useBooleanState({ initialValue: false })
+  const [availableLectureList, setAvailableLectureList] = useState<LectureIdentificationListType>([])
   const [selectedYear, setSelectedYear] = useState<AvailableYearType>()
-  const { state: isEssentialLecture, setToggle: toggleIsEssentialLecture } = useBooleanState({ initialValue: false })
+  const [selectedSeason, setSelectedSeason] = useState<AvailableSeasonType>()
+  const [selectedLectureItemCode, setSelectedLectureItemCode] = useState<string>()
 
   const onChangeSelectedYear = (value: any) => {
     setSelectedYear(value)
+    setSelectedSeason(undefined)
+    setSelectedLectureItemCode(undefined)
+    return
+  }
+
+  const onChangeSelectedSeason = (value: any) => {
+    setSelectedSeason(value)
+    setSelectedLectureItemCode(undefined)
+    return
+  }
+
+  const onChangeSelectedLectureItemCode = (value: any) => {
+    setSelectedSeason(value)
     return
   }
 
   const onClickSubmitButton = () => {
+    if (!selectedYear || !selectedSeason || !selectedLectureItemCode) {
+      alert('선택하지 않은 항목이 있습니다.')
+      return
+    }
+    onCreate(selectedYear, selectedSeason, selectedLectureItemCode)
     return
   }
 
@@ -50,6 +64,25 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
     return undefined
   })()
 
+  const selectAvailableLectureOptions = (() => {
+    if (availableLectureList) {
+      return availableLectureList.map((availableLectureItem) => ({
+        ...availableLectureList,
+        value: availableLectureItem.code,
+      }))
+    }
+    return undefined
+  })()
+
+  useEffect(() => {
+    if (selectedYear && selectedSeason) {
+      const loadedData = loadTimetableFromLocalStorage(selectedYear, selectedSeason)
+      if (loadedData) {
+        setAvailableLectureList(loadedData)
+      }
+    }
+  }, [selectedYear, selectedSeason, setSelectedYear, setSelectedSeason])
+
   return (
     <>
       <ContentButton type={'primary'} className={className} onClick={openModal}>
@@ -62,6 +95,7 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
           <ModalSelectField
             placeholder={'년도를 선택하세요.'}
             options={selectAvailableYearOptions}
+            value={selectedYear}
             onChange={onChangeSelectedYear}
             showSearch
           />
@@ -69,12 +103,18 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
             placeholder={'학기를 선택하세요.'}
             options={selectAvailableSeasonOptions ?? []}
             disabled={!selectAvailableSeasonOptions}
+            value={selectedSeason}
+            onChange={onChangeSelectedSeason}
             showSearch
           />
-          <ModalContentRowContainer onClick={toggleIsEssentialLecture}>
-            <ContentCheckbox type={'checkbox'} checked={isEssentialLecture} />
-            <ContentTypo>필수</ContentTypo>
-          </ModalContentRowContainer>
+          <ModalSelectField
+            placeholder={'강의를 선택하세요.'}
+            options={selectAvailableLectureOptions ?? []}
+            disabled={!selectAvailableSeasonOptions}
+            value={selectedLectureItemCode}
+            onChange={onChangeSelectedLectureItemCode}
+            showSearch
+          />
           <ModalSubmitButton type={'primary'} onClick={onClickSubmitButton}>
             추가하기
           </ModalSubmitButton>

@@ -1,3 +1,5 @@
+import { AvailableSeasonType, AvailableYearType } from 'constants/lecture'
+
 type LectureYearType =
   | 2000
   | 2001
@@ -88,7 +90,7 @@ export type LectureBasicInformationItemType = {
   id: number
   name: string
   year: LectureYearType
-  season: LectureSeasonType
+  season: AvailableSeasonType
   code: string
 }
 
@@ -96,8 +98,8 @@ export type LectureBasicInformationListType = LectureBasicInformationItemType[]
 
 export type LectureIdentificationItemType = {
   code: string
-  year: LectureYearType
-  season: LectureSeasonType
+  year: AvailableYearType
+  season: AvailableSeasonType
 }
 
 export type LectureIdentificationListType = LectureIdentificationItemType[]

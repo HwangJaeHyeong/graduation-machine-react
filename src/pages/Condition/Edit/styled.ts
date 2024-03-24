@@ -108,6 +108,10 @@ export const ContentTimePickerField = styled(TimePicker)`
 
 export const ContentSelectField = styled(Select)``
 
+export const ContentCardDeleteButtonWrapper = styled.div`
+  margin-top: 10px;
+`
+
 export const ContentCardDeleteButton = styled(Button)`
   width: 100%;
   background: #ff000088;
@@ -115,7 +119,6 @@ export const ContentCardDeleteButton = styled(Button)`
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-top: 15px;
   &:hover {
     &&& {
       background: #ff0000aa;
