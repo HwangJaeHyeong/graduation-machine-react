@@ -48,9 +48,11 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
       return
     }
     if (type === 'MINIMUM_GRADE') {
+      let newValue = +e.target.value > 0 ? +e.target.value : 0
+
       setConditionList((prev) =>
         prev.map((conditionItem) =>
-          conditionItem.id === conditionIndex ? { ...conditionItem, minimumCredit: e.target.value } : conditionItem
+          conditionItem.id === conditionIndex ? { ...conditionItem, minimumCredit: newValue } : conditionItem
         )
       )
       return
