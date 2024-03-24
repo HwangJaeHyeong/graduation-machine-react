@@ -22,6 +22,7 @@ import {
   ContentContainer,
   ContentInputField,
   ContentLectureConditionGroupTitleTypo,
+  ContentLectureGroupContainer,
   ContentSubmitButton,
   ContentSubmitButtonTypo,
   HeaderContainer,
@@ -59,6 +60,21 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
       )
       return
     }
+  }
+
+  const onChangeConditionGroupTitleInput = (conditionIndex: number, conditionGroupIndex: number) => (e: any) => {
+    setConditionList((prevState) =>
+      prevState.map((value) =>
+        value.id === conditionIndex
+          ? {
+              ...value,
+              lectureConditionGroupList: value.lectureConditionGroupList.map((value2) =>
+                value2.id === conditionGroupIndex ? { ...value2, title: e.target.value } : value2
+              ),
+            }
+          : value
+      )
+    )
   }
 
   const handleConditionList = (type: 'ADD' | 'DELETE', conditionIndex?: number) => () => {
@@ -203,13 +219,24 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                             }
                             key={`condition_item_${index}_${lectureConditionGroupItem.id}_1`}
                           >
-                            {lectureConditionGroupItem.lectureIdentificationList.map((lectureIdentificationItem) => (
-                              <LectureConditionEditModal
-                                onDelete={onDeleteLecture(conditionItem.id, lectureConditionGroupItem.id)}
-                                key={`condition_item_${index}_${lectureConditionGroupItem.id}_${lectureIdentificationItem.year}_${lectureIdentificationItem.season}_${lectureIdentificationItem.code}`}
+                            <ContentLectureGroupContainer>
+                              <ContentInputField
+                                addonBefore="제목"
+                                placeholder="제목을 입력해주세요."
+                                value={lectureConditionGroupItem.title}
+                                onChange={onChangeConditionGroupTitleInput(
+                                  conditionItem.id,
+                                  lectureConditionGroupItem.id
+                                )}
                               />
-                            ))}
-                            <LectureConditionCreateModal />
+                              {lectureConditionGroupItem.lectureIdentificationList.map((lectureIdentificationItem) => (
+                                <LectureConditionEditModal
+                                  onDelete={onDeleteLecture(conditionItem.id, lectureConditionGroupItem.id)}
+                                  key={`condition_item_${index}_${lectureConditionGroupItem.id}_${lectureIdentificationItem.year}_${lectureIdentificationItem.season}_${lectureIdentificationItem.code}`}
+                                />
+                              ))}
+                              <LectureConditionCreateModal />
+                            </ContentLectureGroupContainer>
                           </ContentCardCollapse.Panel>
                         </ContentCardCollapse>
                       ))}

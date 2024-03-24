@@ -172,3 +172,10 @@ export const ContentSubmitButtonTypo = styled(Typography)`
 export const ContentButton = styled(Button)`
   width: 100%;
 `
+
+export const ContentLectureGroupContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
