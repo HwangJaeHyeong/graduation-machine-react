@@ -106,7 +106,7 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
         <ContentAddButtonIcon />
       </ContentButton>
 
-      <ModalRoot title={'과목 정보 수정하기'} open={open} onCancel={onCancel} closable={true} footer={false}>
+      <ModalRoot title={'과목 정보 수정하기'} open={open} onCancel={onCancel} closable={false} footer={false}>
         <ModalContentRoot>
           <ModalSelectField
             placeholder={'년도를 선택하세요.'}

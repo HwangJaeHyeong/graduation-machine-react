@@ -72,7 +72,7 @@ export const LectureConditionEditModal: FC<LectureConditionEditModalProps> = ({
           <ContentButton type="default" shape="circle" icon={<DeleteOutlined />} onClick={onClickDeleteButton} />
         </ContentButtonContainer>
       </Root>
-      <ModalRoot title={'과목 정보 수정하기'} open={open} onCancel={closeModal} closable={true} footer={false}>
+      <ModalRoot title={'과목 정보 수정하기'} open={open} onCancel={closeModal} closable={false} footer={false}>
         <ModalContentRoot>
           <ModalSelectField
             placeholder={'년도를 선택하세요.'}
