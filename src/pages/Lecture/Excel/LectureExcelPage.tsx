@@ -2,6 +2,7 @@ import { availableSeason, AvailableSeasonType, availableYears, AvailableYearType
 import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Spreadsheet from 'react-spreadsheet'
+import { loadTimetableFromLocalStorage, saveTimetableToLocalStorage } from 'utils/handleTimetableLocalStorage'
 import * as XLSX from 'xlsx/xlsx.mjs'
 import { TABLE_COLUMN_TITLE } from './constant'
 import {
@@ -15,7 +16,6 @@ import {
   SpreadSheetTitleTypo,
   SpreadSheetWrapper,
 } from './styled'
-import { loadTimetableFromLocalStorage, saveTimetableToLocalStorage } from './utils'
 
 type LectureExcelPageProps = {
   className?: string
