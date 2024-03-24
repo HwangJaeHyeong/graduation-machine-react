@@ -1,5 +1,6 @@
 import { availableSeason, AvailableSeasonType, availableYears, AvailableYearType } from 'constants/lecture'
 import { FC, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Spreadsheet from 'react-spreadsheet'
 import * as XLSX from 'xlsx/xlsx.mjs'
 import { TABLE_COLUMN_TITLE } from './constant'
@@ -25,6 +26,7 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
   const [selectedYear, setSelectedYear] = useState<AvailableYearType>()
   const [selectedSeason, setSelectedSeason] = useState<AvailableSeasonType>()
   const [loading, setLoading] = useState<'LOADING' | 'NONE'>('NONE')
+  const navigate = useNavigate()
 
   const selectAvailableYearOptions = availableYears.map((value) => ({ label: `${value}년도`, value }))
   const selectAvailableSeasonOptions = (() => {
@@ -107,6 +109,8 @@ export const LectureExcelPage: FC<LectureExcelPageProps> = ({ className }) => {
     }
 
     saveTimetableToLocalStorage(selectedYear, selectedSeason, excelData)
+    alert('저장이 완료되었습니다.')
+    navigate(0)
     return
   }
 
