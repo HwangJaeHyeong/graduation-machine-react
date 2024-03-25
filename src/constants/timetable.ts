@@ -9048,7 +9048,7 @@ export const DEFAULT_TIMETABLE_2024_1 = [
   },
 ]
 
-export const DEFAULT_TIMETABLE_2023_winter = [
+export const DEFAULT_TIMETABLE_2023_WINTER = [
   { year: 2023, season: 'winter', code: 'PRI4001-01', name: '미적분학및연습1 (Calculus1)', credit: '3' },
   {
     year: 2023,
@@ -19188,7 +19188,7 @@ export const DEFAULT_TIMETABLE_2023_2 = [
     credit: '1',
   },
 ]
-export const DEFAULT_TIMETABLE_2023_summer = [
+export const DEFAULT_TIMETABLE_2023_SUMMER = [
   { year: 2023, season: 'summer', code: 'PRI4001-01', name: '미적분학및연습1 (Calculus1)', credit: '3' },
   {
     year: 2023,
@@ -29381,7 +29381,7 @@ export const DEFAULT_TIMETABLE_2023_1 = [
   { year: 2023, season: '1', code: 'NAD1007-01', name: 'N-딥러닝알고리즘 (Deep Learning Algorithms)', credit: '1' },
 ]
 
-export const DEFAULT_TIMETABLE_2022_winter = [
+export const DEFAULT_TIMETABLE_2022_WINTER = [
   { year: 2022, season: 'winter', code: 'PRI4001-01', name: '미적분학및연습1 (Calculus1)', credit: '3' },
   {
     year: 2022,
@@ -39418,7 +39418,7 @@ export const DEFAULT_TIMETABLE_2022_2 = [
     credit: '1',
   },
 ]
-export const DEFAULT_TIMETABLE_2022_summer = [
+export const DEFAULT_TIMETABLE_2022_SUMMER = [
   { year: 2022, season: 'summer', code: 'PRI4001-01', name: '미적분학및연습1 (Calculus1)', credit: '3' },
   {
     year: 2022,
@@ -49575,7 +49575,7 @@ export const DEFAULT_TIMETABLE_2022_1 = [
   },
 ]
 
-export const DEFAULT_TIMETABLE_2021_winter = [
+export const DEFAULT_TIMETABLE_2021_WINTER = [
   { year: 2021, season: 'winter', code: 'PRI4001-01', name: '미적분학및연습1 (Calculus1)', credit: '3' },
   {
     year: 2021,
@@ -58668,7 +58668,7 @@ export const DEFAULT_TIMETABLE_2021_2 = [
   { year: 2021, season: '2', code: 'LED0007-01', name: '평생교육방법론 (Method of Life-long Education)', credit: '3' },
   { year: 2021, season: '2', code: 'LED0013-01', name: '평생교육경영론 (Guidance & Counselling)', credit: '3' },
 ]
-export const DEFAULT_TIMETABLE_2021_summer = [
+export const DEFAULT_TIMETABLE_2021_SUMMER = [
   { year: 2021, season: 'summer', code: 'PRI4001-01', name: '미적분학및연습1 (Calculus1)', credit: '3' },
   {
     year: 2021,
