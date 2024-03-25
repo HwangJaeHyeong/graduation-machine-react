@@ -9,7 +9,7 @@ import { saveDefaultTimetable } from 'utils/saveDefaultTimetable'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as any)
 
-const VersionCheckContainer = () => {
+const VersionCheckProvider = () => {
   useEffect(() => {
     saveDefaultTimetable()
   }, [])
@@ -18,7 +18,7 @@ const VersionCheckContainer = () => {
 
 root.render(
   <React.StrictMode>
-    <VersionCheckContainer />
+    <VersionCheckProvider />
     <BrowserRouter>
       <Routes>
         <Route path="/condition/edit/:major_code/:year" element={<ConditionEditPage />} />
