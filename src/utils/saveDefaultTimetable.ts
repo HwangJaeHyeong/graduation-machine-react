@@ -24,7 +24,7 @@ import { saveTimetableToLocalStorage } from './handleTimetableLocalStorage'
 const addTimetableToId = (value: any[]): LectureIdentificationListType =>
   value.map((value2, index) => ({ ...value2, id: index }))
 
-export const setDefaultTimetable = () => {
+export const saveDefaultTimetable = () => {
   if (localStorage.getItem(LOCALSTORAGE_TIMETABLE_VERSION_KEY) === TIMETABLE_VERSION) {
     return
   }
