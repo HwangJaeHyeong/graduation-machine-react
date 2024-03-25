@@ -17,6 +17,7 @@ import {
   DEFAULT_TIMETABLE_2023_WINTER,
   DEFAULT_TIMETABLE_2024_1,
 } from 'constants/timetable'
+import { LOCALSTORAGE_TIMETABLE_VERSION_KEY, TIMETABLE_VERSION } from 'constants/version'
 import { LectureIdentificationListType } from 'types/lecture'
 import { saveTimetableToLocalStorage } from './handleTimetableLocalStorage'
 
@@ -24,6 +25,10 @@ const addTimetableToId = (value: any[]): LectureIdentificationListType =>
   value.map((value2, index) => ({ ...value2, id: index }))
 
 export const setDefaultTimetable = () => {
+  if (localStorage.getItem(LOCALSTORAGE_TIMETABLE_VERSION_KEY) === TIMETABLE_VERSION) {
+    return
+  }
+
   saveTimetableToLocalStorage(2020, '1', addTimetableToId(DEFAULT_TIMETABLE_2020_1))
   saveTimetableToLocalStorage(2020, 'summer', addTimetableToId(DEFAULT_TIMETABLE_2020_SUMMER))
   saveTimetableToLocalStorage(2020, '2', addTimetableToId(DEFAULT_TIMETABLE_2020_2))
@@ -45,4 +50,7 @@ export const setDefaultTimetable = () => {
   saveTimetableToLocalStorage(2023, 'winter', addTimetableToId(DEFAULT_TIMETABLE_2023_WINTER))
 
   saveTimetableToLocalStorage(2024, '1', addTimetableToId(DEFAULT_TIMETABLE_2024_1))
+
+  localStorage.removeItem(LOCALSTORAGE_TIMETABLE_VERSION_KEY)
+  localStorage.setItem(LOCALSTORAGE_TIMETABLE_VERSION_KEY, TIMETABLE_VERSION)
 }
