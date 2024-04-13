@@ -168,7 +168,7 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
   }
 
   const onClickSubmitButton = () => {
-    saveCommonLectureGroupToLocalStorage(commonLectureGroupList)
+    saveCommonLectureGroupToLocalStorage(commonLectureGroupList.sort((a, b) => (a.title > b.title ? 1 : -1)))
     alert('저장이 완료되었습니다.')
     navigate(0)
     return
