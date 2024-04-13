@@ -1,8 +1,14 @@
 import { LectureConditionCreateModal } from 'components/LectureConditionCreateModal'
 import { LectureConditionEditModal } from 'components/LectureConditionEditModal'
+import { SelectLectureItemNameModal } from 'components/SelectLectureItemNameModal'
 import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CommonLectureGroupItemType, CommonLectureGroupListType, LectureIdentificationItemType } from 'types/lecture'
+import {
+  CommonLectureGroupItemType,
+  CommonLectureGroupListType,
+  LectureIdentificationItemType,
+  LectureIdentificationListType,
+} from 'types/lecture'
 import {
   loadCommonLectureGroupFromLocalStorage,
   saveCommonLectureGroupToLocalStorage,
@@ -66,8 +72,17 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
     }
   }
 
+  const onCreateCommonConditionGroupLectureList =
+    (commonLectureGroupId: number) => (lectureIdentificationList: LectureIdentificationListType) => () => {
+      lectureIdentificationList.forEach((value) => {
+        onCreateCommonConditionGroupLectureItem(commonLectureGroupId, true)(value)()
+      })
+    }
+
   const onCreateCommonConditionGroupLectureItem =
-    (commonLectureGroupId: number) => (lectureIdentificationItem: LectureIdentificationItemType) => () => {
+    (commonLectureGroupId: number, isGroupSelected: boolean = false) =>
+    (lectureIdentificationItem: LectureIdentificationItemType) =>
+    () => {
       setCommonLectureGroupList((prev) => {
         const newCommonLectureGroupLectureItem = lectureIdentificationItem
         let isDuplicated = false
@@ -83,7 +98,9 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
                   value.season === newCommonLectureGroupLectureItem.season
                 ) {
                   isDuplicated = true
-                  alert('이미 동일한 강의가 포함되어 있습니다.')
+                  if (!isGroupSelected) {
+                    alert('이미 동일한 강의가 포함되어 있습니다.')
+                  }
                   return
                 }
               })
@@ -165,8 +182,6 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
     }
   }, [loadCommonLectureGroupFromLocalStorage])
 
-  console.log(commonLectureGroupList)
-
   return (
     <Root className={className}>
       <HeaderContainer>
@@ -199,6 +214,9 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
                         key={`condition_item_${commonLectureGroupItem.id}_${lectureIdentificationItem.year}_${lectureIdentificationItem.season}_${lectureIdentificationItem.code}`}
                       />
                     ))}
+                    <SelectLectureItemNameModal
+                      onCreate={onCreateCommonConditionGroupLectureList(commonLectureGroupItem.id)}
+                    />
                     <LectureConditionCreateModal
                       onCreate={onCreateCommonConditionGroupLectureItem(commonLectureGroupItem.id)}
                     />
