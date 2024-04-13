@@ -26,6 +26,10 @@ export const MainPage: FC<MainPageProps> = ({ className }) => {
     navigate(`/lecture/excel`)
   }
 
+  const onClickLectureGroupButton = () => {
+    navigate(`/lecture/group`)
+  }
+
   return (
     <Root className={className}>
       <HeaderContainer>
@@ -45,6 +49,12 @@ export const MainPage: FC<MainPageProps> = ({ className }) => {
         <ContentTitleTypo>전체 강의 정보 입력</ContentTitleTypo>
         <ContentButtonContainer>
           <ContentButton onClick={onClickLectureExcelButton}>전체 강의 정보 입력(엑셀)</ContentButton>
+        </ContentButtonContainer>
+      </ContentContainer>
+      <ContentContainer>
+        <ContentTitleTypo>강의 그룹</ContentTitleTypo>
+        <ContentButtonContainer>
+          <ContentButton onClick={onClickLectureGroupButton}>강의 그룹 관리</ContentButton>
         </ContentButtonContainer>
       </ContentContainer>
     </Root>
