@@ -131,3 +131,11 @@ export type ConditionCategoryItemType = {
 }
 
 export type ConditionCategoryListType = ConditionCategoryItemType[]
+
+export type CommonLectureGroupItemType = {
+  id: number
+  title: string
+  lectureIdentificationList: LectureIdentificationListType
+}
+
+export type CommonLectureGroupListType = CommonLectureGroupItemType[]
