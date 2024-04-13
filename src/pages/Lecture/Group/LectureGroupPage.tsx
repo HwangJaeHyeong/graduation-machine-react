@@ -72,60 +72,65 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
         const newCommonLectureGroupLectureItem = lectureIdentificationItem
         let isDuplicated = false
 
-        prev.forEach(
-          (item) =>
-            item.id === commonLectureGroupId &&
-            item.lectureIdentificationList.forEach((value) => {
-              if (
-                value.code === newCommonLectureGroupLectureItem.code &&
-                value.year === newCommonLectureGroupLectureItem.year &&
-                value.season === newCommonLectureGroupLectureItem.season
-              ) {
-                isDuplicated = true
-                alert('이미 동일한 강의가 포함되어 있습니다.')
-                return
-              }
-            })
-        )
+        prev.length >= 1 &&
+          prev.forEach(
+            (item) =>
+              item.id === commonLectureGroupId &&
+              item.lectureIdentificationList.forEach((value) => {
+                if (
+                  value.code === newCommonLectureGroupLectureItem.code &&
+                  value.year === newCommonLectureGroupLectureItem.year &&
+                  value.season === newCommonLectureGroupLectureItem.season
+                ) {
+                  isDuplicated = true
+                  alert('이미 동일한 강의가 포함되어 있습니다.')
+                  return
+                }
+              })
+          )
 
         if (isDuplicated) {
           return prev
         }
 
-        return prev.map((item) =>
-          item.id === commonLectureGroupId
-            ? {
-                ...item,
-                lectureIdentificationList: [
-                  ...item.lectureIdentificationList,
-                  {
-                    ...newCommonLectureGroupLectureItem,
-                    id: item.lectureIdentificationList[item.lectureIdentificationList.length - 1].id + 1,
-                  },
-                ].sort((a, b) => {
-                  if (a.year > b.year) {
-                    return 1
+        return prev.length >= 1
+          ? prev.map((item) =>
+              item.id === commonLectureGroupId
+                ? {
+                    ...item,
+                    lectureIdentificationList: [
+                      ...item.lectureIdentificationList,
+                      {
+                        ...newCommonLectureGroupLectureItem,
+                        id: item.lectureIdentificationList[item.lectureIdentificationList.length - 1]
+                          ? item.lectureIdentificationList[item.lectureIdentificationList.length - 1].id + 1
+                          : 0,
+                      },
+                    ].sort((a, b) => {
+                      if (a.year > b.year) {
+                        return 1
+                      }
+                      if (a.year < b.year) {
+                        return -1
+                      }
+                      if (a.season > b.season) {
+                        return 1
+                      }
+                      if (a.season < b.season) {
+                        return -1
+                      }
+                      if (a.code > b.code) {
+                        return 1
+                      }
+                      if (a.code < b.code) {
+                        return -1
+                      }
+                      return 1
+                    }),
                   }
-                  if (a.year < b.year) {
-                    return -1
-                  }
-                  if (a.season > b.season) {
-                    return 1
-                  }
-                  if (a.season < b.season) {
-                    return -1
-                  }
-                  if (a.code > b.code) {
-                    return 1
-                  }
-                  if (a.code < b.code) {
-                    return -1
-                  }
-                  return 1
-                }),
-              }
-            : item
-        )
+                : item
+            )
+          : prev
       })
       return
     }
@@ -159,6 +164,8 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
       return
     }
   }, [loadCommonLectureGroupFromLocalStorage])
+
+  console.log(commonLectureGroupList)
 
   return (
     <Root className={className}>
