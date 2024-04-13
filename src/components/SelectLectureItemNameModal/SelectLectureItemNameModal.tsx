@@ -22,7 +22,7 @@ type SelectLectureItemNameModalProps = {
 export const SelectLectureItemNameModal: FC<SelectLectureItemNameModalProps> = ({ className, onCreate }) => {
   const { state: open, setTrue: openModal, setFalse: closeModal } = useBooleanState({ initialValue: false })
   const [availableLectureList, setAvailableLectureList] = useState<LectureIdentificationListType>([])
-  const [selectedYear, setSelectedYear] = useState<AvailableYearType>()
+  const [selectedYear, setSelectedYear] = useState<AvailableYearType | 'all'>()
   const [selectedSeason, setSelectedSeason] = useState<AvailableSeasonType | 'all'>()
   const [name, setName] = useState<string>('')
 
@@ -53,14 +53,17 @@ export const SelectLectureItemNameModal: FC<SelectLectureItemNameModalProps> = (
       return
     }
     let newLectureList = availableLectureList.filter((value) => value.name.indexOf(name) !== -1)
-    console.log({ newLectureList })
     onCreate(newLectureList)()
     closeModal()
     resetState()
     return
   }
 
-  const selectAvailableYearOptions = availableYears.map((value) => ({ label: `${value}년도`, value }))
+  const selectAvailableYearOptions = [
+    ...availableYears.map((value) => ({ label: `${value}년도`, value })),
+    { label: '전체', value: 'all' },
+  ]
+
   const selectAvailableSeasonOptions = (() => {
     if (selectedYear) {
       return availableSeason(selectedYear).map((value) => {
@@ -87,7 +90,31 @@ export const SelectLectureItemNameModal: FC<SelectLectureItemNameModalProps> = (
   useEffect(() => {
     if (selectedYear && selectedSeason) {
       let loadedData = []
-      if (selectedSeason === 'all') {
+      if (selectedYear === 'all') {
+        loadedData = [
+          ...loadTimetableFromLocalStorage(2020, '1'),
+          ...loadTimetableFromLocalStorage(2020, '2'),
+          ...loadTimetableFromLocalStorage(2020, 'winter'),
+          ...loadTimetableFromLocalStorage(2020, 'summer'),
+
+          ...loadTimetableFromLocalStorage(2021, '1'),
+          ...loadTimetableFromLocalStorage(2021, '2'),
+          ...loadTimetableFromLocalStorage(2021, 'winter'),
+          ...loadTimetableFromLocalStorage(2021, 'summer'),
+
+          ...loadTimetableFromLocalStorage(2022, '1'),
+          ...loadTimetableFromLocalStorage(2022, '2'),
+          ...loadTimetableFromLocalStorage(2022, 'winter'),
+          ...loadTimetableFromLocalStorage(2022, 'summer'),
+
+          ...loadTimetableFromLocalStorage(2023, '1'),
+          ...loadTimetableFromLocalStorage(2023, '2'),
+          ...loadTimetableFromLocalStorage(2023, 'winter'),
+          ...loadTimetableFromLocalStorage(2023, 'summer'),
+
+          ...loadTimetableFromLocalStorage(2024, '1'),
+        ]
+      } else if (selectedSeason === 'all') {
         loadedData = [
           ...loadTimetableFromLocalStorage(selectedYear, '1'),
           ...loadTimetableFromLocalStorage(selectedYear, '2'),
