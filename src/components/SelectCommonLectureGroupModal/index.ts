@@ -1,0 +1,1 @@
+export { SelectCommonLectureGroupModal } from './SelectCommonLectureGroupModal'
