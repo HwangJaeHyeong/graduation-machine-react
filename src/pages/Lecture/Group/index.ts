@@ -1,0 +1,1 @@
+export { LectureGroupPage } from './LectureGroupPage'
