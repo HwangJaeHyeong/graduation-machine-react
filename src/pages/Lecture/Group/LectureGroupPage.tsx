@@ -195,14 +195,16 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
                     <LectureConditionCreateModal
                       onCreate={onCreateCommonConditionGroupLectureItem(commonLectureGroupItem.id)}
                     />
-                    <ContentCardDeleteButton
-                      type={'primary'}
-                      className={className}
-                      onClick={handleCommonLectureGroupList('DELETE', commonLectureGroupItem.id)}
-                    >
-                      <ContentCardDeleteButtonTypo>그룹 삭제</ContentCardDeleteButtonTypo>
-                      <ContentCardDeleteButtonIcon />
-                    </ContentCardDeleteButton>
+                    {commonLectureGroupList.length > 1 && (
+                      <ContentCardDeleteButton
+                        type={'primary'}
+                        className={className}
+                        onClick={handleCommonLectureGroupList('DELETE', commonLectureGroupItem.id)}
+                      >
+                        <ContentCardDeleteButtonTypo>그룹 삭제</ContentCardDeleteButtonTypo>
+                        <ContentCardDeleteButtonIcon />
+                      </ContentCardDeleteButton>
+                    )}
                   </ContentCardFieldContainer>
                 </ContentCardCollapse.Panel>
               </ContentCardCollapse>
