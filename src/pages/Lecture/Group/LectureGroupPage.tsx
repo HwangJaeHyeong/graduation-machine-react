@@ -1,5 +1,6 @@
 import { LectureConditionCreateModal } from 'components/LectureConditionCreateModal'
 import { LectureConditionEditModal } from 'components/LectureConditionEditModal'
+import { SelectLectureItemCodeModal } from 'components/SelectLectureItemCodeModal'
 import { SelectLectureItemNameModal } from 'components/SelectLectureItemNameModal'
 import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -168,7 +169,11 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
   }
 
   const onClickSubmitButton = () => {
-    saveCommonLectureGroupToLocalStorage(commonLectureGroupList.sort((a, b) => (a.title > b.title ? 1 : -1)))
+    saveCommonLectureGroupToLocalStorage(
+      commonLectureGroupList
+        .sort((a, b) => (a.title > b.title ? 1 : -1))
+        .map((value, index) => ({ ...value, id: index }))
+    )
     alert('저장이 완료되었습니다.')
     navigate(0)
     return
@@ -214,6 +219,9 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
                         key={`condition_item_${commonLectureGroupItem.id}_${lectureIdentificationItem.year}_${lectureIdentificationItem.season}_${lectureIdentificationItem.code}`}
                       />
                     ))}
+                    <SelectLectureItemCodeModal
+                      onCreate={onCreateCommonConditionGroupLectureList(commonLectureGroupItem.id)}
+                    />
                     <SelectLectureItemNameModal
                       onCreate={onCreateCommonConditionGroupLectureList(commonLectureGroupItem.id)}
                     />
