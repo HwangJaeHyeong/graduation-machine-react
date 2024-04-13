@@ -1,3 +1,4 @@
+import { PlusCircleOutlined } from '@ant-design/icons'
 import { Button, Input, Modal, Select, Typography } from 'antd'
 import styled from 'styled-components'
 
@@ -60,4 +61,8 @@ export const ContentSubmitButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`
+
+export const ContentAddButtonIcon = styled(PlusCircleOutlined)`
+  font-size: 18px;
 `

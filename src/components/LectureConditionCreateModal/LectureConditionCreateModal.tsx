@@ -1,10 +1,10 @@
 import { availableSeason, AvailableSeasonType, availableYears, AvailableYearType } from 'constants/lecture'
 import { useBooleanState } from 'hooks/useBooleanState'
-import { ContentAddButtonIcon } from 'pages/Main/styled'
 import { FC, useEffect, useState } from 'react'
 import { LectureIdentificationItemType, LectureIdentificationListType } from 'types/lecture'
 import { loadTimetableFromLocalStorage } from 'utils/handleTimetableLocalStorage'
 import {
+  ContentAddButtonIcon,
   ContentButton,
   ContentSubmitButtonContainer,
   ModalContentRoot,
