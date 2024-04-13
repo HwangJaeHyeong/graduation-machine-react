@@ -172,7 +172,7 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
               <ContentCardCollapse>
                 <ContentCardCollapse.Panel
                   key={`content_group_card`}
-                  header={<ContentCardTitleTypo>{`그룹 ${commonLectureGroupItem.id + 1}`}</ContentCardTitleTypo>}
+                  header={<ContentCardTitleTypo>{`${commonLectureGroupItem.title}`}</ContentCardTitleTypo>}
                 >
                   <ContentCardFieldContainer>
                     <ContentInputField

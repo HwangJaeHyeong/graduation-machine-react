@@ -1,12 +1,13 @@
 import { LectureConditionCreateModal } from 'components/LectureConditionCreateModal'
 import { LectureConditionEditModal } from 'components/LectureConditionEditModal'
+import { SelectCommonLectureGroupModal } from 'components/SelectCommonLectureGroupModal'
 import { defaultConditionList } from 'constants/condition'
 import { availableYears, AvailableYearType } from 'constants/lecture'
 import { AvailableMajorType, majorList } from 'constants/major'
 import { FC, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ConditionListType } from 'types/common'
-import { LectureIdentificationItemType } from 'types/lecture'
+import { LectureIdentificationItemType, LectureIdentificationListType } from 'types/lecture'
 import { loadConditionFromLocalStorage, saveConditionToLocalStorage } from 'utils/handleConditionLocalStorage'
 import {
   ContentAddButton,
@@ -205,8 +206,17 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
     return
   }
 
-  const onCreateConditionGroupLectureItem =
+  const onSelectCommonLectureGroupItem =
     (conditionIndex: number, conditionGroupIndex: number) =>
+    (lectureIdentificationList: LectureIdentificationListType) => {
+      lectureIdentificationList.forEach((lectureIdentificationItem) => {
+        onCreateConditionGroupLectureItem(conditionIndex, conditionGroupIndex, true)(lectureIdentificationItem)()
+      })
+      return
+    }
+
+  const onCreateConditionGroupLectureItem =
+    (conditionIndex: number, conditionGroupIndex: number, isGroupSelected: boolean = false) =>
     (lectureIdentificationItem: LectureIdentificationItemType) =>
     () => {
       setConditionList((prev) =>
@@ -227,7 +237,9 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                           value.season === lectureIdentificationItem.season
                         ) {
                           isDuplicated = true
-                          alert('이미 동일한 강의가 포함되어 있습니다.')
+                          if (!isGroupSelected) {
+                            alert('이미 동일한 강의가 포함되어 있습니다.')
+                          }
                           return
                         }
                       })
@@ -399,6 +411,12 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                                 <ContentCheckbox type={'checkbox'} checked={lectureConditionGroupItem.isEssential} />{' '}
                                 <ContentCheckboxTypo>필수</ContentCheckboxTypo>
                               </ContentCheckboxContainer>
+                              <SelectCommonLectureGroupModal
+                                onSelect={onSelectCommonLectureGroupItem(
+                                  conditionItem.id,
+                                  lectureConditionGroupItem.id
+                                )}
+                              />
                               <LectureConditionCreateModal
                                 onCreate={onCreateConditionGroupLectureItem(
                                   conditionItem.id,
