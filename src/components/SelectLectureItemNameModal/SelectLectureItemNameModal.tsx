@@ -23,7 +23,7 @@ export const SelectLectureItemNameModal: FC<SelectLectureItemNameModalProps> = (
   const { state: open, setTrue: openModal, setFalse: closeModal } = useBooleanState({ initialValue: false })
   const [availableLectureList, setAvailableLectureList] = useState<LectureIdentificationListType>([])
   const [selectedYear, setSelectedYear] = useState<AvailableYearType>()
-  const [selectedSeason, setSelectedSeason] = useState<AvailableSeasonType>()
+  const [selectedSeason, setSelectedSeason] = useState<AvailableSeasonType | 'all'>()
   const [name, setName] = useState<string>('')
 
   const resetState = () => {
@@ -37,11 +37,13 @@ export const SelectLectureItemNameModal: FC<SelectLectureItemNameModalProps> = (
     setSelectedYear(value)
     setSelectedSeason(undefined)
     setAvailableLectureList([])
+    setName('')
     return
   }
 
   const onChangeSelectedSeason = (value: any) => {
     setSelectedSeason(value)
+    setName('')
     return
   }
 
@@ -51,6 +53,7 @@ export const SelectLectureItemNameModal: FC<SelectLectureItemNameModalProps> = (
       return
     }
     let newLectureList = availableLectureList.filter((value) => value.name.indexOf(name) !== -1)
+    console.log({ newLectureList })
     onCreate(newLectureList)()
     closeModal()
     resetState()
@@ -83,7 +86,17 @@ export const SelectLectureItemNameModal: FC<SelectLectureItemNameModalProps> = (
 
   useEffect(() => {
     if (selectedYear && selectedSeason) {
-      const loadedData = loadTimetableFromLocalStorage(selectedYear, selectedSeason)
+      let loadedData = []
+      if (selectedSeason === 'all') {
+        loadedData = [
+          ...loadTimetableFromLocalStorage(selectedYear, '1'),
+          ...loadTimetableFromLocalStorage(selectedYear, '2'),
+          ...loadTimetableFromLocalStorage(selectedYear, 'winter'),
+          ...loadTimetableFromLocalStorage(selectedYear, 'summer'),
+        ]
+      } else {
+        loadedData = loadTimetableFromLocalStorage(selectedYear, selectedSeason)
+      }
       if (loadedData) {
         setAvailableLectureList(loadedData)
       }
@@ -116,7 +129,7 @@ export const SelectLectureItemNameModal: FC<SelectLectureItemNameModalProps> = (
           />
           <ModalSelectField
             placeholder={'학기를 선택하세요.'}
-            options={selectAvailableSeasonOptions ?? []}
+            options={selectAvailableSeasonOptions?.concat({ label: '전체', value: 'all' }) ?? []}
             disabled={!selectAvailableSeasonOptions}
             value={selectedSeason}
             onChange={onChangeSelectedSeason}
