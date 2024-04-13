@@ -108,6 +108,10 @@ export const ContentTimePickerField = styled(TimePicker)`
 
 export const ContentSelectField = styled(Select)``
 
+export const ContentLectureConditionGroupTitleTypo = styled(Typography)`
+  font-size: 14px;
+`
+
 export const ContentCardDeleteButtonWrapper = styled.div`
   margin-top: 10px;
 `
@@ -124,10 +128,6 @@ export const ContentCardDeleteButton = styled(Button)`
       background: #ff0000aa;
     }
   }
-`
-
-export const ContentLectureConditionGroupTitleTypo = styled(Typography)`
-  font-size: 14px;
 `
 
 export const ContentCardDeleteButtonTypo = styled(Typography)`

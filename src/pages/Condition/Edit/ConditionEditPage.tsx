@@ -214,8 +214,30 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
           index === conditionIndex
             ? {
                 ...value,
-                lectureConditionGroupList: value.lectureConditionGroupList.map((value2) =>
-                  value2.id === conditionGroupIndex
+                lectureConditionGroupList: value.lectureConditionGroupList.map((value2) => {
+                  let isDuplicated = false
+
+                  value.lectureConditionGroupList.forEach(
+                    (item) =>
+                      item.id === conditionGroupIndex &&
+                      item.lectureIdentificationList.forEach((value) => {
+                        if (
+                          value.code === lectureIdentificationItem.code &&
+                          value.year === lectureIdentificationItem.year &&
+                          value.season === lectureIdentificationItem.season
+                        ) {
+                          isDuplicated = true
+                          alert('이미 동일한 강의가 포함되어 있습니다.')
+                          return
+                        }
+                      })
+                  )
+
+                  if (isDuplicated) {
+                    return value2
+                  }
+
+                  return value2.id === conditionGroupIndex
                     ? {
                         ...value2,
                         lectureIdentificationList: [
@@ -227,10 +249,30 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                                 ? 1
                                 : value2.lectureIdentificationList[value2.lectureIdentificationList.length - 1].id + 1,
                           },
-                        ],
+                        ].sort((a, b) => {
+                          if (a.year > b.year) {
+                            return 1
+                          }
+                          if (a.year < b.year) {
+                            return -1
+                          }
+                          if (a.season > b.season) {
+                            return 1
+                          }
+                          if (a.season < b.season) {
+                            return -1
+                          }
+                          if (a.code > b.code) {
+                            return 1
+                          }
+                          if (a.code < b.code) {
+                            return -1
+                          }
+                          return 1
+                        }),
                       }
                     : value2
-                ),
+                }),
               }
             : value
         )

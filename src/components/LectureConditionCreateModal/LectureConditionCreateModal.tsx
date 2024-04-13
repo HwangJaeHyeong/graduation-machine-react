@@ -62,6 +62,8 @@ export const LectureConditionCreateModal: FC<LectureConditionCreateModalProps> =
     return
   }
 
+  selectedLectureItem && console.log(JSON.parse(selectedLectureItem))
+
   const selectAvailableYearOptions = availableYears.map((value) => ({ label: `${value}년도`, value }))
   const selectAvailableSeasonOptions = (() => {
     if (selectedYear) {
