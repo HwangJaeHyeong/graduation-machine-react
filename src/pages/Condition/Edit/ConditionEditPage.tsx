@@ -1,6 +1,7 @@
 import { LectureConditionCreateModal } from 'components/LectureConditionCreateModal'
 import { LectureConditionEditModal } from 'components/LectureConditionEditModal'
 import { SelectCommonLectureGroupModal } from 'components/SelectCommonLectureGroupModal'
+import { SelectLectureItemNameModal } from 'components/SelectLectureItemNameModal'
 import { defaultConditionList } from 'constants/condition'
 import { availableYears, AvailableYearType } from 'constants/lecture'
 import { AvailableMajorType, majorList } from 'constants/major'
@@ -215,6 +216,15 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
       return
     }
 
+  const onCreateConditionGroupLectureList =
+    (conditionIndex: number, conditionGroupIndex: number) =>
+    (lectureIdentificationList: LectureIdentificationListType) =>
+    () => {
+      lectureIdentificationList.forEach((value) => {
+        onCreateConditionGroupLectureItem(conditionIndex, conditionGroupIndex, true)(value)()
+      })
+    }
+
   const onCreateConditionGroupLectureItem =
     (conditionIndex: number, conditionGroupIndex: number, isGroupSelected: boolean = false) =>
     (lectureIdentificationItem: LectureIdentificationItemType) =>
@@ -413,6 +423,12 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                               </ContentCheckboxContainer>
                               <SelectCommonLectureGroupModal
                                 onSelect={onSelectCommonLectureGroupItem(
+                                  conditionItem.id,
+                                  lectureConditionGroupItem.id
+                                )}
+                              />
+                              <SelectLectureItemNameModal
+                                onCreate={onCreateConditionGroupLectureList(
                                   conditionItem.id,
                                   lectureConditionGroupItem.id
                                 )}
