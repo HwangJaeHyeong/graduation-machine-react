@@ -2,6 +2,7 @@ import { LectureConditionCreateModal } from 'components/LectureConditionCreateMo
 import { LectureConditionEditModal } from 'components/LectureConditionEditModal'
 import { SelectLectureItemCodeModal } from 'components/SelectLectureItemCodeModal'
 import { SelectLectureItemNameModal } from 'components/SelectLectureItemNameModal'
+import { DEFAULT_LECTURE_GROUP_LIST } from 'constants/lectureGroup'
 import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -49,9 +50,9 @@ const generateDefaultCommonLectureGroupItem = (id: number): CommonLectureGroupIt
 
 export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
   const navigate = useNavigate()
-  const [commonLectureGroupList, setCommonLectureGroupList] = useState<CommonLectureGroupListType>([
-    generateDefaultCommonLectureGroupItem(0),
-  ])
+  const [commonLectureGroupList, setCommonLectureGroupList] = useState<CommonLectureGroupListType>(
+    DEFAULT_LECTURE_GROUP_LIST as CommonLectureGroupListType
+  )
 
   const onChangeCommonLectureGroupTitle = (commonLectureGroupId: number) => (e: any) => {
     setCommonLectureGroupList((prev) =>

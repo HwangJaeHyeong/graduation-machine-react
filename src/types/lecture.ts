@@ -102,7 +102,7 @@ export type LectureIdentificationItemType = {
   name: string
   year: AvailableYearType
   season: AvailableSeasonType
-  credit: LectureCreditType
+  credit: any
 }
 
 export type LectureIdentificationListType = LectureIdentificationItemType[]
