@@ -129,15 +129,14 @@ export type ConditionCategoryType =
   | '교양_자기탐색과리더십_기업가정신과리더십'
   | '교양_자기탐색과리더십_대학생활탐구'
   | '교양_자기탐색과리더십_자아성찰'
-  | '기본소양/학문기초_B'
-  | '기본소양/학문기초_S'
-  | '기본소양/학문기초_M'
+  | '기본소양/학문기초_BSM'
   | '전공'
   | 'etc'
 export type ConditionCategoryItemType = {
   id: number
   label: string
   category: ConditionCategoryType
+  minimumCredit: number
 }
 
 export type ConditionCategoryListType = ConditionCategoryItemType[]
