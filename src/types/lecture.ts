@@ -123,7 +123,17 @@ export type LectureDetailsItemType = {
 } & LectureIdentificationItemType
 
 // english : 영어 강의, design : 설계 강의, refinement : 교양 강의, msc
-export type ConditionCategoryType = 'english' | 'design' | 'common_refinement' | 'msc' | 'etc'
+export type ConditionCategoryType =
+  | '교양_글로벌의사소통_글쓰기'
+  | '교양_글로벌의사소통_영어'
+  | '교양_자기탐색과리더십_기업가정신과리더십'
+  | '교양_자기탐색과리더십_대학생활탐구'
+  | '교양_자기탐색과리더십_자아성찰'
+  | '기본소양/학문기초_B'
+  | '기본소양/학문기초_S'
+  | '기본소양/학문기초_M'
+  | '전공'
+  | 'etc'
 export type ConditionCategoryItemType = {
   id: number
   label: string
