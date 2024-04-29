@@ -1,10 +1,9 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import * as XLSX from 'xlsx/xlsx.mjs'
 import {
   ContentContainer,
   ContentInput,
-  ContentSubmitButton,
   HeaderContainer,
   HeaderLogoTypo,
   HeaderMenuContainer,
@@ -12,18 +11,39 @@ import {
   Root,
   SpreadsheetWrapper,
 } from './styled'
-import { majorList } from 'constants/major'
+import { AvailableMajorType, majorList } from 'constants/major'
 import { Spreadsheet } from 'react-spreadsheet'
-import { TABLE_COLUMN_TITLE } from 'pages/Lecture/Excel/constant'
+import { GRADUATION_DECISION_TABLE_COLUMN_TITLE } from 'pages/Lecture/Excel/constant'
+import { ConditionListType } from 'types/common'
+import { loadConditionFromLocalStorage } from 'utils/handleConditionLocalStorage'
+import { AvailableYearType } from 'constants/lecture'
+import { GraduationDecisionCard } from 'components/GraduationDecisionCard'
+import { ExcelLectureListType } from 'types/lecture'
 
 type GraduationDecisionPageProps = {
   className?: string
 }
 
+const washSeason = (season: string) => {
+  if (season === '1학기') {
+    return '1'
+  }
+  if (season === '2학기') {
+    return '2'
+  }
+  if (season === '여름학기') {
+    return 'summer'
+  }
+  if (season === '겨울학기') {
+    return 'winter'
+  }
+  return 'common'
+}
 export const GraduationDecisionPage: FC<GraduationDecisionPageProps> = ({ className }) => {
   const { major_code: majorCode, year: selectedYear } = useParams()
+  const [conditionList, setConditionList] = useState<ConditionListType>([])
   const majorItem = majorList.filter((majorItem) => majorItem.code === majorCode)[0]
-  const [excelData, setExcelData] = useState<any>([])
+  const [excelLectureList, setExcelLectureList] = useState<ExcelLectureListType>([])
   const [loading, setLoading] = useState<'LOADING' | 'NONE'>('NONE')
   const washedSelectedYear = selectedYear ? +selectedYear : 0
 
@@ -47,29 +67,42 @@ export const GraduationDecisionPage: FC<GraduationDecisionPageProps> = ({ classN
       const washedData = data
         .filter((_, index) => index !== 0)
         .map((value) => ({
-          year: value[0],
-          season: value[1],
+          year: value[1],
+          season: washSeason(value[2]),
           code: value[5],
           name: `${value[7]}(${value[19]})`,
           grade: value[10] !== 'F' ? 'NF' : 'F',
+          credit: value[9],
         }))
-      setExcelData(washedData)
+      setExcelLectureList(washedData)
     }
     if (rABS) reader.readAsBinaryString(file)
     else reader.readAsArrayBuffer(file)
     setLoading('NONE')
   }
-  console.log({ excelData })
 
   const washedExcelData =
-    excelData &&
-    excelData.map((item: any) => [
+    excelLectureList &&
+    excelLectureList.map((item: any) => [
       { value: item.year, readOnly: true },
       { value: item.season, readOnly: true },
       { value: item.code, readOnly: true },
       { value: item.name, readOnly: true },
       { value: item.grade, readOnly: true },
     ])
+
+  useEffect(() => {
+    if (majorItem && washedSelectedYear) {
+      const loadedData = loadConditionFromLocalStorage(
+        majorItem.code as AvailableMajorType,
+        washedSelectedYear as AvailableYearType
+      )
+      if (loadedData && loadedData.length !== 0) {
+        setConditionList(loadedData)
+        return
+      }
+    }
+  }, [])
 
   return (
     <Root className={className}>
@@ -82,7 +115,7 @@ export const GraduationDecisionPage: FC<GraduationDecisionPageProps> = ({ classN
         </HeaderMenuContainer>
       </HeaderContainer>
       <ContentContainer>
-        <span>엑셀 파일 입력</span>
+        <span>전체 성적 엑셀 파일 입력</span>
         <ContentInput
           disabled={loading === 'LOADING'}
           type="file"
@@ -91,13 +124,23 @@ export const GraduationDecisionPage: FC<GraduationDecisionPageProps> = ({ classN
           accept={'xlsx'}
           onChange={handleFile}
         />
-        <SpreadsheetWrapper>
-          {washedExcelData && <Spreadsheet data={washedExcelData} columnLabels={TABLE_COLUMN_TITLE} />}
-        </SpreadsheetWrapper>
-        <ContentSubmitButton type={'primary'} disabled={washedExcelData.length === 0 || loading === 'LOADING'}>
-          졸업요건 테스트하기
-        </ContentSubmitButton>
+        {washedExcelData.length !== 0 && (
+          <SpreadsheetWrapper>
+            <Spreadsheet data={washedExcelData} columnLabels={GRADUATION_DECISION_TABLE_COLUMN_TITLE} />
+          </SpreadsheetWrapper>
+        )}
       </ContentContainer>
+      {!(washedExcelData.length === 0 || loading === 'LOADING') && conditionList.length !== 0 && (
+        <ContentContainer>
+          {conditionList.map((conditionItem) => (
+            <GraduationDecisionCard
+              conditionItem={conditionItem}
+              excelLectureList={excelLectureList}
+              key={`graduation_decision_card_${conditionItem.id}`}
+            />
+          ))}
+        </ContentContainer>
+      )}
     </Root>
   )
 }

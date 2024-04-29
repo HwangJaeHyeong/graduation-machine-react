@@ -149,3 +149,14 @@ export type CommonLectureGroupItemType = {
 }
 
 export type CommonLectureGroupListType = CommonLectureGroupItemType[]
+
+export type ExcelLectureItemType = {
+  year: any
+  season: any
+  code: any
+  name: any
+  grade: any
+  credit: any
+}
+
+export type ExcelLectureListType = ExcelLectureItemType[]
