@@ -76,14 +76,14 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
 
   const onCreateCommonConditionGroupLectureList =
     (commonLectureGroupId: number) => (lectureIdentificationList: LectureIdentificationListType) => () => {
-      lectureIdentificationList.forEach((value) => {
-        onCreateCommonConditionGroupLectureItem(commonLectureGroupId, true)(value)()
+      lectureIdentificationList.forEach((value, index) => {
+        onCreateCommonConditionGroupLectureItem(commonLectureGroupId, true)(value, index)()
       })
     }
 
   const onCreateCommonConditionGroupLectureItem =
     (commonLectureGroupId: number, isGroupSelected: boolean = false) =>
-    (lectureIdentificationItem: LectureIdentificationItemType) =>
+    (lectureIdentificationItem: LectureIdentificationItemType, index: number = 0) =>
     () => {
       setCommonLectureGroupList((prev) => {
         const newCommonLectureGroupLectureItem = lectureIdentificationItem
@@ -122,7 +122,7 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
                       {
                         ...newCommonLectureGroupLectureItem,
                         id: item.lectureIdentificationList[item.lectureIdentificationList.length - 1]
-                          ? item.lectureIdentificationList[item.lectureIdentificationList.length - 1].id + 1
+                          ? item.lectureIdentificationList[item.lectureIdentificationList.length - 1].id + 1 + index
                           : 0,
                       },
                     ].sort((a, b) => {
@@ -154,6 +154,7 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
       return
     }
 
+  console.log(commonLectureGroupList)
   const onDeleteCommonConditionGroupLectureItem = (commonLectureGroupId: number, lectureItemId: number) => () => {
     setCommonLectureGroupList((prev) =>
       prev.map((value) =>
