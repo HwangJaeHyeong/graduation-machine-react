@@ -48,7 +48,7 @@ type ConditionEditPageProps = {
 
 export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => {
   const { major_code: majorCode, year: selectedYear } = useParams()
-  const [conditionList, setConditionList] = useState<ConditionListType>(defaultConditionList)
+  const [conditionList, setConditionList] = useState<ConditionListType>(defaultConditionList as ConditionListType)
   const [minimumCredit, setMinimumCredit] = useState<number>(130)
   const navigate = useNavigate()
 
