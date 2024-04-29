@@ -181,9 +181,10 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
         return
       }
       if (type === 'DELETE') {
+        console.log({ conditionGroupIndex })
         setConditionList((prev) =>
           prev.map((value, index) =>
-            index !== conditionIndex
+            index === conditionIndex
               ? {
                   ...value,
                   lectureConditionGroupList: value.lectureConditionGroupList.filter(
@@ -203,7 +204,7 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
   }
 
   const onClickDeleteConditionGroup = (conditionIndex: number, conditionGroupIndex: number) => () => {
-    handleConditionGroupList('ADD', conditionIndex, conditionGroupIndex)()
+    handleConditionGroupList('DELETE', conditionIndex, conditionGroupIndex)()
     return
   }
 
