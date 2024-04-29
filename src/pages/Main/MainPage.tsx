@@ -22,6 +22,9 @@ export const MainPage: FC<MainPageProps> = ({ className }) => {
     navigate(`/condition/edit/${majorItemCode}/${year}`)
   }
 
+  const onClickGraduationDecisionButton = (majorItemCode: string, year: number) => () => {
+    navigate(`/graduation/decision/${majorItemCode}/${year}`)
+  }
   const onClickLectureExcelButton = () => {
     navigate(`/lecture/excel`)
   }
@@ -40,6 +43,16 @@ export const MainPage: FC<MainPageProps> = ({ className }) => {
         <ContentButtonContainer>
           {SAMPLE_CSE_KEY_LIST.map((keyItem) => (
             <ContentButton onClick={onClickMajorButton('CSE', keyItem.year)} key={`cse_${keyItem.year}`}>
+              {keyItem.label}
+            </ContentButton>
+          ))}
+        </ContentButtonContainer>
+      </ContentContainer>
+      <ContentContainer>
+        <ContentTitleTypo>컴퓨터공학전공 졸업 테스트</ContentTitleTypo>
+        <ContentButtonContainer>
+          {SAMPLE_CSE_KEY_LIST.map((keyItem) => (
+            <ContentButton onClick={onClickGraduationDecisionButton('CSE', keyItem.year)} key={`cse_${keyItem.year}`}>
               {keyItem.label}
             </ContentButton>
           ))}

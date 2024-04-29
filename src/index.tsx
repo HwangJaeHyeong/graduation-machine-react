@@ -1,5 +1,6 @@
 import 'antd/dist/reset.css'
 import { ConditionEditPage } from 'pages/Condition/Edit'
+import { GraduationDecisionPage } from 'pages/Graduation/Decision'
 import { LectureExcelPage } from 'pages/Lecture/Excel'
 import { LectureGroupPage } from 'pages/Lecture/Group'
 import { MainPage } from 'pages/Main'
@@ -25,6 +26,7 @@ root.render(
         <Route path="/condition/edit/:major_code/:year" element={<ConditionEditPage />} />
         <Route path="/lecture/excel" element={<LectureExcelPage />} />
         <Route path="/lecture/group" element={<LectureGroupPage />} />
+        <Route path="/graduation/decision/:major_code/:year" element={<GraduationDecisionPage />} />
         <Route path="/" element={<MainPage />} />
       </Routes>
     </BrowserRouter>

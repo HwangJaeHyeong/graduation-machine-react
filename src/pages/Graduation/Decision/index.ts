@@ -1,0 +1,1 @@
+export { GraduationDecisionPage } from './GraduationDecisionPage'
