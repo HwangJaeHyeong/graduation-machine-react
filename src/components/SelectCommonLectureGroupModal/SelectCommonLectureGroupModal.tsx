@@ -88,6 +88,7 @@ export const SelectCommonLectureGroupModal: FC<SelectCommonLectureGroupModalProp
             options={selectAvailableYearOptions}
             value={selectedLectureGroupId}
             onChange={onChangeSelectedLectureGroupItem}
+            filterOption={(input, option) => (option?.label ?? '').includes(input)}
             showSearch
           />
           <ContentSubmitButtonContainer>
