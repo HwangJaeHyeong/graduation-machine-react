@@ -138,7 +138,7 @@ export const SelectLectureItemCodeModal: FC<SelectLectureItemCodeModalProps> = (
       </ContentButton>
 
       <ModalRoot
-        title={'과목 정보 수정하기'}
+        title={'학수 번호로 강의 추가'}
         open={open}
         onCancel={onCancel}
         closable={false}

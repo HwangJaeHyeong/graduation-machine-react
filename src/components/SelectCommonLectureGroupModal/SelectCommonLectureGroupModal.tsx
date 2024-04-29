@@ -74,7 +74,7 @@ export const SelectCommonLectureGroupModal: FC<SelectCommonLectureGroupModalProp
       </ContentButton>
 
       <ModalRoot
-        title={'과목 정보 수정하기'}
+        title={'공통 강의 그룹 선택'}
         open={open}
         onCancel={onCancel}
         closable={false}
