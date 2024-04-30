@@ -118,6 +118,7 @@ export const GraduationDecisionCard: FC<GraduationDecisionCardProps> = ({
               <ContentCardCollapseInnerContainer>
                 {washedLectureList
                   .filter((lectureItem) => !lectureItem.isTaken)
+                  .filter((lectureItem) => lectureItem.isEssential)
                   .map((lectureItem) => (
                     <ContentCardCollapse key={`is_not_taken_lecture_condition_group_item_${lectureItem.id}`}>
                       <ContentCardCollapse.Panel
@@ -163,6 +164,7 @@ export const GraduationDecisionCard: FC<GraduationDecisionCardProps> = ({
               <ContentCardCollapseInnerContainer>
                 {washedLectureList
                   .filter((lectureItem) => !lectureItem.isTaken)
+                  .filter((lectureItem) => !lectureItem.isEssential)
                   .map((lectureItem) => (
                     <ContentCardCollapse key={`is_not_taken_lecture_condition_group_item_${lectureItem.id}`}>
                       <ContentCardCollapse.Panel
