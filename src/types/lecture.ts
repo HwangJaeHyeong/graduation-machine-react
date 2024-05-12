@@ -86,6 +86,13 @@ type LectureSeasonType = '1학기' | '2학기' | '여름학기' | '겨울학기'
 type LectureGradeType = 'A+' | 'A0' | 'B+' | 'B0' | 'C+' | 'C0' | 'D+' | 'D0' | 'P' | 'F'
 type LectureCreditType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 
+export type PreLectureItemType = {
+  groupId: number
+  conditionId: number
+}
+
+export type PreLectureListType = PreLectureItemType[]
+
 export type LectureBasicInformationItemType = {
   id: number
   name: string
@@ -111,6 +118,7 @@ export type LectureConditionGroupItemType = {
   id: number
   title: string
   lectureIdentificationList: LectureIdentificationListType
+  preLectureList: PreLectureListType
   isEssential: boolean
 }
 
