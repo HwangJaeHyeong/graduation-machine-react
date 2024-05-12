@@ -1,5 +1,13 @@
+import { GraduationDecisionCard } from 'components/GraduationDecisionCard'
+import { AvailableYearType } from 'constants/lecture'
+import { AvailableMajorType, majorList } from 'constants/major'
+import { GRADUATION_DECISION_TABLE_COLUMN_TITLE } from 'pages/Lecture/Excel/constant'
 import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { Spreadsheet } from 'react-spreadsheet'
+import { ConditionListType } from 'types/common'
+import { ExcelLectureListType } from 'types/lecture'
+import { loadConditionFromLocalStorage } from 'utils/handleConditionLocalStorage'
 import * as XLSX from 'xlsx/xlsx.mjs'
 import {
   ContentContainer,
@@ -11,14 +19,6 @@ import {
   Root,
   SpreadsheetWrapper,
 } from './styled'
-import { AvailableMajorType, majorList } from 'constants/major'
-import { Spreadsheet } from 'react-spreadsheet'
-import { GRADUATION_DECISION_TABLE_COLUMN_TITLE } from 'pages/Lecture/Excel/constant'
-import { ConditionListType } from 'types/common'
-import { loadConditionFromLocalStorage } from 'utils/handleConditionLocalStorage'
-import { AvailableYearType } from 'constants/lecture'
-import { GraduationDecisionCard } from 'components/GraduationDecisionCard'
-import { ExcelLectureListType } from 'types/lecture'
 
 type GraduationDecisionPageProps = {
   className?: string
@@ -134,6 +134,7 @@ export const GraduationDecisionPage: FC<GraduationDecisionPageProps> = ({ classN
         <ContentContainer>
           {conditionList.map((conditionItem) => (
             <GraduationDecisionCard
+              conditionList={conditionList}
               conditionItem={conditionItem}
               excelLectureList={excelLectureList}
               key={`graduation_decision_card_${conditionItem.id}`}

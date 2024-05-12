@@ -1,6 +1,7 @@
 import { FC, useRef } from 'react'
-import { ConditionItemType } from 'types/common'
+import { ConditionItemType, ConditionListType } from 'types/common'
 import { ExcelLectureListType } from 'types/lecture'
+import { compareLectureYearAndSeason } from 'utils/compareLectureYearAndSeason'
 import {
   ContentCardCollapse,
   ContentCardCollapseInnerContainer,
@@ -22,12 +23,17 @@ import {
 
 type GraduationDecisionCardProps = {
   className?: string
+  conditionList: ConditionListType
   conditionItem: ConditionItemType
   excelLectureList: ExcelLectureListType
 }
 
+// NONE_01: 아예 수강 x or 동시 수강, NONE_02: 수강 x, DONE: 선이수 체계 맞게 수강
+type CheckPreLectureStatusType = 'NONE_01' | 'NONE_02' | 'DONE'
+
 export const GraduationDecisionCard: FC<GraduationDecisionCardProps> = ({
   className,
+  conditionList,
   conditionItem,
   excelLectureList,
 }) => {
@@ -39,17 +45,68 @@ export const GraduationDecisionCard: FC<GraduationDecisionCardProps> = ({
     return conditionItem.lectureConditionGroupList.map((lectureConditionGroupItem) => {
       let check = false,
         credit = 0
+      let newPreLectureList = lectureConditionGroupItem?.preLectureList ?? []
+      let newPreLectureCheckList: CheckPreLectureStatusType[] = [...Array(newPreLectureList.length)].map(
+        () => 'NONE_01'
+      )
+      let currentLectureItem: any = null
+
       lectureConditionGroupItem.lectureIdentificationList.forEach((lectureIdentificationItem) => {
         excelLectureList.forEach((excelLectureItem) => {
           if (lectureIdentificationItem.code.indexOf(excelLectureItem.code) !== -1) {
             check = true
             credit = +excelLectureItem.credit
+            currentLectureItem = excelLectureItem
           }
         })
       })
+
+      if (check && currentLectureItem) {
+        newPreLectureList.forEach((newPreLectureItem, newPreLectureItemIndex) => {
+          conditionList.forEach((conditionItem2) => {
+            if (conditionItem2.id === newPreLectureItem.conditionId) {
+              conditionItem2.lectureConditionGroupList.forEach((groupItem2) => {
+                if (groupItem2.id === newPreLectureItem.groupId) {
+                  groupItem2.lectureIdentificationList.forEach((lectureIdentification2) => {
+                    excelLectureList.forEach((excelLectureItem) => {
+                      if (
+                        +lectureIdentification2.year === +excelLectureItem.year &&
+                        lectureIdentification2.season === excelLectureItem.season &&
+                        lectureIdentification2.code.indexOf(excelLectureItem.code) !== -1
+                      ) {
+                        console.log(
+                          lectureConditionGroupItem.title,
+                          +currentLectureItem.year,
+                          currentLectureItem.season,
+                          +excelLectureItem.year,
+                          excelLectureItem.season,
+                          +lectureIdentification2.year,
+                          lectureIdentification2.season
+                        )
+                        if (
+                          compareLectureYearAndSeason(
+                            { year: +excelLectureItem.year, season: excelLectureItem.season },
+                            { year: +currentLectureItem.year, season: currentLectureItem.season }
+                          )
+                        ) {
+                          newPreLectureCheckList[newPreLectureItemIndex] = 'DONE'
+                        } else {
+                          newPreLectureCheckList[newPreLectureItemIndex] = 'NONE_02'
+                        }
+                      }
+                    })
+                  })
+                }
+              })
+            }
+          })
+        })
+      }
+
       if (typeof credit === 'number') {
         totalTakenCredit.current += credit
       }
+
       return {
         id: lectureConditionGroupItem.id,
         title: lectureConditionGroupItem.title,
@@ -57,6 +114,7 @@ export const GraduationDecisionCard: FC<GraduationDecisionCardProps> = ({
         lectureIdentificationList: lectureConditionGroupItem.lectureIdentificationList,
         credit,
         isTaken: check,
+        preLectureCheckList: newPreLectureCheckList,
       }
     })
   })()
@@ -90,6 +148,11 @@ export const GraduationDecisionCard: FC<GraduationDecisionCardProps> = ({
                         header={<GroupCardTitleTypo> {lectureItem.title}</GroupCardTitleTypo>}
                       >
                         <GroupCard>
+                          {lectureItem?.preLectureCheckList && lectureItem.preLectureCheckList.length > 0 && (
+                            <GroupCardEssentialTypo>
+                              선이수 : {JSON.stringify(lectureItem.preLectureCheckList)}
+                            </GroupCardEssentialTypo>
+                          )}
                           <GroupCardEssentialTypo>
                             필수 여부 : {lectureItem.isEssential ? '필수' : '선택'}
                           </GroupCardEssentialTypo>

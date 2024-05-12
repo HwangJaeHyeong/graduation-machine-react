@@ -1,5 +1,4 @@
 import { AvailableSeasonType } from 'constants/lecture'
-import { LectureIdentificationItemType } from 'types/lecture'
 
 const rankSeason = (season: AvailableSeasonType): number => {
   if (season === '1') {
@@ -19,8 +18,8 @@ const rankSeason = (season: AvailableSeasonType): number => {
 
 // lectureItem1가 lectureItem2보다 먼저 -> return true, 그 외 -> return false
 export const compareLectureYearAndSeason = (
-  lectureItem1: LectureIdentificationItemType,
-  lectureItem2: LectureIdentificationItemType
+  lectureItem1: { year: number; season: AvailableSeasonType },
+  lectureItem2: { year: number; season: AvailableSeasonType }
 ) => {
   if (lectureItem1.year < lectureItem2.year) {
     return true
