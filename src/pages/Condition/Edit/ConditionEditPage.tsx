@@ -1,14 +1,21 @@
 import { LectureConditionCreateModal } from 'components/LectureConditionCreateModal'
 import { LectureConditionEditModal } from 'components/LectureConditionEditModal'
+import { PreLectureItemCard } from 'components/PreLectureItemCard'
 import { SelectCommonLectureGroupModal } from 'components/SelectCommonLectureGroupModal'
 import { SelectLectureItemNameModal } from 'components/SelectLectureItemNameModal'
+import { SelectPreLectureModal } from 'components/SelectPreLectureModal'
 import { defaultConditionList } from 'constants/condition'
 import { availableYears, AvailableYearType } from 'constants/lecture'
 import { AvailableMajorType, majorList } from 'constants/major'
 import { FC, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ConditionListType } from 'types/common'
-import { LectureIdentificationItemType, LectureIdentificationListType } from 'types/lecture'
+import {
+  LectureIdentificationItemType,
+  LectureIdentificationListType,
+  PreLectureItemType,
+  PreLectureListType,
+} from 'types/lecture'
 import { loadConditionFromLocalStorage, saveConditionToLocalStorage } from 'utils/handleConditionLocalStorage'
 import {
   ContentAddButton,
@@ -34,6 +41,7 @@ import {
   ContentLectureGroupContainer,
   ContentSubmitButton,
   ContentSubmitButtonTypo,
+  ContentSubtitleTypo,
   ContentTitleTypo,
   HeaderContainer,
   HeaderLogoTypo,
@@ -171,6 +179,7 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                           : value.lectureConditionGroupList[value.lectureConditionGroupList.length - 1].id + 1,
                       title: '그룹명을 입력해주세요.',
                       lectureIdentificationList: [],
+                      preLectureList: [],
                       isEssential: false,
                     },
                   ],
@@ -304,6 +313,29 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
       return
     }
 
+  console.log({ conditionList })
+  const onCreatePreLectureItem = (conditionId: number, groupId: number) => (preLectureItem: PreLectureItemType) => {
+    const newPreLectureList = (prevPreLectureList?: PreLectureListType) =>
+      prevPreLectureList ? [...prevPreLectureList, preLectureItem] : [preLectureItem]
+
+    setConditionList((prevConditionList) => {
+      return prevConditionList.map((conditionItem) =>
+        conditionItem.id === conditionId
+          ? {
+              ...conditionItem,
+              lectureConditionGroupList: conditionItem.lectureConditionGroupList.map((groupItem) =>
+                groupItem.id === groupId
+                  ? { ...groupItem, preLectureList: newPreLectureList(groupItem.preLectureList) }
+                  : groupItem
+              ),
+            }
+          : conditionItem
+      )
+    })
+  }
+
+  const onDeletePreLectureItem = () => {}
+
   const majorItem = majorList.filter((majorItem) => majorItem.code === majorCode)[0]
   const washedSelectedYear = selectedYear ? +selectedYear : 0
 
@@ -402,6 +434,22 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                                   lectureConditionGroupItem.id
                                 )}
                               />
+                              <ContentSubtitleTypo>선이수 강의</ContentSubtitleTypo>
+                              {lectureConditionGroupItem?.preLectureList &&
+                                lectureConditionGroupItem.preLectureList.map((preLectureItem) => (
+                                  <PreLectureItemCard
+                                    conditionList={conditionList}
+                                    preLectureItem={preLectureItem}
+                                    key={`pre_lecture_item_card_${preLectureItem.conditionId}_${preLectureItem.groupId}`}
+                                  />
+                                ))}
+                              <SelectPreLectureModal
+                                conditionId={conditionItem.id}
+                                groupId={lectureConditionGroupItem.id}
+                                conditionList={conditionList}
+                                onCreate={onCreatePreLectureItem(conditionItem.id, lectureConditionGroupItem.id)}
+                              />
+                              <ContentSubtitleTypo>개설 강의 내역</ContentSubtitleTypo>
                               {lectureConditionGroupItem.lectureIdentificationList.map((lectureIdentificationItem) => (
                                 <LectureConditionEditModal
                                   lectureIdentificationItem={lectureIdentificationItem}

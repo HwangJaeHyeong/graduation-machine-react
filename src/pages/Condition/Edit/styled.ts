@@ -93,6 +93,13 @@ export const ContentCardFieldContainer = styled.div`
 
 export const ContentInputField = styled(Input)``
 
+export const ContentSubtitleTypo = styled(Typography)`
+  &&& {
+    font-size: 16px;
+    font-weight: 500;
+  }
+`
+
 export const ContentTextAreaField = styled(TextArea)``
 
 export const ContentCardTimePickerFieldContainer = styled.div`
