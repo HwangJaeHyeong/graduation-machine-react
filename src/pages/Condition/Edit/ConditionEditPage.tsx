@@ -313,8 +313,29 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
       return
     }
 
-  console.log({ conditionList })
   const onCreatePreLectureItem = (conditionId: number, groupId: number) => (preLectureItem: PreLectureItemType) => {
+    let duplicateCheck = false
+
+    conditionList.forEach((conditionItem) => {
+      if (conditionItem.id === conditionId) {
+        conditionItem.lectureConditionGroupList.forEach((groupItem) => {
+          groupItem.preLectureList &&
+            groupItem.preLectureList.forEach((prevPreLectureItem) => {
+              if (
+                prevPreLectureItem.conditionId === preLectureItem.conditionId &&
+                prevPreLectureItem.groupId === preLectureItem.groupId
+              ) {
+                duplicateCheck = true
+              }
+            })
+        })
+      }
+    })
+    if (duplicateCheck) {
+      alert('이미 존재하는 선이수 강의입니다.')
+      return
+    }
+
     const newPreLectureList = (prevPreLectureList?: PreLectureListType) =>
       prevPreLectureList ? [...prevPreLectureList, preLectureItem] : [preLectureItem]
 
@@ -334,7 +355,31 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
     })
   }
 
-  const onDeletePreLectureItem = () => {}
+  const onDeletePreLectureItem = (conditionId: number, groupId: number) => (preLectureItem: PreLectureItemType) => {
+    setConditionList((prevConditionList) => {
+      return prevConditionList.map((conditionItem) =>
+        conditionItem.id === conditionId
+          ? {
+              ...conditionItem,
+              lectureConditionGroupList: conditionItem.lectureConditionGroupList.map((groupItem) =>
+                groupItem.id === groupId
+                  ? {
+                      ...groupItem,
+                      preLectureList: groupItem.preLectureList.filter(
+                        (prevPreLectureItem) =>
+                          !(
+                            prevPreLectureItem.groupId === preLectureItem.groupId &&
+                            prevPreLectureItem.conditionId === preLectureItem.conditionId
+                          )
+                      ),
+                    }
+                  : groupItem
+              ),
+            }
+          : conditionItem
+      )
+    })
+  }
 
   const majorItem = majorList.filter((majorItem) => majorItem.code === majorCode)[0]
   const washedSelectedYear = selectedYear ? +selectedYear : 0
@@ -438,6 +483,7 @@ export const ConditionEditPage: FC<ConditionEditPageProps> = ({ className }) => 
                               {lectureConditionGroupItem?.preLectureList &&
                                 lectureConditionGroupItem.preLectureList.map((preLectureItem) => (
                                   <PreLectureItemCard
+                                    onDelete={onDeletePreLectureItem(conditionItem.id, lectureConditionGroupItem.id)}
                                     conditionList={conditionList}
                                     preLectureItem={preLectureItem}
                                     key={`pre_lecture_item_card_${preLectureItem.conditionId}_${preLectureItem.groupId}`}
