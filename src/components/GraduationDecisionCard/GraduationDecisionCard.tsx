@@ -45,10 +45,25 @@ export const GraduationDecisionCard: FC<GraduationDecisionCardProps> = ({
     return conditionItem.lectureConditionGroupList.map((lectureConditionGroupItem) => {
       let check = false,
         credit = 0
-      let newPreLectureList = lectureConditionGroupItem?.preLectureList ?? []
-      let newPreLectureCheckList: CheckPreLectureStatusType[] = [...Array(newPreLectureList.length)].map(
-        () => 'NONE_01'
-      )
+      let newPreLectureList = lectureConditionGroupItem?.preLectureList
+        ? lectureConditionGroupItem.preLectureList.map((preLectureItem) => {
+            let newPreLectureItemTitle = ''
+            conditionList.map((value) => {
+              if (value.id === preLectureItem.conditionId) {
+                value.lectureConditionGroupList.map((value2) => {
+                  if (value2.id === preLectureItem.groupId) {
+                    newPreLectureItemTitle = value2.title
+                  }
+                })
+              }
+            })
+            return {
+              ...preLectureItem,
+              status: 'NONE_01',
+              title: newPreLectureItemTitle,
+            }
+          })
+        : []
       let currentLectureItem: any = null
 
       lectureConditionGroupItem.lectureIdentificationList.forEach((lectureIdentificationItem) => {
@@ -61,7 +76,7 @@ export const GraduationDecisionCard: FC<GraduationDecisionCardProps> = ({
         })
       })
 
-      if (check && currentLectureItem) {
+      if (check && currentLectureItem && newPreLectureList) {
         newPreLectureList.forEach((newPreLectureItem, newPreLectureItemIndex) => {
           conditionList.forEach((conditionItem2) => {
             if (conditionItem2.id === newPreLectureItem.conditionId) {
@@ -74,24 +89,21 @@ export const GraduationDecisionCard: FC<GraduationDecisionCardProps> = ({
                         lectureIdentification2.season === excelLectureItem.season &&
                         lectureIdentification2.code.indexOf(excelLectureItem.code) !== -1
                       ) {
-                        console.log(
-                          lectureConditionGroupItem.title,
-                          +currentLectureItem.year,
-                          currentLectureItem.season,
-                          +excelLectureItem.year,
-                          excelLectureItem.season,
-                          +lectureIdentification2.year,
-                          lectureIdentification2.season
-                        )
                         if (
                           compareLectureYearAndSeason(
                             { year: +excelLectureItem.year, season: excelLectureItem.season },
                             { year: +currentLectureItem.year, season: currentLectureItem.season }
                           )
                         ) {
-                          newPreLectureCheckList[newPreLectureItemIndex] = 'DONE'
+                          newPreLectureList[newPreLectureItemIndex] = {
+                            ...newPreLectureList[newPreLectureItemIndex],
+                            status: 'DONE',
+                          }
                         } else {
-                          newPreLectureCheckList[newPreLectureItemIndex] = 'NONE_02'
+                          newPreLectureList[newPreLectureItemIndex] = {
+                            ...newPreLectureList[newPreLectureItemIndex],
+                            status: 'NONE_02',
+                          }
                         }
                       }
                     })
@@ -114,7 +126,7 @@ export const GraduationDecisionCard: FC<GraduationDecisionCardProps> = ({
         lectureIdentificationList: lectureConditionGroupItem.lectureIdentificationList,
         credit,
         isTaken: check,
-        preLectureCheckList: newPreLectureCheckList,
+        preLectureList: newPreLectureList,
       }
     })
   })()
@@ -125,6 +137,19 @@ export const GraduationDecisionCard: FC<GraduationDecisionCardProps> = ({
     }
     return washedLectureList.filter((value) => value.isEssential).filter((value) => !value.isTaken).length === 0
   })()
+
+  const extractPreLectureStatusByCode = (code: string) => {
+    if (code === 'NONE_01') {
+      return '수강 안함'
+    }
+    if (code === 'NONE_02') {
+      return '선이수 지켜지지 않음'
+    }
+    if (code === 'DONE') {
+      return '선이수 지켜짐'
+    }
+    return '오류'
+  }
 
   return (
     <Root className={className}>
@@ -148,11 +173,13 @@ export const GraduationDecisionCard: FC<GraduationDecisionCardProps> = ({
                         header={<GroupCardTitleTypo> {lectureItem.title}</GroupCardTitleTypo>}
                       >
                         <GroupCard>
-                          {lectureItem?.preLectureCheckList && lectureItem.preLectureCheckList.length > 0 && (
-                            <GroupCardEssentialTypo>
-                              선이수 : {JSON.stringify(lectureItem.preLectureCheckList)}
-                            </GroupCardEssentialTypo>
-                          )}
+                          {lectureItem?.preLectureList &&
+                            lectureItem.preLectureList.length > 0 &&
+                            lectureItem.preLectureList.map((preLectureItem, index) => (
+                              <GroupCardEssentialTypo key={`pre_lecture_item_${lectureItem.id}_${index}`}>
+                                {preLectureItem.title} - {extractPreLectureStatusByCode(preLectureItem.status)}
+                              </GroupCardEssentialTypo>
+                            ))}
                           <GroupCardEssentialTypo>
                             필수 여부 : {lectureItem.isEssential ? '필수' : '선택'}
                           </GroupCardEssentialTypo>
