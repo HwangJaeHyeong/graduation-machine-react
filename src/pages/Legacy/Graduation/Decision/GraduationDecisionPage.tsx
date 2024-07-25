@@ -1,7 +1,7 @@
 import { GraduationDecisionCard } from 'components/GraduationDecisionCard'
 import { AvailableYearType } from 'constants/lecture'
 import { AvailableMajorType, majorList } from 'constants/major'
-import { GRADUATION_DECISION_TABLE_COLUMN_TITLE } from 'pages/Lecture/Excel/constant'
+import { GRADUATION_DECISION_TABLE_COLUMN_TITLE } from 'pages/Legacy/Lecture/Excel/constant'
 import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Spreadsheet } from 'react-spreadsheet'

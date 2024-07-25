@@ -1,9 +1,9 @@
 import 'antd/dist/reset.css'
-import { ConditionEditPage } from 'pages/Condition/Edit'
-import { GraduationDecisionPage } from 'pages/Graduation/Decision'
-import { LectureExcelPage } from 'pages/Lecture/Excel'
-import { LectureGroupPage } from 'pages/Lecture/Group'
-import { MainPage } from 'pages/Main'
+import { ConditionEditPage } from 'pages/Legacy/Condition/Edit'
+import { GraduationDecisionPage } from 'pages/Legacy/Graduation/Decision'
+import { LectureExcelPage } from 'pages/Legacy/Lecture/Excel'
+import { LectureGroupPage } from 'pages/Legacy/Lecture/Group'
+import { MainPage } from 'pages/Legacy/Main'
 import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -23,11 +23,11 @@ root.render(
     <VersionCheckProvider />
     <BrowserRouter>
       <Routes>
-        <Route path="/condition/edit/:major_code/:year" element={<ConditionEditPage />} />
-        <Route path="/lecture/excel" element={<LectureExcelPage />} />
-        <Route path="/lecture/group" element={<LectureGroupPage />} />
-        <Route path="/graduation/decision/:major_code/:year" element={<GraduationDecisionPage />} />
-        <Route path="/" element={<MainPage />} />
+        <Route path="/legacy/condition/edit/:major_code/:year" element={<ConditionEditPage />} />
+        <Route path="/legacy/lecture/excel" element={<LectureExcelPage />} />
+        <Route path="/legacy/lecture/group" element={<LectureGroupPage />} />
+        <Route path="/legacy/graduation/decision/:major_code/:year" element={<GraduationDecisionPage />} />
+        <Route path="/legacy/" element={<MainPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
