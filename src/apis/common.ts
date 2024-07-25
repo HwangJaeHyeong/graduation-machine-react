@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-export const REQUEST_URL = 'http://dongguk-cse-graduationcheck.site'
+export const REQUEST_URL = 'https://dongguk-cse-graduationcheck.site'
 
 type AxiosType = 'GET' | 'POST' | 'PATCH' | 'DELETE'
 
-export const CommonAxios = (type: AxiosType) => async (url: string, params: any) => {
+export const commonAxios = (type: AxiosType) => async (url: string, params: any) => {
   const washedUrl = `${REQUEST_URL}/${url}`
 
   if (type === 'GET') {
@@ -19,4 +19,10 @@ export const CommonAxios = (type: AxiosType) => async (url: string, params: any)
   if (type === 'DELETE') {
     return await axios.delete(washedUrl, { params })
   }
+}
+
+export type CommonResponseType<P> = {
+  success: boolean
+  data: P
+  error: any
 }
