@@ -1,3 +1,38 @@
 html {
   scroll-behavior: smooth;
 }
+
+@font-face {
+  font-family: Pretendard;
+  src: url('../constants/fonts/Pretendard-Black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: Pretendard;
+  src: url('../constants/fonts/Pretendard-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: Pretendard;
+  src: url('../constants/fonts/Pretendard-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: Pretendard;
+  src: url('../constants/fonts/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: Pretendard;
+  src: url('../constants/fonts/Pretendard-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+* {
+  font-family: Pretendard;
+}
