@@ -7,6 +7,7 @@ import { LectureExcelPage as LegacyLectureExcelPage } from 'pages/Legacy/Lecture
 import { LectureGroupPage as LegacyLectureGroupPage } from 'pages/Legacy/Lecture/Group'
 import { MainPage as LegacyMainPage } from 'pages/Legacy/Main'
 import { MainPage } from 'pages/Main'
+import { ResultPage } from 'pages/Result'
 import { SubmitPage } from 'pages/Submit'
 import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
@@ -41,6 +42,7 @@ root.render(
           <Route path="/legacy/" element={<LegacyMainPage />} />
           <Route path="/" element={<MainPage />} />
           <Route path="/submit" element={<SubmitPage />} />
+          <Route path="/result" element={<ResultPage />} />
         </Routes>
       </BrowserRouter>
     </ConfigProvider>

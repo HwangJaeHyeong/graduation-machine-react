@@ -100,7 +100,9 @@ export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
   const onClickSubmitButton = () => {
     // navigate('/result', { state: { classification, entranceYear, excelLectureList } })
     if (excelFile) {
+      setLoading('LOADING')
       postGraduationCheck({ year: entranceYear, tech: classification }, { file: excelFile }).then((data) => {
+        setLoading('NONE')
         navigate('/result', { state: { graduationCheckData: data } })
       })
     }
@@ -151,7 +153,7 @@ export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
               <SpreadsheetWrapper>
                 <Spreadsheet data={washedExcelData} columnLabels={GRADUATION_DECISION_TABLE_COLUMN_TITLE} />
               </SpreadsheetWrapper>
-              <SubmitButton type={'primary'} onClick={onClickSubmitButton}>
+              <SubmitButton type={'primary'} onClick={onClickSubmitButton} disabled={loading === 'LOADING'}>
                 검사하기
               </SubmitButton>
             </>
