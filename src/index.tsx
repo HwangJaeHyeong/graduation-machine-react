@@ -1,4 +1,6 @@
+import { ConfigProvider } from 'antd'
 import 'antd/dist/reset.css'
+import { PRIMARY_COLOR } from 'constants/common'
 import { ConditionEditPage as LegacyConditionEditPage } from 'pages/Legacy/Condition/Edit'
 import { GraduationDecisionPage as LegacyGraduationDecisionPage } from 'pages/Legacy/Graduation/Decision'
 import { LectureExcelPage as LegacyLectureExcelPage } from 'pages/Legacy/Lecture/Excel'
@@ -19,18 +21,26 @@ const VersionCheckProvider = () => {
   return null
 }
 
+const theme = {
+  token: {
+    colorPrimary: PRIMARY_COLOR,
+    fontFamily: 'Pretendard',
+  },
+}
 root.render(
   <React.StrictMode>
     <VersionCheckProvider />
-    <BrowserRouter>
-      <Routes>
-        <Route path="/legacy/condition/edit/:major_code/:year" element={<LegacyConditionEditPage />} />
-        <Route path="/legacy/lecture/excel" element={<LegacyLectureExcelPage />} />
-        <Route path="/legacy/lecture/group" element={<LegacyLectureGroupPage />} />
-        <Route path="/legacy/graduation/decision/:major_code/:year" element={<LegacyGraduationDecisionPage />} />
-        <Route path="/legacy/" element={<LegacyMainPage />} />
-        <Route path="/" element={<MainPage />} />
-      </Routes>
-    </BrowserRouter>
+    <ConfigProvider theme={theme}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/legacy/condition/edit/:major_code/:year" element={<LegacyConditionEditPage />} />
+          <Route path="/legacy/lecture/excel" element={<LegacyLectureExcelPage />} />
+          <Route path="/legacy/lecture/group" element={<LegacyLectureGroupPage />} />
+          <Route path="/legacy/graduation/decision/:major_code/:year" element={<LegacyGraduationDecisionPage />} />
+          <Route path="/legacy/" element={<LegacyMainPage />} />
+          <Route path="/" element={<MainPage />} />
+        </Routes>
+      </BrowserRouter>
+    </ConfigProvider>
   </React.StrictMode>
 )
