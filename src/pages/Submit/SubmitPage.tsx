@@ -1,3 +1,4 @@
+import { postGraduationCheck } from 'apis/graduation/postGraduationCheck'
 import { Header } from 'components/Header'
 import { GRADUATION_DECISION_TABLE_COLUMN_TITLE } from 'pages/Legacy/Lecture/Excel/constant'
 import { FC, useState } from 'react'
@@ -33,20 +34,21 @@ const 전공_구분_OPTIONS = [
   { value: '일반', label: '일반과정' },
 ]
 const 학번_OPTIONS = [
-  { value: '24', label: '24학번' },
-  { value: '23', label: '23학번' },
-  { value: '22', label: '22학번' },
-  { value: '21', label: '21학번' },
-  { value: '20', label: '20학번' },
+  { value: 2024, label: '24학번' },
+  { value: 2023, label: '23학번' },
+  { value: 2022, label: '22학번' },
+  { value: 2021, label: '21학번' },
+  { value: 2020, label: '20학번' },
 ]
 
 type ClassificationType = '일반' | '심화'
-type EntranceYear = '20' | '21' | '22' | '23' | '24'
+type EntranceYear = 2020 | 2021 | 2022 | 2023 | 2024
 
 export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
   const navigate = useNavigate()
   const [classification, setClassification] = useState<ClassificationType>('심화')
-  const [entranceYear, setEntranceYear] = useState<EntranceYear>('20')
+  const [entranceYear, setEntranceYear] = useState<EntranceYear>(2020)
+  const [excelFile, setExcelFile] = useState<any>()
   const [excelLectureList, setExcelLectureList] = useState<ExcelLectureListType>([])
   const [loading, setLoading] = useState<'LOADING' | 'NONE'>('NONE')
 
@@ -57,6 +59,7 @@ export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
       return
     }
     const file = files[0]
+    setExcelFile(file)
 
     const reader = new FileReader()
     const rABS = !!reader.readAsBinaryString
@@ -95,7 +98,12 @@ export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
     ])
 
   const onClickSubmitButton = () => {
-    navigate('/result', { state: { classification, entranceYear, excelLectureList } })
+    // navigate('/result', { state: { classification, entranceYear, excelLectureList } })
+    if (excelFile) {
+      postGraduationCheck({ year: entranceYear, tech: classification }, { file: excelFile }).then((data) => {
+        navigate('/result', { state: { graduationCheckData: data } })
+      })
+    }
   }
 
   return (
