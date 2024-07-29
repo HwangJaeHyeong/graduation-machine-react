@@ -13,7 +13,6 @@ export const CardCollapse = styled(Collapse)`
 export const CardCollapsePanel = styled(Collapse.Panel)``
 
 export const CardTitleTypo = styled(Typography)`
-  font-size: 16px;
   font-weight: 500;
 `
 
