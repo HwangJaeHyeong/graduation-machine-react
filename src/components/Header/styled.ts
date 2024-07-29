@@ -21,7 +21,7 @@ export const LogoImg = styled.img`
 export const MenuContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 40px;
   margin-left: 20px;
 `
 
