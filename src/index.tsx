@@ -1,6 +1,7 @@
 import { ConfigProvider } from 'antd'
 import 'antd/dist/reset.css'
 import { PRIMARY_COLOR } from 'constants/common'
+import { AdminMainPage } from 'pages/Admin/Main'
 import { ConditionEditPage as LegacyConditionEditPage } from 'pages/Legacy/Condition/Edit'
 import { GraduationDecisionPage as LegacyGraduationDecisionPage } from 'pages/Legacy/Graduation/Decision'
 import { LectureExcelPage as LegacyLectureExcelPage } from 'pages/Legacy/Lecture/Excel'
@@ -40,9 +41,12 @@ root.render(
           <Route path="/legacy/lecture/group" element={<LegacyLectureGroupPage />} />
           <Route path="/legacy/graduation/decision/:major_code/:year" element={<LegacyGraduationDecisionPage />} />
           <Route path="/legacy/" element={<LegacyMainPage />} />
+
           <Route path="/" element={<MainPage />} />
           <Route path="/submit" element={<SubmitPage />} />
           <Route path="/result" element={<ResultPage />} />
+
+          <Route path="/admin/" element={<AdminMainPage />} />
         </Routes>
       </BrowserRouter>
     </ConfigProvider>
