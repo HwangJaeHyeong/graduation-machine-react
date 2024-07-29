@@ -17,7 +17,7 @@ export const AdminConditionPage: FC<AdminConditionPageProps> = ({ className }) =
   useAuth()
 
   const onClick입학연도Button = (value: number) => () => {
-    navigate(`/admin/condition/${value}`)
+    navigate(`/admin/condition/detail/${value}`)
   }
 
   return (
