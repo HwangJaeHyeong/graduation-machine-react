@@ -19,18 +19,18 @@ export const MainPage: FC<MainPageProps> = ({ className }) => {
   const navigate = useNavigate()
 
   const onClickMajorButton = (majorItemCode: string, year: number) => () => {
-    navigate(`/condition/edit/${majorItemCode}/${year}`)
+    navigate(`/legacy/condition/edit/${majorItemCode}/${year}`)
   }
 
   const onClickGraduationDecisionButton = (majorItemCode: string, year: number) => () => {
-    navigate(`/graduation/decision/${majorItemCode}/${year}`)
+    navigate(`/legacy/graduation/decision/${majorItemCode}/${year}`)
   }
   const onClickLectureExcelButton = () => {
-    navigate(`/lecture/excel`)
+    navigate(`/legacy/lecture/excel`)
   }
 
   const onClickLectureGroupButton = () => {
-    navigate(`/lecture/group`)
+    navigate(`/legacy/lecture/group`)
   }
 
   return (
