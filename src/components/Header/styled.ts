@@ -22,7 +22,7 @@ export const MenuContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 40px;
-  margin-left: 20px;
+  margin-left: 40px;
 `
 
 export const MenuTypo = styled(Typography)<{ isPointed?: boolean }>`
