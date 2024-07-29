@@ -10,14 +10,16 @@ type AdminConditionDetailPageProps = {
 }
 
 export const AdminConditionDetailPage: FC<AdminConditionDetailPageProps> = ({ className }) => {
-  const { id } = useParams()
+  const { year, tech } = useParams()
 
   useAuth()
   return (
     <Root className={className}>
       <Header type={'ADMIN'} />
       <Container>
-        <TitleTypo>{id}년도 입학생 졸업 이수 조건 수정</TitleTypo>
+        <TitleTypo>
+          {year}년도 {tech}과정 입학생 졸업 이수 조건 수정
+        </TitleTypo>
         <ContentContainer>
           <ContentInput addonBefore={'최저 이수 학점'} value={140} />
           <LectureConditionCard />

@@ -50,7 +50,7 @@ root.render(
 
           <Route path="/admin/" element={<AdminMainPage />} />
           <Route path="/admin/condition" element={<AdminConditionPage />} />
-          <Route path="/admin/condition/detail/:id" element={<AdminConditionDetailPage />} />
+          <Route path="/admin/condition/detail/:year/:tech" element={<AdminConditionDetailPage />} />
         </Routes>
       </BrowserRouter>
     </ConfigProvider>
