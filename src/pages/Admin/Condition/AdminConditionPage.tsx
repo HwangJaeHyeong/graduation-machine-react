@@ -1,4 +1,4 @@
-import { getConditions } from 'apis/conditions/getConditions'
+import { getGraduations } from 'apis/conditions/getGraduations'
 import { Header } from 'components/Header'
 import { ContentButton } from 'components/LectureConditionCreateModal/styled'
 import { useAuth } from 'hooks/useAuth'
@@ -66,7 +66,9 @@ export const AdminConditionPage: FC<AdminConditionPageProps> = ({ className }) =
   }
 
   useEffect(() => {
-    getConditions().then((value) => set입학연도과정(value))
+    getGraduations().then((value) => {
+      set입학연도과정(value)
+    })
   }, [])
 
   return (

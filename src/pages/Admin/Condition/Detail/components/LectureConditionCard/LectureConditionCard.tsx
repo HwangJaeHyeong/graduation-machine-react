@@ -13,19 +13,19 @@ import {
 
 type LectureConditionCardProps = {
   className?: string
+  id: number
+  name: string
+  minimumCredit: number
 }
 
-export const LectureConditionCard: FC<LectureConditionCardProps> = ({ className }) => {
+export const LectureConditionCard: FC<LectureConditionCardProps> = ({ className, name, minimumCredit, id }) => {
   return (
     <Root className={className}>
       <CardCollapse>
-        <CardCollapsePanel
-          header={<CardTitleTypo>{'교양 > 글로벌의사소통 > 글쓰기'}</CardTitleTypo>}
-          key={`lecture_condition_card_`}
-        >
+        <CardCollapsePanel header={<CardTitleTypo>{name}</CardTitleTypo>} key={`lecture_condition_card_${id}`}>
           <ContentContainer>
-            <ContentInput addonBefore={'최소 학점'} />
-            <LectureGroupCard />
+            <ContentInput addonBefore={'최소 학점'} value={minimumCredit} />
+            <LectureGroupCard id={id} />
             <ContentButton type={'primary'}>
               그룹 추가 <ContentAddButtonIcon />
             </ContentButton>
