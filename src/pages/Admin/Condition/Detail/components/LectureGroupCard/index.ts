@@ -1,0 +1,1 @@
+export { LectureGroupCard } from './LectureGroupCard'

@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { LectureGroupCard } from '../LectureGroupCard'
 import {
   CardCollapse,
   CardCollapsePanel,
@@ -17,14 +18,15 @@ type LectureConditionCardProps = {
 export const LectureConditionCard: FC<LectureConditionCardProps> = ({ className }) => {
   return (
     <Root className={className}>
-      <CardCollapse size={'large'}>
+      <CardCollapse>
         <CardCollapsePanel
           header={<CardTitleTypo>{'교양 > 글로벌의사소통 > 글쓰기'}</CardTitleTypo>}
           key={`lecture_condition_card_`}
         >
           <ContentContainer>
-            <ContentInput size={'large'} addonBefore={'최소 학점'} />
-            <ContentButton type={'primary'} size={'large'}>
+            <ContentInput addonBefore={'최소 학점'} />
+            <LectureGroupCard />
+            <ContentButton type={'primary'}>
               그룹 추가 <ContentAddButtonIcon />
             </ContentButton>
           </ContentContainer>
