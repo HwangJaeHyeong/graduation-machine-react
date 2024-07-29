@@ -1,8 +1,6 @@
 import { commonAxios } from 'apis/common'
 
-type Props = {
-  [key: string]: any // 필요에 따라 수정
-}
+type Props = {}
 
 type Type = {
   id: number
@@ -11,9 +9,9 @@ type Type = {
   total_minimum_credit: number
 }[]
 
-export const getConditions = async (params: Props) => {
-  return await commonAxios('GET')('api/v1/conditions', { params }).then((res) => {
-    const response = res?.data as Type
+export const getConditions = async () => {
+  return await commonAxios('GET')('api/v1/conditions', {}).then((res) => {
+    const response = res?.data.data as Type
     return response
   })
 }

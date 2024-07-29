@@ -1,7 +1,8 @@
+import { getConditions } from 'apis/conditions/getConditions'
 import { Header } from 'components/Header'
 import { ContentButton } from 'components/LectureConditionCreateModal/styled'
 import { useAuth } from 'hooks/useAuth'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Container, ContentContainer, Root, TitleTypo } from './styled'
 
@@ -52,14 +53,21 @@ const 입학연도과정_LIST = [
   },
 ]
 
+type 입학연도과정Type = { year: number; tech: '심화' | '일반'; id: number }
+
 export const AdminConditionPage: FC<AdminConditionPageProps> = ({ className }) => {
   const navigate = useNavigate()
+  const [입학연도과정, set입학연도과정] = useState<입학연도과정Type[]>([])
 
   useAuth()
 
-  const onClick입학연도과정Button = (value: { 연도: number; 과정: string }) => () => {
-    navigate(`/admin/condition/detail/${value.연도}/${value.과정}`)
+  const onClick입학연도과정Button = (value: 입학연도과정Type) => () => {
+    navigate(`/admin/condition/detail/${value.id}/${value.year}/${value.tech}`)
   }
+
+  useEffect(() => {
+    getConditions().then((value) => set입학연도과정(value))
+  }, [])
 
   return (
     <Root className={className}>
@@ -67,13 +75,14 @@ export const AdminConditionPage: FC<AdminConditionPageProps> = ({ className }) =
       <Container>
         <TitleTypo>졸업 이수 조건을 수정할 입학연도와 과정을 선택해주세요.</TitleTypo>
         <ContentContainer>
-          {입학연도과정_LIST.map((value) => (
-            <ContentButton
-              size={'large'}
-              key={`입학연도과정_item_${value}`}
-              onClick={onClick입학연도과정Button(value)}
-            >{`${value.연도}년 ${value.과정}과정`}</ContentButton>
-          ))}
+          {입학연도과정 &&
+            입학연도과정.map((value) => (
+              <ContentButton
+                size={'large'}
+                key={`입학연도과정_item_${value}`}
+                onClick={onClick입학연도과정Button(value)}
+              >{`${value.year}년 ${value.tech}과정`}</ContentButton>
+            ))}
         </ContentContainer>
       </Container>
     </Root>
