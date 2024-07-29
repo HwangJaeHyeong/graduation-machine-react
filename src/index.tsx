@@ -1,6 +1,7 @@
 import { ConfigProvider } from 'antd'
 import 'antd/dist/reset.css'
 import { PRIMARY_COLOR } from 'constants/common'
+import { AdminConditionPage } from 'pages/Admin/Condition'
 import { AdminMainPage } from 'pages/Admin/Main'
 import { ConditionEditPage as LegacyConditionEditPage } from 'pages/Legacy/Condition/Edit'
 import { GraduationDecisionPage as LegacyGraduationDecisionPage } from 'pages/Legacy/Graduation/Decision'
@@ -47,6 +48,7 @@ root.render(
           <Route path="/result" element={<ResultPage />} />
 
           <Route path="/admin/" element={<AdminMainPage />} />
+          <Route path="/admin/condition" element={<AdminConditionPage />} />
         </Routes>
       </BrowserRouter>
     </ConfigProvider>
