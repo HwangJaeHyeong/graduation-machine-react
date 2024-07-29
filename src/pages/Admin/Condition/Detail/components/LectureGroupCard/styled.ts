@@ -39,3 +39,10 @@ export const ContentTitleTypo = styled(Typography)`
   font-weight: 500;
 `
 export const ContentTypo = styled(Typography)``
+
+export const ContentLectureList = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`
