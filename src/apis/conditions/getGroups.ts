@@ -1,4 +1,4 @@
-import { commonAxios } from 'apis/common'
+import { commonAxios, CommonResponseType } from 'apis/common'
 import { camelizeKey } from 'utils/camelizeKey'
 
 type Props = {
@@ -13,7 +13,7 @@ type Type = {
 
 export const getGroups = async ({ id }: Props) => {
   return await commonAxios('GET')(`api/v1/lecture-conditions/${id}/lecture-groups`, {}).then((res) => {
-    const response = camelizeKey(res?.data.data) as Type
+    const response = camelizeKey(res?.data) as CommonResponseType<Type>
     return response
   })
 }

@@ -25,8 +25,8 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({ className, id, nam
   const [isOpened, setIsOpened] = useState<boolean>(false)
 
   useEffect(() => {
-    getIdentifications({ id }).then((data) => {
-      setLectureIdentificationList(data)
+    getIdentifications({ id }).then((res) => {
+      setLectureIdentificationList(res.data)
     })
   }, [])
 

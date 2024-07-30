@@ -66,8 +66,8 @@ export const AdminConditionPage: FC<AdminConditionPageProps> = ({ className }) =
   }
 
   useEffect(() => {
-    getGraduations().then((value) => {
-      set입학연도과정(value)
+    getGraduations().then((res) => {
+      set입학연도과정(res.data)
     })
   }, [])
 

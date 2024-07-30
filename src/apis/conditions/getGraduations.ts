@@ -1,4 +1,4 @@
-import { commonAxios } from 'apis/common'
+import { commonAxios, CommonResponseType } from 'apis/common'
 
 type Props = {}
 
@@ -11,7 +11,7 @@ type Type = {
 
 export const getGraduations = async () => {
   return await commonAxios('GET')('api/v1/conditions', {}).then((res) => {
-    const response = res?.data.data as Type
+    const response = res?.data as CommonResponseType<Type>
     return response
   })
 }

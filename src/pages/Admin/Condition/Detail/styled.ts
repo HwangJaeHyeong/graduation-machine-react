@@ -1,4 +1,5 @@
-import { Input, Typography } from 'antd'
+import { PlusCircleOutlined } from '@ant-design/icons'
+import { Button, Input, Typography } from 'antd'
 import { COMMON_MIN_WIDTH } from 'constants/layout'
 import styled from 'styled-components'
 
@@ -40,3 +41,14 @@ export const ContentContainer = styled.div`
 `
 
 export const ContentInput = styled(Input)``
+
+export const ContentButton = styled(Button)`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+export const ContentAddButtonIcon = styled(PlusCircleOutlined)`
+  font-size: 18px;
+`

@@ -22,8 +22,8 @@ export const LectureConditionCard: FC<LectureConditionCardProps> = ({ className,
   const [isOpened, setIsOpened] = useState<boolean>(false)
 
   useEffect(() => {
-    getGroups({ id }).then((value) => {
-      setLectureGroupList(value)
+    getGroups({ id }).then((res) => {
+      setLectureGroupList(res.data)
     })
   }, [])
 

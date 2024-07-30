@@ -4,7 +4,15 @@ import { useAuth } from 'hooks/useAuth'
 import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { LectureConditionCard } from './components/LectureConditionCard'
-import { Container, ContentContainer, ContentInput, Root, TitleTypo } from './styled'
+import {
+  Container,
+  ContentAddButtonIcon,
+  ContentButton,
+  ContentContainer,
+  ContentInput,
+  Root,
+  TitleTypo,
+} from './styled'
 import { LectureConditionListType } from './type'
 
 type AdminConditionDetailPageProps = {
@@ -20,9 +28,9 @@ export const AdminConditionDetailPage: FC<AdminConditionDetailPageProps> = ({ cl
 
   useEffect(() => {
     if (id && year && tech) {
-      getConditions({ id: +id, year: +year, tech }).then((data) => {
-        setLectureConditionList(data.requirements)
-        setTotalMinimumCredit(data.totalMinimumCredit)
+      getConditions({ id: +id, year: +year, tech }).then((res) => {
+        setLectureConditionList(res.data.requirements)
+        setTotalMinimumCredit(res.data.totalMinimumCredit)
       })
     }
   }, [])
@@ -44,6 +52,9 @@ export const AdminConditionDetailPage: FC<AdminConditionDetailPageProps> = ({ cl
               key={`lecture_condition_item_${lectureConditionItem.id}`}
             />
           ))}
+          <ContentButton type={'primary'}>
+            조건 추가 <ContentAddButtonIcon />
+          </ContentButton>
         </ContentContainer>
       </Container>
     </Root>
