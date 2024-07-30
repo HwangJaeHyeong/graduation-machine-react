@@ -1,4 +1,5 @@
 import { getConditions } from 'apis/conditions/getConditions'
+import { postConditions } from 'apis/conditions/postConditions'
 import { Header } from 'components/Header'
 import { useAuth } from 'hooks/useAuth'
 import { FC, useEffect, useState } from 'react'
@@ -26,13 +27,27 @@ export const AdminConditionDetailPage: FC<AdminConditionDetailPageProps> = ({ cl
 
   useAuth()
 
-  useEffect(() => {
+  const updateLectureConditionList = () => {
     if (id && year && tech) {
       getConditions({ id: +id, year: +year, tech }).then((res) => {
         setLectureConditionList(res.data.requirements)
         setTotalMinimumCredit(res.data.totalMinimumCredit)
       })
     }
+  }
+
+  const onClickAddButton = () => {
+    if (id) {
+      postConditions({ graduationId: +id, name: '새로운 조건', minimumCredit: 0 }).then((res) => {
+        if (res.success) {
+          updateLectureConditionList()
+        }
+      })
+    }
+  }
+
+  useEffect(() => {
+    updateLectureConditionList()
   }, [])
 
   return (
@@ -52,7 +67,7 @@ export const AdminConditionDetailPage: FC<AdminConditionDetailPageProps> = ({ cl
               key={`lecture_condition_item_${lectureConditionItem.id}`}
             />
           ))}
-          <ContentButton type={'primary'}>
+          <ContentButton type={'primary'} onClick={onClickAddButton}>
             조건 추가 <ContentAddButtonIcon />
           </ContentButton>
         </ContentContainer>
