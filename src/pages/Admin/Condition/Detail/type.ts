@@ -26,3 +26,10 @@ export type LectureIdentificationItemType = {
 }
 
 export type LectureIdentificationListType = LectureIdentificationItemType[]
+
+export type PreLectureGroupItemType = {
+  id: number
+  name: string
+}
+
+export type PreLectureGroupListType = PreLectureGroupItemType[]

@@ -1,11 +1,13 @@
 import { Spin } from 'antd'
 import { deleteGroups } from 'apis/conditions/deleteGroups'
 import { getIdentifications } from 'apis/conditions/getIdentifications'
+import { getPreGroups } from 'apis/conditions/getPreGroups'
 import { patchGroups } from 'apis/conditions/patchGroups'
 import { FC, useEffect, useState } from 'react'
 import { LectureIdentificationListType } from 'types/lecture'
-import { LectureGroupItemType } from '../../type'
+import { LectureGroupItemType, PreLectureGroupListType } from '../../type'
 import { LectureIdentificationCard } from '../LectureIdentificationCard'
+import { PreLectureGroupCard } from '../PreLectureGroupCard'
 import {
   CardCollapse,
   CardCollapsePanel,
@@ -37,11 +39,18 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
   conditionId,
   updateLectureGroupList,
 }) => {
+  const [preGroupList, setPreGroupList] = useState<PreLectureGroupListType>([])
   const [lectureIdentificationList, setLectureIdentificationList] = useState<LectureIdentificationListType>([])
   const [isOpened, setIsOpened] = useState<boolean>(false)
   const [name, setName] = useState<string>(defaultName)
   const [isEssential, setIsEssential] = useState<boolean>(defaultIsEssential)
   const [editable, setEditable] = useState<boolean>(false)
+
+  const updatePreGroupList = () => {
+    getPreGroups({ id }).then((res) => {
+      setPreGroupList(res.data)
+    })
+  }
 
   const updateLectureIdentificationList = () => {
     getIdentifications({ id }).then((res) => {
@@ -73,6 +82,7 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
   }
 
   useEffect(() => {
+    updatePreGroupList()
     updateLectureIdentificationList()
   }, [])
 
@@ -98,6 +108,12 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
               {editable ? '수정 완료' : '그룹 수정'}
             </ContentButton>
             <ContentTitleTypo>선이수 강의</ContentTitleTypo>
+            <ContentLectureContainer>
+              {isOpened &&
+                preGroupList.map((preGroupItem) => (
+                  <PreLectureGroupCard {...preGroupItem} key={`pre_group_item_${preGroupItem.id}`} />
+                ))}
+            </ContentLectureContainer>
             <ContentButton type={'primary'}>
               선이수 강의 추가 <ContentAddButtonIcon />
             </ContentButton>
