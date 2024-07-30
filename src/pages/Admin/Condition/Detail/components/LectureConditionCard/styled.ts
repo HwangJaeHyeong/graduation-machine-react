@@ -31,9 +31,9 @@ export const ContentButton = styled(Button)`
 `
 
 export const ContentAddButtonIcon = styled(PlusCircleOutlined)`
-  font-size: 18px;
+  font-size: 16px;
 `
 
 export const ContentDeleteButtonIcon = styled(MinusCircleOutlined)`
-  font-size: 18px;
+  font-size: 16px;
 `

@@ -1,4 +1,5 @@
 import { Spin } from 'antd'
+import { deleteGroups } from 'apis/conditions/deleteGroups'
 import { getIdentifications } from 'apis/conditions/getIdentifications'
 import { FC, useEffect, useState } from 'react'
 import { LectureIdentificationListType } from 'types/lecture'
@@ -11,23 +12,45 @@ import {
   ContentAddButtonIcon,
   ContentButton,
   ContentContainer,
-  ContentLectureList,
+  ContentDeleteButtonIcon,
+  ContentLectureContainer,
   ContentTitleTypo,
   Root,
 } from './styled'
 
 type LectureGroupCardProps = {
   className?: string
+  updateLectureGroupList: () => void
+  conditionId: number
 } & LectureGroupItemType
 
-export const LectureGroupCard: FC<LectureGroupCardProps> = ({ className, id, name, isEssential }) => {
+export const LectureGroupCard: FC<LectureGroupCardProps> = ({
+  className,
+  id,
+  name,
+  isEssential,
+  conditionId,
+  updateLectureGroupList,
+}) => {
   const [lectureIdentificationList, setLectureIdentificationList] = useState<LectureIdentificationListType>([])
   const [isOpened, setIsOpened] = useState<boolean>(false)
 
-  useEffect(() => {
+  const updateLectureIdentificationList = () => {
     getIdentifications({ id }).then((res) => {
       setLectureIdentificationList(res.data)
     })
+  }
+
+  const onClickDeleteButton = () => {
+    deleteGroups({ conditionId, groupId: id }).then((res) => {
+      if (res.success) {
+        updateLectureGroupList()
+      }
+    })
+  }
+
+  useEffect(() => {
+    updateLectureIdentificationList()
   }, [])
 
   return (
@@ -43,7 +66,7 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({ className, id, nam
               선이수 강의 추가 <ContentAddButtonIcon />
             </ContentButton>
             <ContentTitleTypo>강의 개설 내역</ContentTitleTypo>
-            <ContentLectureList>
+            <ContentLectureContainer>
               {!isOpened && <Spin />}
               {isOpened &&
                 lectureIdentificationList.map((lectureIdentificationItem) => (
@@ -52,7 +75,13 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({ className, id, nam
                     key={`lecture_identification_item_${lectureIdentificationItem.id}`}
                   />
                 ))}
-            </ContentLectureList>
+            </ContentLectureContainer>
+            <ContentButton type={'primary'}>
+              강의 추가 <ContentAddButtonIcon />
+            </ContentButton>
+            <ContentButton danger onClick={onClickDeleteButton}>
+              그룹 삭제 <ContentDeleteButtonIcon />
+            </ContentButton>
           </ContentContainer>
         </CardCollapsePanel>
       </CardCollapse>

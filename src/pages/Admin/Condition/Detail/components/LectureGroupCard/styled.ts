@@ -1,4 +1,4 @@
-import { PlusCircleOutlined } from '@ant-design/icons'
+import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons'
 import { Button, Collapse, Input, Typography } from 'antd'
 import styled from 'styled-components'
 
@@ -34,15 +34,21 @@ export const ContentAddButtonIcon = styled(PlusCircleOutlined)`
   font-size: 16px;
 `
 
+export const ContentDeleteButtonIcon = styled(MinusCircleOutlined)`
+  font-size: 16px;
+`
+
 export const ContentTitleTypo = styled(Typography)`
   font-size: 16px;
   font-weight: 500;
 `
 export const ContentTypo = styled(Typography)``
 
-export const ContentLectureList = styled.div`
+export const ContentLectureContainer = styled.div`
   width: 100%;
+  height: 400px;
   display: flex;
   flex-direction: column;
   gap: 5px;
+  overflow-y: scroll;
 `

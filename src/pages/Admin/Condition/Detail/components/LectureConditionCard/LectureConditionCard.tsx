@@ -70,6 +70,7 @@ export const LectureConditionCard: FC<LectureConditionCardProps> = ({
                   name={lectureGroupItem.name}
                   isEssential={lectureGroupItem.isEssential}
                   updateLectureGroupList={updateLectureGroupList}
+                  conditionId={id}
                   key={`lecture_group_item_${id}_${lectureGroupItem.id}`}
                 />
               ))}
