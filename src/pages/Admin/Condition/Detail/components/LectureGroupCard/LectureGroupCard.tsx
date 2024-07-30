@@ -42,11 +42,13 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
   }
 
   const onClickDeleteButton = () => {
-    deleteGroups({ conditionId, groupId: id }).then((res) => {
-      if (res.success) {
-        updateLectureGroupList()
-      }
-    })
+    if (confirm('정말로 그룹을 삭제하시겠습니까?')) {
+      deleteGroups({ conditionId, groupId: id }).then((res) => {
+        if (res.success) {
+          updateLectureGroupList()
+        }
+      })
+    }
   }
 
   useEffect(() => {
@@ -72,6 +74,8 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
                 lectureIdentificationList.map((lectureIdentificationItem) => (
                   <LectureIdentificationCard
                     {...lectureIdentificationItem}
+                    groupId={id}
+                    updateLectureIdentificationList={updateLectureIdentificationList}
                     key={`lecture_identification_item_${lectureIdentificationItem.id}`}
                   />
                 ))}
