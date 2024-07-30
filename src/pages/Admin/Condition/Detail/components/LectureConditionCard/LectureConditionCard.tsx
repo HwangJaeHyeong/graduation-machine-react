@@ -1,5 +1,6 @@
 import { deleteConditions } from 'apis/conditions/deleteConditions'
 import { getGroups } from 'apis/conditions/getGroups'
+import { patchConditions } from 'apis/conditions/patchConditions'
 import { postGroups } from 'apis/conditions/postGroups'
 import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -24,14 +25,17 @@ type LectureConditionCardProps = {
 
 export const LectureConditionCard: FC<LectureConditionCardProps> = ({
   className,
-  name,
-  minimumCredit,
+  name: defaultName,
+  minimumCredit: defaultMinimumCredit,
   id,
   updateLectureConditionList,
 }) => {
   const { id: graduationId } = useParams()
   const [lectureGroupList, setLectureGroupList] = useState<LectureGroupListType>([])
   const [isOpened, setIsOpened] = useState<boolean>(false)
+  const [editable, setEditable] = useState<boolean>(false)
+  const [name, setName] = useState<string>(defaultName)
+  const [minimumCredit, setMinimumCredit] = useState<number>(defaultMinimumCredit)
 
   const updateLectureGroupList = () => {
     getGroups({ id }).then((res) => {
@@ -57,6 +61,21 @@ export const LectureConditionCard: FC<LectureConditionCardProps> = ({
     }
   }
 
+  const onClickEditButton = () => {
+    setEditable((prev) => {
+      if (prev) {
+        if (graduationId && typeof +graduationId === 'number') {
+          patchConditions({ graduationId: +graduationId, conditionId: id, name, minimumCredit }).then((res) => {
+            if (res.success) {
+              updateLectureConditionList()
+            }
+          })
+        }
+      }
+      return !prev
+    })
+  }
+
   useEffect(() => {
     updateLectureGroupList()
   }, [])
@@ -69,7 +88,22 @@ export const LectureConditionCard: FC<LectureConditionCardProps> = ({
           key={`lecture_condition_card_${id}`}
         >
           <ContentContainer>
-            <ContentInput addonBefore={'최소 학점'} value={minimumCredit} />
+            <ContentInput
+              addonBefore={'조건명'}
+              value={name}
+              onChange={(e: any) => setName(e.target.value)}
+              disabled={!editable}
+            />
+            <ContentInput
+              addonBefore={'최소 학점'}
+              type={'number'}
+              value={minimumCredit}
+              onChange={(e: any) => setMinimumCredit(e.target.value)}
+              disabled={!editable}
+            />
+            <ContentButton type={'primary'} onClick={onClickEditButton}>
+              조건 수정
+            </ContentButton>
             {isOpened &&
               lectureGroupList.map((lectureGroupItem) => (
                 <LectureGroupCard
