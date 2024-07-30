@@ -46,7 +46,7 @@ export const ContentTypo = styled(Typography)``
 
 export const ContentLectureContainer = styled.div`
   width: 100%;
-  height: 400px;
+  max-height: 400px;
   display: flex;
   flex-direction: column;
   gap: 5px;

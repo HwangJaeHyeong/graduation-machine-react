@@ -1,5 +1,6 @@
 import { deleteConditions } from 'apis/conditions/deleteConditions'
 import { getGroups } from 'apis/conditions/getGroups'
+import { postGroups } from 'apis/conditions/postGroups'
 import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { LectureConditionItemType, LectureGroupListType } from '../../type'
@@ -38,7 +39,13 @@ export const LectureConditionCard: FC<LectureConditionCardProps> = ({
     })
   }
 
-  const onClickDeleteConditionButton = () => {
+  const onClickAddButton = () => {
+    postGroups({ conditionId: id, name: '새로운 그룹', isEssential: false }).then((res) => {
+      updateLectureGroupList()
+    })
+  }
+
+  const onClickDeleteButton = () => {
     if (graduationId && typeof +graduationId === 'number') {
       if (confirm('정말로 조건을 삭제하시겠습니까?')) {
         deleteConditions({ graduationId: +graduationId, conditionId: id }).then((res) => {
@@ -74,10 +81,10 @@ export const LectureConditionCard: FC<LectureConditionCardProps> = ({
                   key={`lecture_group_item_${id}_${lectureGroupItem.id}`}
                 />
               ))}
-            <ContentButton type={'primary'}>
+            <ContentButton type={'primary'} onClick={onClickAddButton}>
               그룹 추가 <ContentAddButtonIcon />
             </ContentButton>
-            <ContentButton type={'default'} onClick={onClickDeleteConditionButton} danger>
+            <ContentButton type={'default'} onClick={onClickDeleteButton} danger>
               조건 삭제 <ContentDeleteButtonIcon />
             </ContentButton>
           </ContentContainer>
