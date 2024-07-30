@@ -1,4 +1,4 @@
-import { PlusCircleOutlined } from '@ant-design/icons'
+import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons'
 import { Button, Collapse, Input, Typography } from 'antd'
 import styled from 'styled-components'
 
@@ -31,5 +31,9 @@ export const ContentButton = styled(Button)`
 `
 
 export const ContentAddButtonIcon = styled(PlusCircleOutlined)`
+  font-size: 18px;
+`
+
+export const ContentDeleteButtonIcon = styled(MinusCircleOutlined)`
   font-size: 18px;
 `

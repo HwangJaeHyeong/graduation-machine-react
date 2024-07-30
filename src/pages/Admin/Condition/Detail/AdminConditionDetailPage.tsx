@@ -64,6 +64,7 @@ export const AdminConditionDetailPage: FC<AdminConditionDetailPageProps> = ({ cl
               id={lectureConditionItem.id}
               name={lectureConditionItem.name}
               minimumCredit={lectureConditionItem.minimumCredit}
+              updateLectureConditionList={updateLectureConditionList}
               key={`lecture_condition_item_${lectureConditionItem.id}`}
             />
           ))}
