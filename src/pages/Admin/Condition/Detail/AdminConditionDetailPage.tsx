@@ -58,7 +58,7 @@ export const AdminConditionDetailPage: FC<AdminConditionDetailPageProps> = ({ cl
           {year}년도 {tech}과정 입학생 졸업 이수 조건 수정
         </TitleTypo>
         <ContentContainer>
-          <ContentInput addonBefore={'최저 이수 학점'} value={totalMinimumCredit} />
+          <ContentInput addonBefore={'최소 이수 학점'} value={totalMinimumCredit} />
           {lectureConditionList.map((lectureConditionItem) => (
             <LectureConditionCard
               id={lectureConditionItem.id}

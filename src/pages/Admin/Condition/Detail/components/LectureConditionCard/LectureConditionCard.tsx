@@ -30,7 +30,10 @@ export const LectureConditionCard: FC<LectureConditionCardProps> = ({ className,
   return (
     <Root className={className} onClick={() => setIsOpened(true)}>
       <CardCollapse>
-        <CardCollapsePanel header={<CardTitleTypo>{name}</CardTitleTypo>} key={`lecture_condition_card_${id}`}>
+        <CardCollapsePanel
+          header={<CardTitleTypo>{`${name} (최소 ${minimumCredit}학점)`}</CardTitleTypo>}
+          key={`lecture_condition_card_${id}`}
+        >
           <ContentContainer>
             <ContentInput addonBefore={'최소 학점'} value={minimumCredit} />
             {isOpened &&
