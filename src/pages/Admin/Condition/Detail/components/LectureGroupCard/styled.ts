@@ -1,5 +1,5 @@
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons'
-import { Button, Collapse, Input, Typography } from 'antd'
+import { Button, Checkbox, Collapse, Input, Typography } from 'antd'
 import styled from 'styled-components'
 
 export const Root = styled.div`
@@ -52,3 +52,13 @@ export const ContentLectureContainer = styled.div`
   gap: 5px;
   overflow-y: scroll;
 `
+
+export const ContentIsEssentialContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+`
+
+export const ContentIsEssentialCheckbox = styled(Checkbox)``

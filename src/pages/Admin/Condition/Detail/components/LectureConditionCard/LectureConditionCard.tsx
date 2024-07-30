@@ -84,7 +84,7 @@ export const LectureConditionCard: FC<LectureConditionCardProps> = ({
     <Root className={className} onClick={() => setIsOpened(true)}>
       <CardCollapse>
         <CardCollapsePanel
-          header={<CardTitleTypo>{`${name} (최소 ${minimumCredit}학점)`}</CardTitleTypo>}
+          header={<CardTitleTypo>{`${defaultName} (최소 ${defaultMinimumCredit}학점)`}</CardTitleTypo>}
           key={`lecture_condition_card_${id}`}
         >
           <ContentContainer>
@@ -102,7 +102,7 @@ export const LectureConditionCard: FC<LectureConditionCardProps> = ({
               disabled={!editable}
             />
             <ContentButton type={'primary'} onClick={onClickEditButton}>
-              조건 수정
+              {editable ? '수정 완료' : '조건 수정'}
             </ContentButton>
             {isOpened &&
               lectureGroupList.map((lectureGroupItem) => (
