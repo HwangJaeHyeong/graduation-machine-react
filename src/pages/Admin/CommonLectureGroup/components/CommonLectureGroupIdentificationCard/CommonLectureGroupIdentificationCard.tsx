@@ -1,12 +1,12 @@
-import { deleteIdentifications } from 'apis/conditions/deleteIdentifications'
+import { deleteCommonLectureGroupIdentifications } from 'apis/commonLectureGroups/deleteCommonLectureGroupIdentifications'
 import { FC } from 'react'
 import { LectureIdentificationItemType } from 'types/lecture'
 import { ContentButton, ContentTypo, DeleteIcon, Root } from './styled'
 
 type CommonLectureGroupIdentificationCardProps = {
   className?: string
-  groupId: number
-  updateLectureIdentificationList: () => void
+  commonLectureGroupId: number
+  updateCommonLectureGroupIdentificationList: () => void
 } & LectureIdentificationItemType
 
 export const CommonLectureGroupIdentificationCard: FC<CommonLectureGroupIdentificationCardProps> = ({
@@ -14,18 +14,20 @@ export const CommonLectureGroupIdentificationCard: FC<CommonLectureGroupIdentifi
   code,
   credit,
   id,
-  groupId,
+  commonLectureGroupId,
   name,
   season,
   year,
-  updateLectureIdentificationList,
+  updateCommonLectureGroupIdentificationList,
 }) => {
   const onClickDeleteButton = () => {
-    deleteIdentifications({ groupId, identificationId: id }).then((res) => {
-      if (res.success) {
-        updateLectureIdentificationList()
+    deleteCommonLectureGroupIdentifications({ commonLectureGroupId, commonLectureGroupIdentificationId: id }).then(
+      (res) => {
+        if (res.success) {
+          updateCommonLectureGroupIdentificationList()
+        }
       }
-    })
+    )
   }
 
   return (

@@ -5,6 +5,7 @@ import { patchCommonLectureGroups } from 'apis/commonLectureGroups/patchCommonLe
 import { FC, useEffect, useState } from 'react'
 import { LectureIdentificationListType } from 'types/lecture'
 import { CommonLectureGroupItemType } from '../../type'
+import { CommonLectureGroupIdentificationAddModal } from '../CommonLectureGroupIdentificationAddModal'
 import { CommonLectureGroupIdentificationCard } from '../CommonLectureGroupIdentificationCard'
 import {
   CardCollapse,
@@ -35,7 +36,7 @@ export const CommonLectureGroupCard: FC<CommonLectureGroupCardProps> = ({
   const [name, setName] = useState<string>(defaultName)
   const [editable, setEditable] = useState<boolean>(false)
 
-  const updateLectureIdentificationList = () => {
+  const updateCommonLectureGroupIdentificationList = () => {
     getCommonLectureGroupIdentifications({ commonLectureGroupId: id }).then((res) => {
       setLectureIdentificationList(res.data)
     })
@@ -65,7 +66,7 @@ export const CommonLectureGroupCard: FC<CommonLectureGroupCardProps> = ({
   }
 
   useEffect(() => {
-    updateLectureIdentificationList()
+    updateCommonLectureGroupIdentificationList()
   }, [])
 
   return (
@@ -92,12 +93,16 @@ export const CommonLectureGroupCard: FC<CommonLectureGroupCardProps> = ({
                 lectureIdentificationList.map((lectureIdentificationItem) => (
                   <CommonLectureGroupIdentificationCard
                     {...lectureIdentificationItem}
-                    groupId={id}
-                    updateLectureIdentificationList={updateLectureIdentificationList}
+                    commonLectureGroupId={id}
+                    updateCommonLectureGroupIdentificationList={updateCommonLectureGroupIdentificationList}
                     key={`lecture_identification_item_${lectureIdentificationItem.id}`}
                   />
                 ))}
             </ContentLectureContainer>
+            <CommonLectureGroupIdentificationAddModal
+              commonLectureGroupId={id}
+              updateCommonLectureGroupIdentificationList={updateCommonLectureGroupIdentificationList}
+            />
             <ContentButton danger onClick={onClickDeleteButton}>
               공통 그룹 삭제 <ContentDeleteButtonIcon />
             </ContentButton>

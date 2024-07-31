@@ -1,0 +1,1 @@
+export { CommonLectureGroupIdentificationAddModal } from './CommonLectureGroupIdentificationAddModal'
