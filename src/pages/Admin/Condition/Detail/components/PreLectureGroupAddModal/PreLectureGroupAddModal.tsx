@@ -20,7 +20,7 @@ export const PreLectureGroupAddModal: FC<PreLectureGroupAddModalProps> = ({
 }) => {
   const [opened, setOpened] = useState<boolean>(false)
   const [lectureGroupList, setLectureGroupList] = useState<LectureGroupListType>([])
-  const [preLectureGroupId, setPreLectureGroupId] = useState<number>()
+  const [preLectureGroupId, setPreLectureGroupId] = useState<number | undefined>()
 
   const onClickButton = () => {
     setOpened(true)
@@ -28,6 +28,7 @@ export const PreLectureGroupAddModal: FC<PreLectureGroupAddModalProps> = ({
 
   const onCancel = () => {
     setOpened(false)
+    setPreLectureGroupId(undefined)
   }
 
   const onChangeSelect = (value: any) => {
@@ -76,6 +77,7 @@ export const PreLectureGroupAddModal: FC<PreLectureGroupAddModalProps> = ({
           <ContentSelect
             placeholder={'선이수 강의를 추가해주세요.'}
             onChange={onChangeSelect}
+            value={preLectureGroupId}
             options={washedLectureGroupOptionList}
           />
           <ContentButton onClick={onClickSubmitButton} type={'primary'}>

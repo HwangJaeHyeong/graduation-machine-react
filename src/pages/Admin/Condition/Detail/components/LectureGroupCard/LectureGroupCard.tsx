@@ -112,7 +112,12 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
             <ContentLectureContainer>
               {isOpened &&
                 preGroupList.map((preGroupItem) => (
-                  <PreLectureGroupCard {...preGroupItem} key={`pre_group_item_${preGroupItem.id}`} />
+                  <PreLectureGroupCard
+                    {...preGroupItem}
+                    groupId={id}
+                    updatePreGroupList={updatePreGroupList}
+                    key={`pre_group_item_${preGroupItem.id}`}
+                  />
                 ))}
             </ContentLectureContainer>
             <PreLectureGroupAddModal conditionId={conditionId} groupId={id} updatePreGroupList={updatePreGroupList} />
