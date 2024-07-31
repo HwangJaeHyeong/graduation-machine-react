@@ -1,6 +1,5 @@
 import { Spin } from 'antd'
 import { deleteGroups } from 'apis/conditions/deleteGroups'
-import { getCandidatePreGroups } from 'apis/conditions/getCandidatePreGroups'
 import { getIdentifications } from 'apis/conditions/getIdentifications'
 import { getPreGroups } from 'apis/conditions/getPreGroups'
 import { patchGroups } from 'apis/conditions/patchGroups'
@@ -9,12 +8,12 @@ import { LectureIdentificationListType } from 'types/lecture'
 import { LectureGroupItemType, PreLectureGroupListType } from '../../type'
 import { LectureIdentificationAddModal } from '../LectureIdentificationAddModal'
 import { LectureIdentificationCard } from '../LectureIdentificationCard'
+import { PreLectureGroupAddModal } from '../PreLectureGroupAddModal'
 import { PreLectureGroupCard } from '../PreLectureGroupCard'
 import {
   CardCollapse,
   CardCollapsePanel,
   CardTitleTypo,
-  ContentAddButtonIcon,
   ContentButton,
   ContentContainer,
   ContentDeleteButtonIcon,
@@ -86,7 +85,6 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
   useEffect(() => {
     updatePreGroupList()
     updateLectureIdentificationList()
-    getCandidatePreGroups({ conditionId, groupId: id }).then((res) => console.log(res))
   }, [])
 
   return (
@@ -117,9 +115,7 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
                   <PreLectureGroupCard {...preGroupItem} key={`pre_group_item_${preGroupItem.id}`} />
                 ))}
             </ContentLectureContainer>
-            <ContentButton type={'primary'}>
-              선이수 강의 추가 <ContentAddButtonIcon />
-            </ContentButton>
+            <PreLectureGroupAddModal conditionId={conditionId} groupId={id} updatePreGroupList={updatePreGroupList} />
             <ContentTitleTypo>강의 개설 내역</ContentTitleTypo>
             <ContentLectureContainer>
               {!isOpened && <Spin />}

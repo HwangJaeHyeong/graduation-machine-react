@@ -154,7 +154,6 @@ export const LectureGroupPage: FC<LectureGroupPageProps> = ({ className }) => {
       return
     }
 
-  console.log(commonLectureGroupList)
   const onDeleteCommonConditionGroupLectureItem = (commonLectureGroupId: number, lectureItemId: number) => () => {
     setCommonLectureGroupList((prev) =>
       prev.map((value) =>

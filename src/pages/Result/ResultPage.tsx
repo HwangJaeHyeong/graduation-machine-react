@@ -25,8 +25,6 @@ export const ResultPage: FC<ResultPageProps> = ({ className }) => {
     state: { graduationCheckData },
   } = useLocation()
 
-  console.log({ graduationCheckData })
-
   return (
     <Root className={className}>
       <Header />
