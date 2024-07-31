@@ -9,7 +9,7 @@ type Props = {
 type Type = LectureIdentificationListType
 
 export const getCommonLectureGroupIdentifications = async ({ commonLectureGroupId }: Props) => {
-  return await commonAxios('GET')(`api/v1/common-lecture-groups/lectures/${commonLectureGroupId}`, {}).then((res) => {
+  return await commonAxios('GET')(`api/v1/common-lecture-groups/${commonLectureGroupId}/lectures/`, {}).then((res) => {
     const response = camelizeKey(res?.data) as CommonResponseType<Type>
     return response
   })

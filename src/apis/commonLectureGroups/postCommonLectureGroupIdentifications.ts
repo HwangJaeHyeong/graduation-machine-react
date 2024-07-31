@@ -10,7 +10,7 @@ type Props = {
 type Type = {}
 
 export const postCommonLectureGroupIdentifications = async ({ commonLectureGroupId, type, keyword }: Props) => {
-  return await commonAxios('POST')(`api/v1/common-lecture-groups/lectures/${commonLectureGroupId}`, {
+  return await commonAxios('POST')(`api/v1/common-lecture-groups/${commonLectureGroupId}/lectures/`, {
     type,
     keyword,
   }).then((res) => {
