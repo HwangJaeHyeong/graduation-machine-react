@@ -1,6 +1,7 @@
 import { Spin } from 'antd'
 import { deleteCommonLectureGroups } from 'apis/commonLectureGroups/deleteCommonLectureGroups'
 import { getCommonLectureGroupIdentifications } from 'apis/commonLectureGroups/getCommonLectureGroupIdentifications'
+import { patchCommonLectureGroups } from 'apis/commonLectureGroups/patchCommonLectureGroups'
 import { FC, useEffect, useState } from 'react'
 import { LectureIdentificationListType } from 'types/lecture'
 import { CommonLectureGroupItemType } from '../../type'
@@ -53,7 +54,11 @@ export const CommonLectureGroupCard: FC<CommonLectureGroupCardProps> = ({
   const onClickEditButton = () => {
     setEditable((prev) => {
       if (prev) {
-        //
+        patchCommonLectureGroups({ commonLectureGroupId: id, name }).then((res) => {
+          if (res.success) {
+            updateCommonLectureGroupList()
+          }
+        })
       }
       return !prev
     })
