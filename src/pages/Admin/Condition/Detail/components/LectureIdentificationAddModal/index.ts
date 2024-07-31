@@ -1,0 +1,1 @@
+export { LectureIdentificationAddModal } from './LectureIdentificationAddModal'

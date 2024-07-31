@@ -4,7 +4,7 @@ import { camelizeKey } from 'utils/camelizeKey'
 type Props = {
   groupId: number
   type: 'none' | 'name' | 'code'
-  keyword?: string
+  keyword?: string | number
 }
 
 type Type = {}
