@@ -1,5 +1,6 @@
 import { Spin } from 'antd'
-import { getIdentifications } from 'apis/conditions/getIdentifications'
+import { deleteCommonLectureGroups } from 'apis/commonLectureGroups/deleteCommonLectureGroups'
+import { getCommonLectureGroupIdentifications } from 'apis/commonLectureGroups/getCommonLectureGroupIdentifications'
 import { FC, useEffect, useState } from 'react'
 import { LectureIdentificationListType } from 'types/lecture'
 import { CommonLectureGroupItemType } from '../../type'
@@ -34,14 +35,18 @@ export const CommonLectureGroupCard: FC<CommonLectureGroupCardProps> = ({
   const [editable, setEditable] = useState<boolean>(false)
 
   const updateLectureIdentificationList = () => {
-    getIdentifications({ id }).then((res) => {
+    getCommonLectureGroupIdentifications({ commonLectureGroupId: id }).then((res) => {
       setLectureIdentificationList(res.data)
     })
   }
 
   const onClickDeleteButton = () => {
-    if (confirm('정말로 그룹을 삭제하시겠습니까?')) {
-      //
+    if (confirm('정말로 공통 그룹을 삭제하시겠습니까?')) {
+      deleteCommonLectureGroups({ commonLectureGroupId: id }).then((res) => {
+        if (res.success) {
+          updateCommonLectureGroupList()
+        }
+      })
     }
   }
 
@@ -67,13 +72,13 @@ export const CommonLectureGroupCard: FC<CommonLectureGroupCardProps> = ({
         >
           <ContentContainer>
             <ContentInput
-              addonBefore={'그룹명'}
+              addonBefore={'공통 그룹명'}
               value={name}
               onChange={(e: any) => setName(e.target.value)}
               disabled={!editable}
             />
             <ContentButton type={'primary'} onClick={onClickEditButton}>
-              {editable ? '수정 완료' : '그룹 수정'}
+              {editable ? '수정 완료' : '공통 그룹 수정'}
             </ContentButton>
             <ContentTitleTypo>강의 개설 내역</ContentTitleTypo>
             <ContentLectureContainer>
@@ -89,7 +94,7 @@ export const CommonLectureGroupCard: FC<CommonLectureGroupCardProps> = ({
                 ))}
             </ContentLectureContainer>
             <ContentButton danger onClick={onClickDeleteButton}>
-              그룹 삭제 <ContentDeleteButtonIcon />
+              공통 그룹 삭제 <ContentDeleteButtonIcon />
             </ContentButton>
           </ContentContainer>
         </CardCollapsePanel>

@@ -1,6 +1,7 @@
 import { ConfigProvider } from 'antd'
 import 'antd/dist/reset.css'
 import { PRIMARY_COLOR } from 'constants/common'
+import { AdminCommonLectureGroupPage } from 'pages/Admin/CommonLectureGroup'
 import { AdminConditionPage } from 'pages/Admin/Condition'
 import { AdminConditionDetailPage } from 'pages/Admin/Condition/Detail'
 import { AdminMainPage } from 'pages/Admin/Main'
@@ -50,6 +51,7 @@ root.render(
 
           <Route path="/admin/" element={<AdminMainPage />} />
           <Route path="/admin/condition" element={<AdminConditionPage />} />
+          <Route path="/admin/common-lecture-group" element={<AdminCommonLectureGroupPage />} />
           <Route path="/admin/condition/detail/:id/:year/:tech" element={<AdminConditionDetailPage />} />
         </Routes>
       </BrowserRouter>
