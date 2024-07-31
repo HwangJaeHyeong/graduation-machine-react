@@ -22,6 +22,8 @@ export const ResultPage: FC<ResultPageProps> = ({ className }) => {
   const totalCredit = graduationCheckData.data.total_credit as { ratio: string; value: boolean }
   const grade = graduationCheckData.data.grade as { gpa: string; isPassed: boolean }
 
+  console.log(graduationCheckData.data)
+
   return (
     <Root className={className}>
       <Header />

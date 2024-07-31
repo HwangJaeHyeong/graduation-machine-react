@@ -17,13 +17,7 @@ export const ContentContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 `
 
 export const ContentTypo = styled(Typography)``
-
-export const CardContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`
