@@ -1,5 +1,6 @@
 import { message } from 'antd'
 import { getCommonLectureGroups } from 'apis/commonLectureGroups/getCommonLectureGroups'
+import { postLectureIdentificationsByCommonLectureGroup } from 'apis/commonLectureGroups/postLectureIdentificationsByCommonLectureGroup'
 import { getAllIdentifications } from 'apis/conditions/getAllIdentifications'
 import { postIdentifications } from 'apis/conditions/postIdentifications'
 import { CommonLectureGroupItemType, CommonLectureGroupListType } from 'pages/Admin/CommonLectureGroup/type'
@@ -27,7 +28,7 @@ export const LectureIdentificationAddModal: FC<LectureIdentificationAddModalProp
   updateLectureIdentificationList,
 }) => {
   const [opened, setOpened] = useState<boolean>(false)
-  const [type, setType] = useState<undefined | 'none' | 'name' | 'code' | 'preLecture'>()
+  const [type, setType] = useState<undefined | 'none' | 'name' | 'code' | 'commonLecture'>()
   const [keyword, setKeyword] = useState<string | number>('')
   const [lectureIdentificationList, setLectureIdentificationList] = useState<LectureIdentificationListType>([])
   const [commonLectureGroupList, setCommonLectureGroupList] = useState<CommonLectureGroupListType>([])
@@ -83,8 +84,18 @@ export const LectureIdentificationAddModal: FC<LectureIdentificationAddModalProp
         }
       })
     }
-    if (type === 'preLecture') {
-      //
+    if (type === 'commonLecture') {
+      if (selectedCommonLectureGroupItem) {
+        postLectureIdentificationsByCommonLectureGroup({
+          groupId,
+          commonLectureGroupId: selectedCommonLectureGroupItem,
+        }).then((res) => {
+          if (res.success) {
+            message.info('강의 추가가 성공적으로 완료되었습니다.')
+            updateLectureIdentificationList()
+          }
+        })
+      }
     }
 
     onCancel()
@@ -125,7 +136,7 @@ export const LectureIdentificationAddModal: FC<LectureIdentificationAddModalProp
               { value: 'none', label: '선택해서 추가하기' },
               { value: 'name', label: '이름으로 추가하기' },
               { value: 'code', label: '학수 번호로 추가하기' },
-              { value: 'preLecture', label: '공통 강의로 추가하기' },
+              { value: 'commonLecture', label: '공통 강의로 추가하기' },
             ]}
             value={type}
             onChange={onChangeTypeSelect}
@@ -145,7 +156,7 @@ export const LectureIdentificationAddModal: FC<LectureIdentificationAddModalProp
               onChange={onChangeLectureIdentificationSelect}
             />
           )}
-          {type === 'preLecture' && (
+          {type === 'commonLecture' && (
             <ContentSelect
               placeholder={'공통 강의 그룹을 선택해주세요.'}
               showSearch
