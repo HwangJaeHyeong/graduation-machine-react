@@ -8,6 +8,8 @@ export const Root = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 5px;
+  border: 1px #d9d9d9 solid;
+  padding: 5px 10px;
 `
 
 export const ContentTypo = styled(Typography)``

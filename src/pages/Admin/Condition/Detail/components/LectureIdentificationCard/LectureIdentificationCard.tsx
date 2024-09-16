@@ -21,11 +21,13 @@ export const LectureIdentificationCard: FC<LectureIdentificationCardProps> = ({
   updateLectureIdentificationList,
 }) => {
   const onClickDeleteButton = () => {
-    deleteIdentifications({ groupId, identificationId: id }).then((res) => {
-      if (res.success) {
-        updateLectureIdentificationList()
-      }
-    })
+    if (confirm('정말로 identification을 삭제하시겠습니까?')) {
+      deleteIdentifications({ groupId, identificationId: id }).then((res) => {
+        if (res.success) {
+          updateLectureIdentificationList()
+        }
+      })
+    }
   }
 
   return (
