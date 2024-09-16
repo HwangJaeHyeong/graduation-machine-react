@@ -1,5 +1,5 @@
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons'
-import { Button, Checkbox, Collapse, Input, Typography } from 'antd'
+import { Button, Checkbox, Collapse, Input, Select, Typography } from 'antd'
 import styled from 'styled-components'
 
 export const Root = styled.div`
@@ -38,10 +38,32 @@ export const ContentDeleteButtonIcon = styled(MinusCircleOutlined)`
   font-size: 16px;
 `
 
+export const ContentTitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
 export const ContentTitleTypo = styled(Typography)`
   font-size: 16px;
   font-weight: 500;
 `
+
+export const ContentTitleFilterSelectContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`
+
+export const ContentTitleFilterSelectTypo = styled(Typography)`
+  font-size: 14px;
+  font-weight: 500;
+`
+
+export const ContentTitleFilterSelect = styled(Select)`
+  width: 160px;
+`
+
 export const ContentTypo = styled(Typography)``
 
 export const ContentLectureContainer = styled.div`

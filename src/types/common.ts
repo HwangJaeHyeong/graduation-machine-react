@@ -10,3 +10,13 @@ export type ConditionItemType = {
 }
 
 export type ConditionListType = ConditionItemType[]
+
+export type FilterOptionType =
+  | '강의명 asc'
+  | '학기 asc'
+  | '연도 asc'
+  | '학수번호 asc'
+  | '강의명 dsc'
+  | '학기 dsc'
+  | '연도 dsc'
+  | '학수번호 dsc'

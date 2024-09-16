@@ -3,7 +3,9 @@ import { deleteGroups } from 'apis/conditions/deleteGroups'
 import { getIdentifications } from 'apis/conditions/getIdentifications'
 import { getPreGroups } from 'apis/conditions/getPreGroups'
 import { patchGroups } from 'apis/conditions/patchGroups'
+import { filterOptionList } from 'constants/common'
 import { FC, useEffect, useState } from 'react'
+import { FilterOptionType } from 'types/common'
 import { LectureIdentificationListType } from 'types/lecture'
 import { LectureGroupItemType, PreLectureGroupListType } from '../../type'
 import { LectureIdentificationAddModal } from '../LectureIdentificationAddModal'
@@ -21,6 +23,10 @@ import {
   ContentIsEssentialCheckbox,
   ContentIsEssentialContainer,
   ContentLectureContainer,
+  ContentTitleContainer,
+  ContentTitleFilterSelect,
+  ContentTitleFilterSelectContainer,
+  ContentTitleFilterSelectTypo,
   ContentTitleTypo,
   ContentTypo,
   Root,
@@ -46,6 +52,7 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
   const [name, setName] = useState<string>(defaultName)
   const [isEssential, setIsEssential] = useState<boolean>(defaultIsEssential)
   const [editable, setEditable] = useState<boolean>(false)
+  const [filterOption, setFilterOption] = useState<FilterOptionType>('연도 dsc')
 
   const updatePreGroupList = () => {
     getPreGroups({ id }).then((res) => {
@@ -81,6 +88,31 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
       return !prev
     })
   }
+
+  const filteredLectureIdentificationList = (() => {
+    if (filterOption === '강의명 dsc') {
+      return lectureIdentificationList.sort((a, b) => b.name.localeCompare(a.name))
+    }
+    if (filterOption === '강의명 asc') {
+      return lectureIdentificationList.sort((a, b) => a.name.localeCompare(b.name))
+    }
+    if (filterOption === '학수번호 dsc') {
+      return lectureIdentificationList.sort((a, b) => b.code.localeCompare(a.code))
+    }
+    if (filterOption === '학수번호 asc') {
+      return lectureIdentificationList.sort((a, b) => a.code.localeCompare(b.code))
+    }
+    if (filterOption === '연도 dsc') {
+      return lectureIdentificationList.sort((a: any, b: any) => b.year - a.year)
+    }
+    if (filterOption === '연도 asc') {
+      return lectureIdentificationList.sort((a: any, b: any) => a.year - b.year)
+    }
+    if (filterOption === '학기 dsc') {
+      return lectureIdentificationList.sort((a: any, b: any) => b.season - a.season)
+    }
+    return lectureIdentificationList.sort((a: any, b: any) => a.season - b.season)
+  })()
 
   useEffect(() => {
     updatePreGroupList()
@@ -121,11 +153,23 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
                 ))}
             </ContentLectureContainer>
             <PreLectureGroupAddModal conditionId={conditionId} groupId={id} updatePreGroupList={updatePreGroupList} />
-            <ContentTitleTypo>강의 개설 내역</ContentTitleTypo>
+            <ContentTitleContainer>
+              <ContentTitleTypo>강의 개설 내역</ContentTitleTypo>
+              <ContentTitleFilterSelectContainer>
+                <ContentTitleFilterSelectTypo>정렬 기준 :</ContentTitleFilterSelectTypo>
+                <ContentTitleFilterSelect
+                  options={filterOptionList}
+                  value={filterOption}
+                  onChange={(value: any) => {
+                    setFilterOption(value)
+                  }}
+                />
+              </ContentTitleFilterSelectContainer>
+            </ContentTitleContainer>
             <ContentLectureContainer>
               {!isOpened && <Spin />}
               {isOpened &&
-                lectureIdentificationList.map((lectureIdentificationItem) => (
+                filteredLectureIdentificationList.map((lectureIdentificationItem) => (
                   <LectureIdentificationCard
                     {...lectureIdentificationItem}
                     groupId={id}
