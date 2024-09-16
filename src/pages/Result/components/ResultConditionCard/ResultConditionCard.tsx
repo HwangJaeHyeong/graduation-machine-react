@@ -9,6 +9,7 @@ import {
   ContentContainer,
   ContentTypo,
   Root,
+  RootCardCollapse,
 } from './styled'
 
 type ResultConditionCardProps = {
@@ -48,7 +49,7 @@ export const ResultConditionCard: FC<ResultConditionCardProps> = ({
 
   return (
     <Root className={className}>
-      <CardCollapse>
+      <RootCardCollapse isPassed={isPassed}>
         <CardCollapsePanel header={<CardTitleTypo>{`${name}`}</CardTitleTypo>} key={`lecture_condition_card_${id}`}>
           <ContentContainer>
             {washedLectureGroupList.수강.length > 0 && (
@@ -97,7 +98,7 @@ export const ResultConditionCard: FC<ResultConditionCardProps> = ({
             <ContentTypo>통과 여부 : {isPassed ? 'P' : 'F'}</ContentTypo>
           </ContentContainer>
         </CardCollapsePanel>
-      </CardCollapse>
+      </RootCardCollapse>
     </Root>
   )
 }

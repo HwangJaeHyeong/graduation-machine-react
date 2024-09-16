@@ -5,6 +5,12 @@ export const Root = styled.div`
   width: 100%;
 `
 
+export const RootCardCollapse = styled(Collapse)<{ isPassed: boolean }>`
+  width: 100%;
+  background: ${(props) => (props.isPassed ? `#f8f8f8` : `#f001`)};
+  border: 1px ${(props) => (props.isPassed ? `#d9d9d9` : `#f009`)} solid;
+`
+
 export const CardCollapse = styled(Collapse)`
   width: 100%;
 `
