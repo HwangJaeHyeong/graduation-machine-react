@@ -51,42 +51,48 @@ export const ResultConditionCard: FC<ResultConditionCardProps> = ({
       <CardCollapse>
         <CardCollapsePanel header={<CardTitleTypo>{`${name}`}</CardTitleTypo>} key={`lecture_condition_card_${id}`}>
           <ContentContainer>
-            <CardCollapse>
-              <CardCollapsePanel
-                header={<CardTitleTypo>{`수강 과목`}</CardTitleTypo>}
-                key={`lecture_condition_card_${id}`}
-              >
-                <CardContainer>
-                  {washedLectureGroupList.수강.map((lectureGroupItem) => (
-                    <ResultGroupCard {...lectureGroupItem} key={`lecture_group_item_${lectureGroupItem.id}`} />
-                  ))}
-                </CardContainer>
-              </CardCollapsePanel>
-            </CardCollapse>
-            <CardCollapse>
-              <CardCollapsePanel
-                header={<CardTitleTypo>{`필수 미수강 과목`}</CardTitleTypo>}
-                key={`lecture_condition_card_${id}`}
-              >
-                <CardContainer>
-                  {washedLectureGroupList.필수미수강.map((lectureGroupItem) => (
-                    <ResultGroupCard {...lectureGroupItem} key={`lecture_group_item_${lectureGroupItem.id}`} />
-                  ))}
-                </CardContainer>
-              </CardCollapsePanel>
-            </CardCollapse>
-            <CardCollapse>
-              <CardCollapsePanel
-                header={<CardTitleTypo>{`단순 미수강 과목`}</CardTitleTypo>}
-                key={`lecture_condition_card_${id}`}
-              >
-                <CardContainer>
-                  {washedLectureGroupList.단순미수강.map((lectureGroupItem) => (
-                    <ResultGroupCard {...lectureGroupItem} key={`lecture_group_item_${lectureGroupItem.id}`} />
-                  ))}
-                </CardContainer>
-              </CardCollapsePanel>
-            </CardCollapse>
+            {washedLectureGroupList.수강.length > 0 && (
+              <CardCollapse>
+                <CardCollapsePanel
+                  header={<CardTitleTypo>{`수강 과목`}</CardTitleTypo>}
+                  key={`lecture_condition_card_${id}`}
+                >
+                  <CardContainer>
+                    {washedLectureGroupList.수강.map((lectureGroupItem) => (
+                      <ResultGroupCard {...lectureGroupItem} key={`lecture_group_item_${lectureGroupItem.id}`} />
+                    ))}
+                  </CardContainer>
+                </CardCollapsePanel>
+              </CardCollapse>
+            )}
+            {washedLectureGroupList.필수미수강.length > 0 && (
+              <CardCollapse>
+                <CardCollapsePanel
+                  header={<CardTitleTypo>{`필수 미수강 과목`}</CardTitleTypo>}
+                  key={`lecture_condition_card_${id}`}
+                >
+                  <CardContainer>
+                    {washedLectureGroupList.필수미수강.map((lectureGroupItem) => (
+                      <ResultGroupCard {...lectureGroupItem} key={`lecture_group_item_${lectureGroupItem.id}`} />
+                    ))}
+                  </CardContainer>
+                </CardCollapsePanel>
+              </CardCollapse>
+            )}
+            {washedLectureGroupList.단순미수강.length > 0 && (
+              <CardCollapse>
+                <CardCollapsePanel
+                  header={<CardTitleTypo>{`단순 미수강 과목`}</CardTitleTypo>}
+                  key={`lecture_condition_card_${id}`}
+                >
+                  <CardContainer>
+                    {washedLectureGroupList.단순미수강.map((lectureGroupItem) => (
+                      <ResultGroupCard {...lectureGroupItem} key={`lecture_group_item_${lectureGroupItem.id}`} />
+                    ))}
+                  </CardContainer>
+                </CardCollapsePanel>
+              </CardCollapse>
+            )}
             <ContentTypo>이수 학점/최소 학점 : {`${passedCredit}/${minimumCredit}`}</ContentTypo>
             <ContentTypo>통과 여부 : {isPassed ? 'P' : 'F'}</ContentTypo>
           </ContentContainer>
