@@ -20,6 +20,8 @@ export type ResultPreLectureGroupListType = ResultPreLectureGroupItemType[]
 
 export type ResultLectureGroupItemType = {
   id: number
+  year: number
+  season: '1' | '2' | 'winter' | 'summer'
   isEssential: boolean
   isPassed: boolean
   lectureIdentificationItem: ResultLectureIdentificationItemType
