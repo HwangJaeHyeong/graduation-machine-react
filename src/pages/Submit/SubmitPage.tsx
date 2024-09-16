@@ -1,12 +1,7 @@
 import { postGraduationCheck } from 'apis/graduation/postGraduationCheck'
 import { Header } from 'components/Header'
-import { GRADUATION_DECISION_TABLE_COLUMN_TITLE } from 'pages/Legacy/Lecture/Excel/constant'
 import { FC, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Spreadsheet from 'react-spreadsheet'
-import { ExcelLectureListType } from 'types/lecture'
-import { washSeason } from 'utils/washData'
-import * as XLSX from 'xlsx/xlsx.mjs'
 import {
   Container,
   ContentContainer,
@@ -20,7 +15,6 @@ import {
   ContentTitleContainer,
   ContentTitleTypo,
   Root,
-  SpreadsheetWrapper,
   SubmitButton,
   TitleTypo,
 } from './styled'
@@ -49,7 +43,7 @@ export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
   const [classification, setClassification] = useState<ClassificationType>('심화')
   const [entranceYear, setEntranceYear] = useState<EntranceYear>(2020)
   const [excelFile, setExcelFile] = useState<any>()
-  const [excelLectureList, setExcelLectureList] = useState<ExcelLectureListType>([])
+  const [excelFilePassword, setExcelFilePassword] = useState<string>()
   const [loading, setLoading] = useState<'LOADING' | 'NONE'>('NONE')
 
   const handleFile = (e: any) => {
@@ -60,51 +54,35 @@ export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
     }
     const file = files[0]
     setExcelFile(file)
-
-    const reader = new FileReader()
-    const rABS = !!reader.readAsBinaryString
-    reader.onload = (e: any) => {
-      const bstr = e.target.result
-      const wb = XLSX.read(bstr, { type: rABS ? 'binary' : 'array' })
-      const wsname = wb.SheetNames[0]
-      const ws = wb.Sheets[wsname]
-      const data = XLSX.utils.sheet_to_json(ws, { header: 1 }) as any[]
-      e.target.value = null
-      const washedData = data
-        .filter((_, index) => index !== 0)
-        .map((value) => ({
-          year: value[1],
-          season: washSeason(value[2]),
-          code: value[5],
-          name: `${value[7]}(${value[19]})`,
-          grade: value[10] !== 'F' ? 'NF' : 'F',
-          credit: value[9],
-        }))
-      setExcelLectureList(washedData)
-    }
-    if (rABS) reader.readAsBinaryString(file)
-    else reader.readAsArrayBuffer(file)
     setLoading('NONE')
   }
 
-  const washedExcelData =
-    excelLectureList &&
-    excelLectureList.map((item: any) => [
-      { value: item.year, readOnly: true },
-      { value: item.season, readOnly: true },
-      { value: item.code, readOnly: true },
-      { value: item.name, readOnly: true },
-      { value: item.grade, readOnly: true },
-    ])
-
   const onClickSubmitButton = () => {
     // navigate('/result', { state: { classification, entranceYear, excelLectureList } })
+
+    if (!excelFile) {
+      alert('성적표 엑셀 파일을 입력해주세요.')
+      return
+    }
+
+    if (!excelFilePassword) {
+      alert('성적표 엑셀 파일 비밀번호를 입력해주세요.')
+      return
+    }
+
+    let formData = new FormData()
+    formData.append('file', excelFile)
+    formData.append('password', excelFilePassword)
     if (excelFile) {
       setLoading('LOADING')
-      postGraduationCheck({ year: entranceYear, tech: classification }, { file: excelFile }).then((data) => {
-        setLoading('NONE')
-        navigate('/result', { state: { graduationCheckData: data } })
-      })
+      postGraduationCheck({ year: entranceYear, tech: classification }, formData)
+        .then((data) => {
+          setLoading('NONE')
+          navigate('/result', { state: { graduationCheckData: data } })
+        })
+        .catch((res) => {
+          alert('엑셀 파일의 비밀번호를 확인해주세요.')
+        })
     }
   }
 
@@ -147,17 +125,19 @@ export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
                 onChange={handleFile}
               />
             </ContentQuestionItemContainer>
+            <ContentQuestionItemContainer>
+              <ContentQuestionItemTitleTypo>excel 파일 비밀번호</ContentQuestionItemTitleTypo>
+              <ContentInput
+                disabled={loading === 'LOADING'}
+                type={'password'}
+                value={excelFilePassword}
+                onChange={(e: any) => setExcelFilePassword(e.target.value)}
+              />
+            </ContentQuestionItemContainer>
           </ContentQuestionContainer>
-          {washedExcelData.length !== 0 && (
-            <>
-              <SpreadsheetWrapper>
-                <Spreadsheet data={washedExcelData} columnLabels={GRADUATION_DECISION_TABLE_COLUMN_TITLE} />
-              </SpreadsheetWrapper>
-              <SubmitButton type={'primary'} onClick={onClickSubmitButton} disabled={loading === 'LOADING'}>
-                검사하기
-              </SubmitButton>
-            </>
-          )}
+          <SubmitButton type={'primary'} onClick={onClickSubmitButton} disabled={loading === 'LOADING'}>
+            검사하기
+          </SubmitButton>
         </ContentContainer>
       </Container>
     </Root>
