@@ -1,0 +1,1 @@
+export { ExceptionEducationCard } from './ExceptionEducationCard'

@@ -2,6 +2,7 @@ import { Header } from 'components/Header'
 import { FC } from 'react'
 import { useLocation } from 'react-router-dom'
 import { LectureIdentificationListType } from 'types/lecture'
+import { ExceptionEducationCard } from './components/ExceptionEducationCard'
 import { GeneralEducationCard } from './components/GeneralEducationCard'
 import { ResultConditionCard } from './components/ResultConditionCard'
 import { Container, InfoContainer, InfoTitleTypo, InfoTypo, Root, TitleTypo } from './styled'
@@ -24,6 +25,7 @@ export const ResultPage: FC<ResultPageProps> = ({ className }) => {
   const totalCredit = graduationCheckData.data.total_credit as { ratio: string; value: boolean }
   const grade = graduationCheckData.data.grade as { gpa: string; isPassed: boolean }
   const generalEducationList = graduationCheckData.data.generalEducation as LectureIdentificationListType
+  const exceptionEducationList = graduationCheckData.data.unfilteredLectures as LectureIdentificationListType
 
   return (
     <Root className={className}>
@@ -48,6 +50,9 @@ export const ResultPage: FC<ResultPageProps> = ({ className }) => {
             <ResultConditionCard {...lectureConditionItem} key={`result_condition_card_${lectureConditionItem.id}`} />
           ))}
           {generalEducationList.length > 0 && <GeneralEducationCard lectureIdentificationList={generalEducationList} />}
+          {exceptionEducationList.length > 0 && (
+            <ExceptionEducationCard lectureIdentificationList={exceptionEducationList} />
+          )}
         </InfoContainer>
       </Container>
     </Root>
