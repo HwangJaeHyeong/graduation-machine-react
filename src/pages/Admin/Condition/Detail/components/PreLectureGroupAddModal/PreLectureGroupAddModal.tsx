@@ -1,6 +1,7 @@
 import { message } from 'antd'
 import { getCandidatePreGroups } from 'apis/conditions/getCandidatePreGroups'
 import { postPreGroups } from 'apis/conditions/postPreGroups'
+import { preLectureYearOptionList } from 'constants/preLecture'
 import { FC, useEffect, useState } from 'react'
 import { LectureGroupListType } from '../../type'
 import { ContentAddButtonIcon, ContentButton, ContentContainer, ContentModal, ContentSelect, Root } from './styled'
@@ -21,6 +22,7 @@ export const PreLectureGroupAddModal: FC<PreLectureGroupAddModalProps> = ({
   const [opened, setOpened] = useState<boolean>(false)
   const [lectureGroupList, setLectureGroupList] = useState<LectureGroupListType>([])
   const [preLectureGroupId, setPreLectureGroupId] = useState<number | undefined>()
+  const [preLectureYear, setPreLectureYear] = useState<string>()
 
   const onClickButton = () => {
     setOpened(true)
@@ -31,16 +33,24 @@ export const PreLectureGroupAddModal: FC<PreLectureGroupAddModalProps> = ({
     setPreLectureGroupId(undefined)
   }
 
-  const onChangeSelect = (value: any) => {
+  const onChangeSelectPreLectureGroupId = (value: any) => {
     setPreLectureGroupId(value)
   }
 
+  const onChangeSelectPreLectureYear = (value: any) => {
+    setPreLectureYear(value)
+  }
+
   const onClickSubmitButton = () => {
-    if (preLectureGroupId === undefined) {
-      message.info('선이수 그룹을 선택해주세요.')
+    if (preLectureYear === undefined) {
+      message.error('연도를 선택해주세요.')
       return
     }
-    postPreGroups({ groupId, preGroupId: preLectureGroupId }).then((res) => {
+    if (preLectureGroupId === undefined) {
+      message.error('선이수 그룹을 선택해주세요.')
+      return
+    }
+    postPreGroups({ groupId, preGroupId: preLectureGroupId, year: preLectureYear }).then((res) => {
       if (res.success) {
         message.info('선이수 그룹 추가에 성공했습니다.')
         updatePreGroupList()
@@ -75,8 +85,14 @@ export const PreLectureGroupAddModal: FC<PreLectureGroupAddModalProps> = ({
       <ContentModal open={opened} onCancel={onCancel} footer={null} title={'선이수 강의 추가'}>
         <ContentContainer>
           <ContentSelect
+            placeholder={'적용할 연도를 선택해주세요.'}
+            onChange={onChangeSelectPreLectureYear}
+            value={preLectureYear}
+            options={preLectureYearOptionList}
+          />
+          <ContentSelect
             placeholder={'선이수 강의를 추가해주세요.'}
-            onChange={onChangeSelect}
+            onChange={onChangeSelectPreLectureGroupId}
             value={preLectureGroupId}
             options={washedLectureGroupOptionList}
           />
