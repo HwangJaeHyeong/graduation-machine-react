@@ -20,3 +20,5 @@ export type FilterOptionType =
   | '학기 dsc'
   | '연도 dsc'
   | '학수번호 dsc'
+
+export type PreLectureGroupFilterOptionType = '연도 asc' | '연도 dsc' | '이름 asc' | '이름 dsc'

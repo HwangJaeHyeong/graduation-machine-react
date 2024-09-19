@@ -8,6 +8,7 @@ type Props = {
 type Type = {
   id: number
   name: string
+  year: string
 }[]
 
 export const getPreGroups = async ({ id }: Props) => {

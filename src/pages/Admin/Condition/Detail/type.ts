@@ -30,6 +30,7 @@ export type LectureIdentificationListType = LectureIdentificationItemType[]
 export type PreLectureGroupItemType = {
   id: number
   name: string
+  year: string
 }
 
 export type PreLectureGroupListType = PreLectureGroupItemType[]

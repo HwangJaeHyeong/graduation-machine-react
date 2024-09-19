@@ -3,9 +3,9 @@ import { deleteGroups } from 'apis/conditions/deleteGroups'
 import { getIdentifications } from 'apis/conditions/getIdentifications'
 import { getPreGroups } from 'apis/conditions/getPreGroups'
 import { patchGroups } from 'apis/conditions/patchGroups'
-import { filterOptionList } from 'constants/common'
+import { filterOptionList, preLectureGroupFilterOptionList } from 'constants/common'
 import { FC, useEffect, useState } from 'react'
-import { FilterOptionType } from 'types/common'
+import { FilterOptionType, PreLectureGroupFilterOptionType } from 'types/common'
 import { LectureIdentificationListType } from 'types/lecture'
 import { LectureGroupItemType, PreLectureGroupListType } from '../../type'
 import { LectureIdentificationAddModal } from '../LectureIdentificationAddModal'
@@ -46,17 +46,19 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
   conditionId,
   updateLectureGroupList,
 }) => {
-  const [preGroupList, setPreGroupList] = useState<PreLectureGroupListType>([])
+  const [preLectureGroupList, setPreLectureGroupList] = useState<PreLectureGroupListType>([])
   const [lectureIdentificationList, setLectureIdentificationList] = useState<LectureIdentificationListType>([])
   const [isOpened, setIsOpened] = useState<boolean>(false)
   const [name, setName] = useState<string>(defaultName)
   const [isEssential, setIsEssential] = useState<boolean>(defaultIsEssential)
   const [editable, setEditable] = useState<boolean>(false)
+  const [preLectureGroupFilterOption, setPreLectureGroupFilterOption] =
+    useState<PreLectureGroupFilterOptionType>('연도 dsc')
   const [filterOption, setFilterOption] = useState<FilterOptionType>('연도 dsc')
 
-  const updatePreGroupList = () => {
+  const updatePreLectureGroupList = () => {
     getPreGroups({ id }).then((res) => {
-      setPreGroupList(res.data)
+      setPreLectureGroupList(res.data.map((value) => ({ ...value, year: `${value.year}` })))
     })
   }
 
@@ -114,8 +116,21 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
     return lectureIdentificationList.sort((a: any, b: any) => a.season - b.season)
   })()
 
+  const filteredPreLectureGroupList = (() => {
+    if (preLectureGroupFilterOption === '연도 dsc') {
+      return preLectureGroupList.sort((a, b) => b.year.localeCompare(a.year))
+    }
+    if (preLectureGroupFilterOption === '연도 asc') {
+      return preLectureGroupList.sort((a, b) => a.year.localeCompare(b.year))
+    }
+    if (preLectureGroupFilterOption === '이름 dsc') {
+      return preLectureGroupList.sort((a, b) => b.name.localeCompare(a.name))
+    }
+    return preLectureGroupList.sort((a, b) => a.name.localeCompare(b.name))
+  })()
+
   useEffect(() => {
-    updatePreGroupList()
+    updatePreLectureGroupList()
     updateLectureIdentificationList()
   }, [])
 
@@ -140,19 +155,35 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
             <ContentButton type={'primary'} onClick={onClickEditButton}>
               {editable ? '수정 완료' : '그룹 수정'}
             </ContentButton>
-            <ContentTitleTypo>선이수 강의</ContentTitleTypo>
+            <ContentTitleContainer>
+              <ContentTitleTypo>선이수 강의</ContentTitleTypo>
+              <ContentTitleFilterSelectContainer>
+                <ContentTitleFilterSelectTypo>정렬 기준 :</ContentTitleFilterSelectTypo>
+                <ContentTitleFilterSelect
+                  options={preLectureGroupFilterOptionList}
+                  value={preLectureGroupFilterOption}
+                  onChange={(value: any) => {
+                    setPreLectureGroupFilterOption(value)
+                  }}
+                />
+              </ContentTitleFilterSelectContainer>
+            </ContentTitleContainer>
             <ContentLectureContainer>
               {isOpened &&
-                preGroupList.map((preGroupItem) => (
+                filteredPreLectureGroupList.map((preLectureGroupItem) => (
                   <PreLectureGroupCard
-                    {...preGroupItem}
+                    {...preLectureGroupItem}
                     groupId={id}
-                    updatePreGroupList={updatePreGroupList}
-                    key={`pre_group_item_${preGroupItem.id}`}
+                    updatePreGroupList={updatePreLectureGroupList}
+                    key={`pre_group_item_${preLectureGroupItem.id}`}
                   />
                 ))}
             </ContentLectureContainer>
-            <PreLectureGroupAddModal conditionId={conditionId} groupId={id} updatePreGroupList={updatePreGroupList} />
+            <PreLectureGroupAddModal
+              conditionId={conditionId}
+              groupId={id}
+              updatePreGroupList={updatePreLectureGroupList}
+            />
             <ContentTitleContainer>
               <ContentTitleTypo>강의 개설 내역</ContentTitleTypo>
               <ContentTitleFilterSelectContainer>

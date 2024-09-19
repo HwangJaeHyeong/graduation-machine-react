@@ -34,3 +34,22 @@ export const filterOptionList = [
     label: '연도 dsc',
   },
 ]
+
+export const preLectureGroupFilterOptionList = [
+  {
+    value: '이름 dsc',
+    label: '이름 dsc',
+  },
+  {
+    value: '이름 asc',
+    label: '이름 asc',
+  },
+  {
+    value: '연도 dsc',
+    label: '연도 dsc',
+  },
+  {
+    value: '연도 asc',
+    label: '연도 asc',
+  },
+]
