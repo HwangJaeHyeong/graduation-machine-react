@@ -9,6 +9,9 @@ type Type = {
   id: number
   name: string
   isEssential: boolean
+  isMultiLecture: boolean
+  maximumNumber: number | null
+  minimumNumber: number | null
 }[]
 
 export const getGroups = async ({ id }: Props) => {

@@ -10,6 +10,9 @@ export type LectureGroupItemType = {
   id: number
   name: string
   isEssential: boolean
+  isMultiLecture: boolean
+  maximumNumber: number | null
+  minimumNumber: number | null
 }
 
 export type LectureGroupListType = LectureGroupItemType[]

@@ -84,3 +84,11 @@ export const ContentIsEssentialContainer = styled.div`
 `
 
 export const ContentIsEssentialCheckbox = styled(Checkbox)``
+
+export const ContentInputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+`

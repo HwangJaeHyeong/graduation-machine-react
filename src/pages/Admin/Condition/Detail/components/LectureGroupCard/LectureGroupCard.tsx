@@ -1,4 +1,4 @@
-import { Spin } from 'antd'
+import { message, Spin } from 'antd'
 import { deleteGroups } from 'apis/conditions/deleteGroups'
 import { getIdentifications } from 'apis/conditions/getIdentifications'
 import { getPreGroups } from 'apis/conditions/getPreGroups'
@@ -20,6 +20,7 @@ import {
   ContentContainer,
   ContentDeleteButtonIcon,
   ContentInput,
+  ContentInputContainer,
   ContentIsEssentialCheckbox,
   ContentIsEssentialContainer,
   ContentLectureContainer,
@@ -38,6 +39,12 @@ type LectureGroupCardProps = {
   conditionId: number
 } & LectureGroupItemType
 
+type MultiGroupType = {
+  isEnabled: boolean
+  minimum: number
+  maximum: number
+}
+
 export const LectureGroupCard: FC<LectureGroupCardProps> = ({
   className,
   id,
@@ -45,6 +52,9 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
   isEssential: defaultIsEssential,
   conditionId,
   updateLectureGroupList,
+  isMultiLecture,
+  maximumNumber,
+  minimumNumber,
 }) => {
   const [preLectureGroupList, setPreLectureGroupList] = useState<PreLectureGroupListType>([])
   const [lectureIdentificationList, setLectureIdentificationList] = useState<LectureIdentificationListType>([])
@@ -55,6 +65,11 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
   const [preLectureGroupFilterOption, setPreLectureGroupFilterOption] =
     useState<PreLectureGroupFilterOptionType>('연도 dsc')
   const [filterOption, setFilterOption] = useState<FilterOptionType>('연도 dsc')
+  const [multiGroupState, setMultiGroupState] = useState<MultiGroupType>({
+    isEnabled: isMultiLecture,
+    maximum: maximumNumber ?? 1,
+    minimum: minimumNumber ?? 1,
+  })
 
   const updatePreLectureGroupList = () => {
     getPreGroups({ id }).then((res) => {
@@ -79,9 +94,22 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
   }
 
   const onClickEditButton = () => {
+    if (multiGroupState.minimum > multiGroupState.maximum) {
+      message.error('최소 이수 강의 수가 최대 이수 강의 수보다 많습니다.')
+      return
+    }
+
     setEditable((prev) => {
       if (prev) {
-        patchGroups({ conditionId: conditionId, groupId: id, name, isEssential }).then((res) => {
+        patchGroups({
+          conditionId: conditionId,
+          groupId: id,
+          name,
+          isEssential,
+          isMultiLecture: multiGroupState.isEnabled,
+          maximumNumber: multiGroupState.maximum,
+          minimumNumber: multiGroupState.minimum,
+        }).then((res) => {
           if (res.success) {
             updateLectureGroupList()
           }
@@ -148,10 +176,54 @@ export const LectureGroupCard: FC<LectureGroupCardProps> = ({
               onChange={(e: any) => setName(e.target.value)}
               disabled={!editable}
             />
-            <ContentIsEssentialContainer onClick={() => setIsEssential((prev) => !prev)}>
+            <ContentIsEssentialContainer
+              onClick={() => {
+                if (editable) {
+                  setIsEssential((prev) => !prev)
+                }
+              }}
+            >
               <ContentIsEssentialCheckbox checked={isEssential} disabled={!editable} />
               <ContentTypo>필수 여부</ContentTypo>
             </ContentIsEssentialContainer>
+            <ContentIsEssentialContainer
+              onClick={() => {
+                if (editable) {
+                  setMultiGroupState((prev) => ({ ...prev, isEnabled: !prev.isEnabled }))
+                }
+              }}
+            >
+              <ContentIsEssentialCheckbox checked={multiGroupState.isEnabled} disabled={!editable} />
+              <ContentTypo>다중 강의 그룹 여부</ContentTypo>
+            </ContentIsEssentialContainer>
+            {multiGroupState.isEnabled && (
+              <ContentInputContainer>
+                <ContentInput
+                  addonBefore={'최소 이수 강의 수'}
+                  addonAfter={'개'}
+                  style={{ textAlign: 'end' }}
+                  value={multiGroupState.minimum}
+                  onChange={(e: any) => {
+                    if (/^[0-9]*$/.test(e.target.value)) {
+                      setMultiGroupState((prev) => ({ ...prev, minimum: e.target.value }))
+                    }
+                  }}
+                  disabled={!editable}
+                />
+                <ContentInput
+                  addonBefore={'최대 이수 강의 수'}
+                  addonAfter={'개'}
+                  style={{ textAlign: 'end' }}
+                  value={multiGroupState.maximum}
+                  onChange={(e: any) => {
+                    if (/^[0-9]*$/.test(e.target.value)) {
+                      setMultiGroupState((prev) => ({ ...prev, maximum: e.target.value }))
+                    }
+                  }}
+                  disabled={!editable}
+                />
+              </ContentInputContainer>
+            )}
             <ContentButton type={'primary'} onClick={onClickEditButton}>
               {editable ? '수정 완료' : '그룹 수정'}
             </ContentButton>
