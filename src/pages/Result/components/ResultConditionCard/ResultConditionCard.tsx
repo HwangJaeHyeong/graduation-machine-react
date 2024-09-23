@@ -36,7 +36,11 @@ export const ResultConditionCard: FC<ResultConditionCardProps> = ({
       수강: [],
     }
     lectureGroupList.forEach((lectureGroupItem) => {
-      if (lectureGroupItem.lectureIdentificationItem?.id) {
+      if (
+        lectureGroupItem.lectureIdentificationItem?.id ||
+        (lectureGroupItem.isMultiGroup &&
+          lectureGroupItem.multiLectureIdentificationItem.length >= lectureGroupItem.minimumNumber)
+      ) {
         newLectureGroupList.수강.push(lectureGroupItem)
       } else if (lectureGroupItem.isEssential) {
         newLectureGroupList.필수미수강.push(lectureGroupItem)

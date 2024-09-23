@@ -25,6 +25,10 @@ export type ResultLectureGroupItemType = {
   isEssential: boolean
   isPassed: boolean
   lectureIdentificationItem: ResultLectureIdentificationItemType
+  multiLectureIdentificationItem: ResultLectureIdentificationListType
+  isMultiGroup: boolean
+  maximumNumber: number
+  minimumNumber: number
   name: string
   preLectureGroupList: ResultPreLectureGroupListType
 }

@@ -13,6 +13,7 @@ export const ResultGroupCard: FC<ResultGroupCardProps> = ({
   isPassed,
   isEssential,
   lectureIdentificationItem,
+  multiLectureIdentificationItem,
 }) => {
   return (
     <Root className={className}>
@@ -29,6 +30,17 @@ export const ResultGroupCard: FC<ResultGroupCardProps> = ({
                 <ContentTypo>수강 학점 : {lectureIdentificationItem.credit}학점</ContentTypo>
               </>
             )}
+            {multiLectureIdentificationItem.length > 0 &&
+              multiLectureIdentificationItem.map((item, index) => (
+                <div key={`multi_lecture_identification_${index}`}>
+                  <ContentTypo>강의 명 : {item.name}</ContentTypo>
+                  <ContentTypo>
+                    이수 학기 : {item.year}-{item.season}
+                  </ContentTypo>
+                  <ContentTypo>학수 번호 : {item.code}</ContentTypo>
+                  <ContentTypo>수강 학점 : {item.credit}학점</ContentTypo>
+                </div>
+              ))}
             <ContentTypo>필수 여부 : {isEssential ? '필수' : '필수 아님'}</ContentTypo>
           </ContentContainer>
         </CardCollapsePanel>
