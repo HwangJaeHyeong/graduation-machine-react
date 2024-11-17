@@ -1,4 +1,4 @@
-import { Button, Typography } from 'antd'
+import { Button, Input, Select, Typography } from 'antd'
 import styled from 'styled-components'
 
 export const Root = styled.div`
@@ -32,8 +32,26 @@ export const ContentContainer = styled.div`
   margin-top: 40px;
 `
 
+export const ContentAddContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`
+
+export const ContentAddTypo = styled(Typography)`
+  width: 200px;
+  font-size: 24px;
+  font-weight: bold;
+`
+
 export const ContentButton = styled(Button)`
   &&& {
     font-size: 20px;
   }
+`
+
+export const ContentInput = styled(Input)``
+
+export const ContentSelect = styled(Select)`
+  width: 100%;
 `
