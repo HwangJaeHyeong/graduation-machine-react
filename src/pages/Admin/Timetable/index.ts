@@ -1,0 +1,1 @@
+export { AdminTimetablePage } from './AdminTimetablePage'

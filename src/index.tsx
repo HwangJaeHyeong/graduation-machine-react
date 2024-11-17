@@ -5,6 +5,7 @@ import { AdminCommonLectureGroupPage } from 'pages/Admin/CommonLectureGroup'
 import { AdminConditionPage } from 'pages/Admin/Condition'
 import { AdminConditionDetailPage } from 'pages/Admin/Condition/Detail'
 import { AdminMainPage } from 'pages/Admin/Main'
+import { AdminTimetablePage } from 'pages/Admin/Timetable'
 import { ConditionEditPage as LegacyConditionEditPage } from 'pages/Legacy/Condition/Edit'
 import { GraduationDecisionPage as LegacyGraduationDecisionPage } from 'pages/Legacy/Graduation/Decision'
 import { LectureExcelPage as LegacyLectureExcelPage } from 'pages/Legacy/Lecture/Excel'
@@ -51,6 +52,7 @@ root.render(
 
           <Route path="/admin/" element={<AdminMainPage />} />
           <Route path="/admin/condition" element={<AdminConditionPage />} />
+          <Route path="/admin/timetable" element={<AdminTimetablePage />} />
           <Route path="/admin/common-lecture-group" element={<AdminCommonLectureGroupPage />} />
           <Route path="/admin/condition/detail/:id/:year/:tech" element={<AdminConditionDetailPage />} />
         </Routes>
