@@ -40,10 +40,7 @@ export const AdminTestPage: FC<AdminTestPageProps> = ({ className }) => {
   const handleFile = (e: any) => {
     setLoading('LOADING')
     const files = e.target.files
-    if (!(files || files[0])) {
-      return
-    }
-    const file = files[0]
+    const file = files
     setExcelFile(file)
     setLoading('NONE')
   }
@@ -66,14 +63,19 @@ export const AdminTestPage: FC<AdminTestPageProps> = ({ className }) => {
     }
 
     let formData = new FormData()
-    formData.append('file', excelFile)
+    if (excelFile) {
+      console.log(excelFile)
+      Array.from(excelFile).forEach((value: any) => {
+        formData.append('file', value)
+      })
+    }
     formData.append('password', excelFilePassword)
     if (excelFile) {
       setLoading('LOADING')
       postGraduationCheck({ year: condition?.year, tech: condition?.tech }, formData)
         .then((data) => {
           setLoading('NONE')
-          navigate('/result', { state: { graduationCheckData: data.data[0] } })
+          navigate('/admin/test/result', { state: { graduationCheckData: data.data } })
         })
         .catch((res) => {
           alert('엑셀 파일의 비밀번호를 확인해주세요.')
@@ -96,7 +98,7 @@ export const AdminTestPage: FC<AdminTestPageProps> = ({ className }) => {
 
   return (
     <Root className={className}>
-      <Header />
+      <Header type="ADMIN" />
       <Container>
         <TitleTypo>졸업 판정 검사를 위해 기본적인 정보를 입력해주세요.</TitleTypo>
         <ContentContainer>
@@ -126,6 +128,7 @@ export const AdminTestPage: FC<AdminTestPageProps> = ({ className }) => {
                 id="file"
                 accept={'xlsx'}
                 onChange={handleFile}
+                multiple={true}
               />
             </ContentQuestionItemContainer>
             <ContentQuestionItemContainer>

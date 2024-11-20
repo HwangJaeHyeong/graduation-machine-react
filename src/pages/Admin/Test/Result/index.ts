@@ -1,0 +1,1 @@
+export { AdminTestResultPage } from './AdminTestResultPage'

@@ -12,7 +12,7 @@ export const Header: FC<HeaderProps> = ({ className, type = 'USER' }) => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
-  const onClickMenu = (type: 'CONDITION' | 'TIMETABLE' | 'COMMON_LECTURE_GROUP') => () => {
+  const onClickMenu = (type: 'CONDITION' | 'TIMETABLE' | 'COMMON_LECTURE_GROUP' | 'TEST') => () => {
     if (type === 'CONDITION') {
       navigate('/admin/condition')
       return
@@ -23,6 +23,10 @@ export const Header: FC<HeaderProps> = ({ className, type = 'USER' }) => {
     }
     if (type === 'COMMON_LECTURE_GROUP') {
       navigate('/admin/common-lecture-group')
+      return
+    }
+    if (type === 'TEST') {
+      navigate('/admin/test')
       return
     }
   }
@@ -43,6 +47,9 @@ export const Header: FC<HeaderProps> = ({ className, type = 'USER' }) => {
             onClick={onClickMenu('COMMON_LECTURE_GROUP')}
           >
             공통 강의 그룹 수정
+          </MenuTypo>
+          <MenuTypo isPointed={pathname.indexOf('test') !== -1} onClick={onClickMenu('TEST')}>
+            판정기 테스트
           </MenuTypo>
         </MenuContainer>
       )}
