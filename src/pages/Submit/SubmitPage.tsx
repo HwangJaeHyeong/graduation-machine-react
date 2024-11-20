@@ -78,7 +78,7 @@ export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
       postGraduationCheck({ year: entranceYear, tech: classification }, formData)
         .then((data) => {
           setLoading('NONE')
-          navigate('/result', { state: { graduationCheckData: data } })
+          navigate('/result', { state: { graduationCheckData: data.data[0] } })
         })
         .catch((res) => {
           alert('엑셀 파일의 비밀번호를 확인해주세요.')

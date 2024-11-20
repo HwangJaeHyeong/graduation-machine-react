@@ -21,11 +21,11 @@ export const ResultPage: FC<ResultPageProps> = ({ className }) => {
     return <div>잘못된 접근입니다.</div>
   }
 
-  const lectureConditionList = graduationCheckData.data.lectureConditionList as ResultLectureConditionListType
-  const totalCredit = graduationCheckData.data.total_credit as { ratio: string; value: boolean }
-  const grade = graduationCheckData.data.grade as { gpa: string; isPassed: boolean }
-  const generalEducationList = graduationCheckData.data.generalEducation as LectureIdentificationListType
-  const exceptionEducationList = graduationCheckData.data.unfilteredLectures as LectureIdentificationListType
+  const lectureConditionList = graduationCheckData.lectureConditionList as ResultLectureConditionListType
+  const totalCredit = graduationCheckData.total_credit as { ratio: string; value: boolean }
+  const grade = graduationCheckData.grade as { gpa: string; isPassed: boolean }
+  const generalEducationList = graduationCheckData.generalEducation as LectureIdentificationListType
+  const exceptionEducationList = graduationCheckData.unfilteredLectures as LectureIdentificationListType
 
   return (
     <Root className={className}>
