@@ -1,6 +1,7 @@
+import { getGraduations } from 'apis/conditions/getGraduations'
 import { postGraduationCheck } from 'apis/graduation/postGraduationCheck'
 import { Header } from 'components/Header'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Container,
@@ -37,11 +38,14 @@ const 학번_OPTIONS = [
 
 type ClassificationType = '일반' | '심화'
 type EntranceYear = 2020 | 2021 | 2022 | 2023 | 2024
+type ConditionOptionType = { year: number; tech: ClassificationType }
 
 export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
   const navigate = useNavigate()
-  const [classification, setClassification] = useState<ClassificationType>('심화')
-  const [entranceYear, setEntranceYear] = useState<EntranceYear>(2020)
+  const [conditionOptions, setConditionOptions] = useState<ConditionOptionType[]>([])
+  const [condition, setCondition] = useState<ConditionOptionType>()
+  const [conditionOptionValue, setConditionOptionValue] = useState<string>()
+
   const [excelFile, setExcelFile] = useState<any>()
   const [excelFilePassword, setExcelFilePassword] = useState<string>()
   const [loading, setLoading] = useState<'LOADING' | 'NONE'>('NONE')
@@ -69,13 +73,17 @@ export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
       alert('성적표 엑셀 파일 비밀번호를 입력해주세요.')
       return
     }
+    if (!condition) {
+      alert('입학 연도/구분을 선택해주세요.')
+      return
+    }
 
     let formData = new FormData()
     formData.append('file', excelFile)
     formData.append('password', excelFilePassword)
     if (excelFile) {
       setLoading('LOADING')
-      postGraduationCheck({ year: entranceYear, tech: classification }, formData)
+      postGraduationCheck({ year: condition?.year, tech: condition?.tech }, formData)
         .then((data) => {
           setLoading('NONE')
           navigate('/result', { state: { graduationCheckData: data.data[0] } })
@@ -85,6 +93,19 @@ export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
         })
     }
   }
+
+  const 졸업_요건_OPTIONS = (() => {
+    return conditionOptions.map((conditionOption) => ({
+      value: JSON.stringify(conditionOption),
+      label: `${conditionOption.year}학번 ${conditionOption.tech}과정`,
+    }))
+  })()
+
+  useEffect(() => {
+    getGraduations().then((res) => {
+      setConditionOptions(res.data)
+    })
+  }, [])
 
   return (
     <Root className={className}>
@@ -99,19 +120,14 @@ export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
           </ContentTitleContainer>
           <ContentQuestionContainer>
             <ContentQuestionItemContainer>
-              <ContentQuestionItemTitleTypo>전공 구분</ContentQuestionItemTitleTypo>
+              <ContentQuestionItemTitleTypo>입학 연도/전공 구분</ContentQuestionItemTitleTypo>
               <ContentQuestionItemSelect
-                options={전공_구분_OPTIONS}
-                value={classification}
-                onChange={(value: any) => setClassification(value)}
-              />
-            </ContentQuestionItemContainer>
-            <ContentQuestionItemContainer>
-              <ContentQuestionItemTitleTypo>입학 연도</ContentQuestionItemTitleTypo>
-              <ContentQuestionItemSelect
-                options={학번_OPTIONS}
-                value={entranceYear}
-                onChange={(value: any) => setEntranceYear(value)}
+                options={졸업_요건_OPTIONS}
+                value={conditionOptionValue}
+                onChange={(value: any) => {
+                  setConditionOptionValue(value)
+                  setCondition(JSON.parse(value) as ConditionOptionType)
+                }}
               />
             </ContentQuestionItemContainer>
             <ContentQuestionItemContainer>
