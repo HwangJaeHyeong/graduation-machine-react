@@ -20,14 +20,14 @@ import {
   TitleTypo,
 } from './styled'
 
-type SubmitPageProps = {
+type AdminTestPageProps = {
   className?: string
 }
 
 type ClassificationType = '일반' | '심화'
 type ConditionOptionType = { year: number; tech: ClassificationType }
 
-export const SubmitPage: FC<SubmitPageProps> = ({ className }) => {
+export const AdminTestPage: FC<AdminTestPageProps> = ({ className }) => {
   const navigate = useNavigate()
   const [conditionOptions, setConditionOptions] = useState<ConditionOptionType[]>([])
   const [condition, setCondition] = useState<ConditionOptionType>()
